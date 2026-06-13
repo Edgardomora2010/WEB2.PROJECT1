@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Codificación caracteres  -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive Design-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description" content="Página de venta de artículos">
+    <meta name="keywords" content="NextShop, tienda online, ecommerce, tecnología, accesorios, compras online">
+    <meta name="author" content="Edgardo Mora M, Oscar Marín">
+
+    <!-- Título de página principal -->
+    <title>Home</title>
+
+    <!-- Implementación de hoja de estilos-->
+    <link rel="stylesheet" th:href="@{/css/GeneralStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/Components.css}">
+    <link rel="stylesheet" th:href="@{/css/Sites.css}"/>
+
+</head>
+
+<body>
+
+    <!-- Inicia construcción visual de página -->
+
+    <!-- HEADER:  -->
+    <!-- Fragmento (repetible en templates) para Header de página (Navegador de productos) -->
+    <div th:replace="~{fragments/Header :: header_page}"></div>
+
+    <!-- ASIDE:  -->
+    <!-- Fragmento para panel lateral de opciones -->
+    <div th:replace="~{fragments/SidePanel :: side_panel_page}"></div>
+
+    <!-- MAIN:  -->
+    <!-- Contenedor principal para contenido específico de página Home -->
+    <main class="products_container">
+
+        <!-- Info -->
+        <section class="info_section" id="info-section">
+            <h1>Bienvenido a NextShop</h1>
+            <p>
+                Encuentra productos de tecnología, hogar,
+                deportes, libros y mucho más.
+            </p>
+        </section>
+
+        <!-- Productos buscados por el usuario -->
+        <section class="searched_products"
+                 th:if="${searchResults != null}">
+
+            <details open>
+
+                <summary>Resultados de búsqueda:</summary>
+
+                <div class="products_grid">
+
+                    <div class="product_card"
+                         th:each="product : ${searchResults}">
+
+                        <div class="product_image_container">
+
+                            <img class="product_image"
+                                 th:src="${product.imagePath}"
+                                 alt="Producto">
+
+                        </div>
+
+                        <h3 th:text="${product.name}"></h3>
+                        <p th:text="${product.category.name}"></p>
+                        <p th:text="'₡' + ${product.price}"></p>
+
+                        <p class="product_stock"
+                           th:text="'Stock: ' + ${productStock[product.id]}">
+                        </p>
+
+                        <a th:href="@{/products/{id}(id=${product.id})}"
+                           class="btn_view_product">
+                            Ver producto
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+        </section>
+
+        <!-- Productos destacados -->
+        <section class="featured_products">
+
+            <details open>
+
+                <summary>Productos Destacados</summary>
+
+                <div class="products_grid">
+
+                    <div class="product_card"
+                         th:each="product : ${featuredProducts}">
+
+                        <div class="product_image_container">
+
+                            <img class="product_image"
+                                 th:src="${product.imagePath}"
+                                 alt="#">
+
+                        </div>
+
+                        <h3 th:text="${product.name}"></h3>
+                        <p th:text="${product.category.name}"></p>
+                        <p th:text="'₡' + ${product.price}"></p>
+
+                        <p class="product_stock"
+                           th:text="'Stock: ' + ${productStock[product.id]}">
+                        </p>
+
+                        <a th:href="@{/products/{id}(id=${product.id})}"
+                           class="btn_view_product">
+                            Ver producto
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+        </section>
+
+        <!-- Productos en oferta -->
+        <section class="sale_products">
+
+            <details open>
+
+                <summary>Ofertas</summary>
+
+                <div class="products_grid">
+
+                    <div class="product_card"
+                         th:each="product : ${saleProducts}">
+
+                        <div class="product_image_container">
+
+                            <img class="product_image"
+                                 th:src="${product.imagePath}"
+                                 alt="Producto">
+
+                        </div>
+
+                        <h3 th:text="${product.name}"></h3>
+                        <p th:text="${product.category.name}"></p>
+                        <p th:text="'₡' + ${product.price}"></p>
+
+                        <p class="product_stock"
+                           th:text="'Stock: ' + ${productStock[product.id]}">
+                        </p>
+
+                        <a th:href="@{/products/{id}(id=${product.id})}"
+                           class="btn_view_product">
+                            Ver producto
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+        </section>
+
+        <!-- Productos recientes -->
+        <section class="new_products">
+
+            <details open>
+
+                <summary>Recientes</summary>
+
+                <div class="products_grid">
+
+                    <div class="product_card"
+                         th:each="product : ${newProducts}">
+
+                        <div class="product_image_container">
+
+                            <img class="product_image"
+                                 th:src="${product.imagePath}"
+                                 alt="Producto">
+
+                        </div>
+
+                        <h3 th:text="${product.name}"></h3>
+                        <p th:text="${product.category.name}"></p>
+                        <p th:text="'₡' + ${product.price}"></p>
+
+                        <p class="product_stock"
+                           th:text="'Stock: ' + ${productStock[product.id]}">
+                        </p>
+
+                        <button>
+                            Ver producto
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER:  -->
+    <!-- Fragmento (repetible en templates) para Footer de página (redes sociales)-->
+    <div th:replace="~{fragments/Footer :: footer_page}"></div>
+
+<!-- Scripts JS: Para manipular visualización de panel de opciones de página -->
+<script type="module" th:src="@{/js/sidePanel.js}"></script>
+
+</body>
+
+</html>

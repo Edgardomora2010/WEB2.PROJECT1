@@ -1,0 +1,124 @@
+<!-- Contenedor principal: Barra de navegación y menú -->
+<header th:fragment="header_page" class="main_container">
+
+    <!-- Navegador principal -->
+    <nav class="main_nav">
+
+        <!-- Área de Logo -->
+        <div class="site_logo">
+            <a th:href="@{/}">
+                <img th:src="@{/images/appImages/NextShopLogo1.png}"
+                     alt="NextShop Logo"
+                     height="300"
+                     width="auto">
+            </a>
+        </div>
+
+        <!-- Contenedor de búsqueda de productos -->
+        <div class="search_container">
+
+            <form th:action="@{/search-products}"
+                  method="post"
+                  class="search_form">
+
+                <!-- Selector (Combobox) para categoría de búsqueda -->
+                <select class="search_category"
+                        name="category_name">
+
+                    <option value="Todas">Todas</option>
+
+                    <option th:each="category : ${product_categories}"
+                            th:value="${category.name}"
+                            th:text="${category.name}">
+                    </option>
+
+                </select>
+
+                <!-- Campo de texto para búsqueda de productos -->
+                <input type="text"
+                       name="product_name"
+                       placeholder="Buscar producto..."
+                       class="search_input">
+
+                <!-- Botón de búsqueda de productos -->
+                <button type="submit"
+                        class="search_button">
+
+                    <img class="search_icon"
+                         th:src="@{/images/appImages/Search1.png}"
+                         alt="Search">
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Área de Login / Usuario -->
+        <div class="login_area">
+
+            <a th:if="${session.client == null}"
+               th:href="@{/login}">
+                LOGIN
+            </a>
+
+            <a th:if="${session.client != null}"
+               th:href="@{/logout}"
+               th:text="${session.client.name}">
+                Usuario
+            </a>
+
+        </div>
+
+        <!-- Carrito de compras -->
+        <a th:href="@{/cart}" class="cart_container">
+
+            <img class="cart_icon"
+                 th:src="@{/images/appImages/Cart1.png}"
+                 alt="Cart">
+
+            <span class="cart_item_counter">
+                0
+            </span>
+
+        </a>
+
+        <!-- Botón de más opciones -->
+        <div class="more_options">
+
+            <button id="open-menu"
+                    class="more_options_button">
+
+                <img class="more_options_icon"
+                     th:src="@{/images/appImages/MoreOptions1.png}"
+                     alt="More Options"
+                     height="200"
+                     width="auto">
+
+            </button>
+
+        </div>
+
+    </nav>
+
+    <!-- Menú principal -->
+    <div class="main_menu">
+
+        <a th:href="@{/products}"
+           class="menu_link">
+            Productos
+        </a>
+
+        <a th:href="@{/offers}"
+           class="menu_link">
+            Ofertas
+        </a>
+
+        <a th:href="@{/categories}"
+           class="menu_link">
+            Categorías
+        </a>
+
+    </div>
+
+</header>

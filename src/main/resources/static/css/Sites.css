@@ -1,0 +1,321 @@
+/* ******************************************************************************************************************/
+/* NEXTSHOP */
+/* HOJA DE ESTILOS: SITES.CSS */
+/* Contiene estilos generales de las páginas implementadas en el proyecto,
+/* permitiendo definir variaciones visuales específicas según cada página.
+/* ********************************************************************************************************************/
+
+/* ********************************************************************************************************************/
+/* HOME */
+/* ********************************************************************************************************************/
+
+/* HEADER: <Nav> */
+.main_nav{
+    position:fixed;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    z-index:1000;
+    height:180px;
+    background-color:cadetblue;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+/* <Div> Área de Login */
+.login_area{
+    font-size:xx-large;
+    font-weight:bold;
+}
+
+/* <Button> Botón de más opciones */
+.more_options_button{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:none;
+    border:none;
+    cursor:pointer;
+    margin-right:20px;
+}
+
+/* <Img> ícono de botón de más opciones */
+.more_options_button .more_options_icon{
+    width:100px;
+    height:auto;
+}
+
+/* <Div> Barra de menú secundaria */
+.main_menu{
+    position:fixed;
+    top:180px;
+    left:0;
+    height:50px;
+    width:100%;
+    background:indianred;
+    display:flex;
+    align-items:center;
+    gap:40px;
+    padding:0 25px;
+    z-index:999;
+}
+
+/* <a> href:Links de menú de barra secundaria */
+.menu_link{
+    color:white;
+    font-size:1.4rem;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+/* Efecto Hover: para links de menú de barra secundaria */
+.menu_link:hover{
+    color:#ffd34d;
+    transform:translateY(-2px);
+}
+
+/* CUERPO DE PAGINA HOME: <Div>  */
+.products_container{
+    width:100%;
+    min-height:100vh;
+    background:#F8E9C0;
+    margin-top:230px;
+    padding:40px;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+/* <Section> Información de página */
+.info_section{
+    width:100%;
+    padding:20px;
+}
+
+/* <Section> para artículos de ventas */
+.sale_products{
+    width:100%;
+    padding:20px;
+}
+
+/* */
+.products_grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+/* */
+.product_card{
+    width:220px;
+    padding:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:white;
+}
+
+.product_image_container{
+    width:100%;
+    height:200px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.product_image{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+
+/* ********************************************************************************************************************/
+/* HOME: SECCIONES COLAPSABLES */
+/* ********************************************************************************************************************/
+
+.featured_products,
+.sale_products,
+.new_products{
+    width:100%;
+    padding:40px;
+}
+
+.featured_products details,
+.sale_products details,
+.new_products details{
+    width:100%;
+}
+
+details{
+    width:100%;
+}
+
+.featured_products summary,
+.sale_products summary,
+.new_products summary{
+    padding:20px;
+    font-size:2rem;
+    font-weight:bold;
+    cursor:pointer;
+    list-style:none;
+}
+
+.featured_products summary::-webkit-details-marker,
+.sale_products summary::-webkit-details-marker,
+.new_products summary::-webkit-details-marker{
+    display:none;
+}
+
+.search_form{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* ********************************************************************************************************************/
+/* LOGIN/REGISTER */
+/* ********************************************************************************************************************/
+
+/* HEADER: */
+
+/* <Div> Contenedor principal de login */
+.login_container,
+.register_container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* <Section> Sección para objetos de login */
+.login_section{
+    width:600px;
+    padding:50px;
+    border-radius:10px;
+    display:flex;
+    flex-direction:column;
+    gap:60px;
+}
+
+/* <Form> Formulario login */
+.login_form,
+.register_form{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    gap:25px;
+    font-size:1.5rem;
+}
+
+/* Contenedores internos de inputs */
+.login_form div{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* Inputs */
+.login_form input,
+.register_form input{
+    height:45px;
+    padding:0 15px;
+    border:1px solid #999;
+    border-radius:5px;
+    font-size:1.5rem;
+}
+
+/* Botón */
+.login_form button,
+.register_form button{
+    height:55px;
+    width:100%;
+    border:none;
+    border-radius:999px;
+    background:#f7b955;
+    font-size:2rem;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ********************************************************************************************************************/
+/* REGISTER */
+/* ********************************************************************************************************************/
+
+.register_section{
+    width:700px;
+    padding:50px;
+    border-radius:10px;
+    display:flex;
+    flex-direction:column;
+    gap:60px;
+}
+
+.register_row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.register_row label{
+    min-width:200px;
+}
+
+/* ********************************************************************************************************************/
+/* PRODUCT DETAILS */
+/* ********************************************************************************************************************/
+
+.product_details_container{
+    width:100%;
+    max-width:1200px;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    font-size:1.4rem;
+}
+
+.product_details_image_container{
+    width:450px;
+    flex-shrink:0;
+}
+
+.product_details_container h1{
+    font-size:3rem;
+}
+
+.product_details_container h2{
+    font-size:2rem;
+}
+
+.product_header{
+    display:flex;
+    gap:40px;
+    align-items:flex-start;
+}
+
+.product_info{
+    flex:1;
+}
+
+.product_info h1{
+    font-size:3rem;
+}
+
+.product_price{
+    font-size:2rem;
+    font-weight:bold;
+}
+
+.product_actions{
+    margin-top:30px;
+}
+
+.add_to_cart_button{
+    width:300px;
+    height:70px;
+    border:none;
+    border-radius:10px;
+    font-size:1.6rem;
+    font-weight:bold;
+    cursor:pointer;
+}

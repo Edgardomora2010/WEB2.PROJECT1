@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Codificación caracteres  -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive Design-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description" content="Página de venta de artículos">
+    <meta name="keywords" content="NextShop, tienda online, ecommerce, tecnología, accesorios, compras online">
+    <meta name="author" content="Edgardo Mora M, Oscar Marín">
+
+    <!-- Título de página principal -->
+    <title>Login</title>
+
+    <!-- Implementación de hoja de estilos-->
+    <link rel="stylesheet" th:href="@{/css/GeneralStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/Components.css}">
+    <link rel="stylesheet" th:href="@{/css/Sites.css}" />
+
+</head>
+
+<body>
+
+    <header>
+
+        <!-- Área del Logo -->
+        <div class="site_logo">
+            <a th:href="@{/}"><img th:src="@{/images/appImages/NextShopLogo1.png}"
+            alt="NextShop Logo" height="300" width="auto" ></a>
+        </div>
+
+    </header>
+
+    <main class="page_content">
+
+        <div class="login_container">
+
+            <!-- Sección decorativa -->
+            <section class = "login_section">
+
+                <!-- Título de sección -->
+                <h1>Iniciar sesión o crear una cuenta</h1>
+
+                <!-- Formulario para login -->
+                <form th:action="@{/login}" method="post" class="login_form">
+
+                    <div>
+
+                        <!-- Usuario (correo electrónico) -->
+                        <label for="client_email">
+                            Ingresar el correo electrónico
+                        </label>
+
+                        <input type="text"
+                               id="client_email"
+                               name="client_email"
+                               placeholder="Ingrese correo electrónico"
+                               required/>
+
+                    </div>
+
+                    <div>
+
+                        <!-- Contraseña -->
+                        <label for="client_password">
+                            Contraseña
+                        </label>
+
+                        <input type="password"
+                               id="client_password"
+                               name="client_password"
+                               required/>
+
+                    </div>
+
+                    <div>
+
+                        <!-- Botón de ingreso -->
+                        <button type="submit">
+                            Continuar
+                        </button>
+
+                    </div>
+
+                    <!-- Fragmento para mostrar errores de sitio -->
+                    <div th:replace="~{fragments/SiteErrors :: site_errors}"></div>
+
+                    <!-- Ir a register -->
+                    <div class="login_area">
+                        <a th:href="@{/register}">Crear una cuenta</a>
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER:  -->
+    <footer class="footer_container">
+        <!-- Fragmento (repetible en templates) para Footer de página
+        (redes sociales)-->
+        <div th:replace="~{fragments/Footer :: footer_page}"></div>
+
+    </footer>
+
+</body>
+</html>

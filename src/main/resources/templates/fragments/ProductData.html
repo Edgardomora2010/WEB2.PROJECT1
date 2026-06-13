@@ -1,0 +1,119 @@
+<!-- Fragmento: Información detallada de producto -->
+<div th:fragment="product_data" class="product_details_container">
+
+    <!-- Encabezado de producto -->
+    <div class="product_header">
+
+        <!-- Imagen -->
+        <div class="product_image_container">
+
+            <img class="product_image"
+                 th:src="${product.imagePath}"
+                 th:alt="${product.name}">
+
+        </div>
+
+        <!-- Información principal -->
+        <div class="product_info">
+
+            <h1 th:text="${product.name}">
+                Nombre Producto
+            </h1>
+
+            <p class="product_category"
+               th:text="${product.category.name}">
+                Categoría
+            </p>
+
+            <p class="product_sku">
+
+                SKU:
+
+                <span th:text="${product.sku}">
+                    SKU
+                </span>
+
+            </p>
+
+            <!-- Stock producto -->
+            <p th:if="${productStock > 0}"
+               th:text="'Stock disponible: ' + ${productStock}">
+            </p>
+
+            <p th:if="${productStock == 0}">
+                Agotado
+            </p>
+
+            <!-- Precio normal -->
+            <p th:if="${product.discountPercentage == 0}"
+               class="product_price"
+               th:text="'₡' + ${product.price}">
+                ₡0
+            </p>
+
+            <!-- Precio con descuento -->
+            <div th:if="${product.discountPercentage > 0}">
+
+                <span class="product_discount"
+                      th:text="${product.discountPercentage + '% OFF'}">
+
+                    10% OFF
+
+                </span>
+
+                <p class="product_price"
+                   th:text="'₡' + ${product.price}">
+
+                    ₡0
+
+                </p>
+
+            </div>
+
+            <button class="add_to_cart_button">
+
+                Agregar al carrito
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Descripción -->
+    <section class="product_description">
+
+        <h2>Descripción</h2>
+
+        <p th:text="${product.description}">
+            Descripción del producto
+        </p>
+
+    </section>
+
+    <!-- Características -->
+    <section class="product_properties">
+
+        <h2>Características</h2>
+
+        <ul>
+
+            <li th:each="property : ${product.properties}">
+
+                <strong th:text="${property.name}">
+                    Propiedad
+                </strong>
+
+                :
+
+                <span th:text="${property.value}">
+                    Valor
+                </span>
+
+            </li>
+
+        </ul>
+
+    </section>
+
+</div>

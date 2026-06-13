@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Codificación caracteres  -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive Design-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description" content="Página de venta de artículos">
+    <meta name="keywords" content="NextShop, tienda online, ecommerce, tecnología, accesorios, compras online">
+    <meta name="author" content="Edgardo Mora M, Oscar Marín">
+
+    <!-- Título de página principal -->
+    <title>ProductDetails</title>
+
+    <!-- Implementación de hoja de estilos-->
+    <link rel="stylesheet" th:href="@{/css/GeneralStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/Components.css}">
+    <link rel="stylesheet" th:href="@{/css/Sites.css}" />
+
+</head>
+
+<body>
+
+<!-- Inicia construcción visual de página -->
+
+<!-- HEADER:  -->
+<!-- Fragmento (repetible en templates) para Header de página (Navegador de productos) -->
+<div th:replace="~{fragments/Header :: header_page}"></div>
+
+<!-- ASIDE:  -->
+<!-- Fragmento para panel lateral de opciones -->
+<div th:replace="~{fragments/SidePanel :: side_panel_page}"></div>
+
+<!-- MAIN:  -->
+<!-- Contenedor principal para contenido específico de página Home -->
+<main class="products_container">
+
+    <div th:replace="~{fragments/ProductData :: product_data}">
+    </div>
+
+</main>
+
+<!-- FOOTER:  -->
+<!-- Fragmento (repetible en templates) para Footer de página (redes sociales)-->
+<div th:replace="~{fragments/Footer :: footer_page}"></div>
+
+<!-- Scripts JS: Para manipular visualización de panel de opciones de página -->
+<script type="module" th:src="@{/js/sidePanel.js}"></script>
+
+</body>
+
+</html>

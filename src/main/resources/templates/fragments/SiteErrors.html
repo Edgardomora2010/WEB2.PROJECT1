@@ -1,0 +1,12 @@
+<div th:fragment="site_errors">
+
+    <div class="error_container"
+         th:if="${errorMessage != null}">
+
+        <span th:text="${errorMessage}">
+            Mensaje de error
+        </span>
+
+    </div>
+
+</div>
