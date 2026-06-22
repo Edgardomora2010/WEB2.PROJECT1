@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Codificación caracteres  -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive Design-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description" content="Página de venta de artículos">
+    <meta name="keywords" content="NextShop, tienda online, ecommerce, tecnología, accesorios, compras online">
+    <meta name="author" content="Edgardo Mora M, Oscar Marín">
+
+    <!-- Título de página principal -->
+    <title>Home</title>
+
+    <!-- Implementación de hoja de estilos-->
+    <link rel="stylesheet" th:href="@{/css/Components.css}">
+    <link rel="stylesheet" th:href="@{/css/Sites.css}"/>
+
+</head>
+
+<body>
+
+<!-- Barra de menú secundario -->
+<div class="main_menu_b">
+
+    <div class ="home_options">
+
+        <div>
+            <a th:href="@{/}"
+               class="menu_link">
+                Volver (tienda)
+            </a>
+        </div>
+
+        <div>
+            <a th:href="@{/MyAccount}"
+               class="menu_link">
+                Mi cuenta
+            </a>
+        </div>
+
+        <div>
+            <a th:href="@{/help}"
+               class="menu_link">
+                Ayuda
+            </a>
+        </div>
+    </div>
+
+    <div class = "admin_options">
+        <a th:if="${session.client != null and session.client.role.name() == 'ADMIN'}"
+           th:href="@{/logout}"
+           class="menu_link">
+            Cerra sesión
+        </a>
+    </div>
+
+</div>
+
+<!-- MAIN:  -->
+<!-- Contenedor principal para contenido específico de página Home -->
+<main class="dashboard_container">
+
+    <div class="admin_dashboard">
+
+        <div class="admin_menu">
+
+            <details>
+
+                <summary>Categorías</summary>
+
+                <div class="admin_options">
+
+                    <a th:href="@{/admin/categories}">
+                        Administrar Categorías
+                    </a>
+
+                </div>
+
+            </details>
+
+            <details>
+
+                <summary>Productos</summary>
+
+                <div class="admin_options">
+
+                    <a th:href="@{/AdminProducts}">
+                        Administrar Productos
+                    </a>
+
+                </div>
+
+            </details>
+
+            <details>
+
+                <summary>Inventario</summary>
+
+                <div class="admin_options">
+
+                    <a th:href="@{/admin/inventory}">
+                        Gestionar Inventario
+                    </a>
+
+                </div>
+
+            </details>
+
+            <details>
+
+                <summary>Clientes</summary>
+
+                <div class="admin_options">
+
+                    <a th:href="@{/AdminClients}">
+                        Administrar Clientes
+                    </a>
+
+                </div>
+
+            </details>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- FOOTER:  -->
+<!-- Fragmento (repetible en templates) para Footer de página (redes sociales)-->
+<div th:replace="~{fragments/Footer :: footer_page}"></div>
+
+</body>

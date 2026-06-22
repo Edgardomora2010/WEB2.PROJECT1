@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <!-- Codificación caracteres -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive Design -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description"
+          content="Mantenimiento administrativo de usuarios">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>Mantenimiento de Usuarios</title>
+
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="adminclients_container">
+
+        <!-- TÍTULO -->
+        <section>
+
+            <h1>
+                Mantenimiento de Usuarios
+            </h1>
+
+        </section>
+
+        <!-- BÚSQUEDA -->
+        <section>
+
+            <h2>
+                Búsqueda de Usuarios
+            </h2>
+
+            <form th:action="@{/AdminClients/Search}"
+                  method="post"
+                  class="admin_search_form">
+
+                <div class="admin_search_row">
+
+                    <label>
+                        Tipo de búsqueda
+                    </label>
+
+                    <select name="searchType">
+
+                        <option value="ID">
+                            ID
+                        </option>
+
+                        <option value="NAME">
+                            Nombre
+                        </option>
+
+                        <option value="EMAIL">
+                            Correo
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="admin_search_row">
+
+                    <label>
+                        Valor
+                    </label>
+
+                    <input type="text"
+                           name="searchValue">
+
+                </div>
+
+                <div class="admin_search_button_container">
+
+                    <button type="submit"
+                            class="primary_button">
+
+                        Buscar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- TABLA DE USUARIOS -->
+        <section>
+
+            <h2>
+                Usuarios Registrados
+            </h2>
+
+            <div class="admin_table">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Perfil</th>
+                        <th>Estado</th>
+                        <th>Editar</th>
+                        <th>Acción</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="client : ${clients}">
+
+                        <td th:text="${client.id}">
+                            1
+                        </td>
+
+                        <td th:text="${client.name}">
+                            Nombre
+                        </td>
+
+                        <td th:text="${client.email}">
+                            Correo
+                        </td>
+
+                        <td th:text="${client.role}">
+                            Perfil
+                        </td>
+
+                        <td>
+
+                    <span th:text="${client.active ? 'Activo' : 'Inactivo'}">
+                        Activo
+                    </span>
+
+                        </td>
+
+                        <!-- EDITAR -->
+
+                        <td>
+
+                            <form th:action="@{/AdminClients/Edit}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="clientId"
+                                       th:value="${client.id}">
+
+                                <button type="submit"
+                                        class="edit_button">
+
+                                    Editar
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                        <!-- ACTIVAR / DESACTIVAR -->
+
+                        <td>
+
+                            <div th:if="${session.client.id == client.id}">
+
+                                No permitido
+
+                            </div>
+
+                            <form th:if="${session.client.id != client.id}"
+                                  th:action="@{/AdminClients/SwitchStatus}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="clientId"
+                                       th:value="${client.id}">
+
+                                <button type="submit"
+                                        class="delete_button"
+                                        th:text="${client.active ? 'Desactivar' : 'Activar'}">
+
+                                    Desactivar
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- CREAR ADMINISTRADOR -->
+
+        <section>
+
+            <form th:action="@{/AdminClients/Create}"
+                  method="get">
+
+                <button type="submit"
+                        class="primary_button">
+
+                    Crear Administrador
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+<footer>
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+</body>
+
+</html>

@@ -5,7 +5,6 @@ package tec.nextshop_project_1.service;
 import org.springframework.stereotype.Service;
 import tec.nextshop_project_1.data.Inventory;
 import tec.nextshop_project_1.repository.interfaces.IInventoryRepository;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -43,8 +43,8 @@ public class NextShopProject1Application implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/**");
+        /*registry.addInterceptor(authenticationInterceptor)
+                .addPathPatterns("/**");*/
 
         registry.addInterceptor(timingInterceptor)
                 .addPathPatterns("/**");

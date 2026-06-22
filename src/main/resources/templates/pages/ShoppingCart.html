@@ -1,10 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+
+    <!-- Codificación caracteres  -->
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <!-- Responsive Design-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description" content="Registro de cliente para tienda online">
+    <meta name="keywords" content="NextShop, registro, cliente, tienda online, ecommerce">
+    <meta name="author" content="Edgardo Mora M, Oscar Marín">
+
+    <!-- Título de página principal -->
+    <title>Register</title>
+
+    <!-- Implementación de hoja de estilos-->
+    <link rel="stylesheet" th:href="@{/css/Components.css}">
+    <link rel="stylesheet" th:href="@{/css/Sites.css}" />
+
 </head>
+
 <body>
+
+<header>
+
+    <!-- HEADER:  -->
+    <!-- Fragmento (repetible en templates) para Header de página (Navegador de productos) -->
+    <div th:replace="~{fragments/HeaderC :: header_page_c}"></div>
+
+</header>
+
+<main class="cart_page">
+
+    <div class="shoppingcart_container">
+
+        <!-- Productos del carrito -->
+        <section class="cart_products">
+
+            <h2>Carrito de Compras</h2>
+
+            <div class="cart_item"
+                 th:each="item : ${cartItems}">
+
+                <!-- Imagen -->
+                <div class="cart_item_image_container">
+
+                    <img class="cart_item_image"
+                         th:src="${item.product.imagePath}"
+                         alt="Producto">
+
+                </div>
+
+                <!-- Información -->
+                <div class="cart_item_info">
+
+                    <h3 th:text="${item.product.name}">
+                        Nombre Producto
+                    </h3>
+
+                    <p th:text="${item.product.category.name}">
+                        Categoría
+                    </p>
+
+                    <p class="cart_price"
+                       th:text="'₡ ' + ${item.product.price}">
+                        ₡ 0
+                    </p>
+
+                    <p>
+                        Cantidad:
+                        <span th:text="${item.quantity}">
+                            1
+                        </span>
+                    </p>
+
+                    <p>
+                        Stock:
+                        <span th:text="${productStock[item.product.id]}">
+                            0
+                        </span>
+                    </p>
+
+                    <p class="cart_subtotal">
+
+                        Subtotal:
+
+                        <span th:text="'₡ ' + ${item.product.price * item.quantity}">
+                            ₡ 0
+                        </span>
+
+                    </p>
+
+                </div>
+
+                <!-- Acciones de carrito -->
+                <div class="cart_item_side_actions">
+
+                    <div class="cart_quantity">
+
+                        <form th:action="@{/cart/decrease}"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="product_id"
+                                   th:value="${item.product.id}">
+
+                            <button class="quantity_button"
+                                    type="submit">
+
+                                -
+
+                            </button>
+
+                        </form>
+
+                        <span class="quantity_value"
+                              th:text="${item.quantity}">
+                            1
+                        </span>
+
+                        <form th:action="@{/cart/increase}"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="product_id"
+                                   th:value="${item.product.id}">
+
+                            <button class="quantity_button"
+                                    type="submit">
+
+                                +
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <div class="cart_actions">
+
+                        <form th:action="@{/cart/remove}"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="product_id"
+                                   th:value="${item.product.id}">
+
+                            <button class="primary_button"
+                                    type="submit">
+
+                                Eliminar
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- PANEL RESUMEN -->
+        <aside class="cart_summary">
+
+            <h2>Resumen del Pedido</h2>
+
+            <p>
+
+                Artículos:
+
+                <span th:text="${totalItems}">
+                    0
+                </span>
+
+            </p>
+
+            <p>
+
+                Subtotal:
+
+                <span th:text="'₡ ' + ${subTotal}">
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <p>
+
+                Envío:
+
+                <span>
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <hr>
+
+            <p class="cart_total">
+
+                Total:
+
+                <span th:text="'₡ ' + ${subTotal}">
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <h3>Dirección de envío</h3>
+
+            <p th:text="${session.client.address}">
+                Dirección Cliente
+            </p>
+
+            <a th:href="@{/checkout}"
+               class="primary_button">
+
+                Finalizar Compra
+
+            </a>
+
+        </aside>
+
+    </div>
+
+</main>
+
+<!-- FOOTER:  -->
+<footer class="footer_container">
+
+    <!-- Fragmento (repetible en templates) para Footer de página
+    (redes sociales)-->
+    <div th:replace="~{fragments/Footer :: footer_page}"></div>
+
+</footer>
 
 </body>
 </html>

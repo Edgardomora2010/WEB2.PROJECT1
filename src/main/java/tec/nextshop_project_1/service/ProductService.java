@@ -4,7 +4,9 @@ package tec.nextshop_project_1.service;
 // IMPORTACIÓN DE LIBRERÍAS
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import tec.nextshop_project_1.data.Category;
 import tec.nextshop_project_1.data.Product;
+import tec.nextshop_project_1.data.Property;
 import tec.nextshop_project_1.repository.interfaces.IProductRepository;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +27,8 @@ public class ProductService {
      * Constructor de clase, inyección de dependencia: ProductRepository
      * @param productRepository
      */
-    public ProductService(IProductRepository productRepository) {
+    public ProductService(IProductRepository productRepository)
+    {
         this.productRepository = productRepository;
     }
 
@@ -159,53 +162,210 @@ public class ProductService {
 
     /**
      * Valida y registra un nuevo producto en la aplicación.
-     * @param product
+     * @param product información del producto.
      * @return true si el producto fue agregado correctamente.
      */
     public boolean addProduct(Product product) {
 
-        // Busca el id de cliente más alto y genera el siguiente consecutivo.
+        // Busca el id de producto más alto y genera el siguiente consecutivo.
         long nextId = 1;
-        for (Product currentProduct : productRepository.getAllProducts()) {
-            if (currentProduct.getId() >= nextId) {
+
+        for(Product currentProduct :
+                productRepository.getAllProducts()) {
+
+            if(currentProduct.getId() >= nextId) {
                 nextId = currentProduct.getId() + 1;
             }
+
         }
 
-        Optional<Product> productName = findByProductName(product.getName());
+        // Valida que el SKU no exista previamente.
+        Optional<Product> existingSku =
+                findBySku(
+                        product.getSku()
+                );
 
-        if (productName.isPresent()) {
+        if(existingSku.isPresent()) {
             return false;
         }
 
         // Orden del constructor en Product
 
-        /*  id
-            sku
-            name
-            description
-            price
-            imagePath
-            category
-            List<Property> properties
-            active
+        /*
+        id
+        sku
+        name
+        description
+        price
+        imagePath
+        category
+        List<Property> properties
+        active
          */
 
-        Product newProduct = new Product(
-                nextId,
-                product.getSku().trim(),
-                product.getName().trim(),
-                product.getDescription().trim(),
-                product.getPrice(),
-                product.getImagePath().trim(),
-                product.getCategory(),
-                product.getProperties(),
-                true
+        // Constructor minimo anterior
+        /*
+        Product newProduct =
+                new Product(
+                        nextId,
+                        product.getSku().trim(),
+                        product.getName().trim(),
+                        product.getDescription().trim(),
+                        product.getPrice(),
+                        product.getImagePath(),
+                        product.getCategory(),
+                        product.getProperties(),
+                        true
+                );
+
+         */
+
+        // Corrección a constructor completo de clase: Product
+        // Orden del constructor en Product
+
+        /*
+        id
+        sku
+        name
+        description
+        price
+        imagePath
+        category
+        List<Property> properties
+        featured
+        discountPercentage
+        createdAt
+        active
+        */
+
+        Product newProduct =
+                new Product(
+                        nextId,
+                        product.getSku().trim(),
+                        product.getName().trim(),
+                        product.getDescription().trim(),
+                        product.getPrice(),
+                        product.getImagePath(),
+                        product.getCategory(),
+                        product.getProperties(),
+                        product.isFeatured(),
+                        product.getDiscountPercentage(),
+                        java.time.LocalDateTime.now(),
+                        product.isActive()
+                );
+
+        productRepository.addProduct(
+                newProduct
         );
 
-        productRepository.addProduct(newProduct);
+        return true;
+
+    }
+
+    /**
+     * Actualiza la información editable de un producto.
+     * @param productId identificador del producto.
+     * @param sku sku.
+     * @param name nombre.
+     * @param description descripción.
+     * @param imagePath ruta imagen.
+     * @param category categoría.
+     * @param properties propiedades.
+     * @param featured destacado.
+     * @param discountPercentage descuento.
+     * @param active estado.
+     * @return true si fue posible actualizar.
+     */
+    public boolean updateProduct(
+            Long productId,
+            String sku,
+            String name,
+            String description,
+            String imagePath,
+            Category category,
+            List<Property> properties,
+            boolean featured,
+            double discountPercentage,
+            boolean active) {
+
+        Optional<Product> product =
+                findByProductId(productId);
+
+        if(product.isEmpty()) {
+            return false;
+        }
+
+        Product updatedProduct =
+                new Product(
+                        product.get().getId(),
+                        sku,
+                        name,
+                        description,
+                        product.get().getPrice(),
+                        imagePath,
+                        category,
+                        properties,
+                        featured,
+                        discountPercentage,
+                        product.get().getCreatedAt(),
+                        active
+                );
+
+        productRepository.updateProduct(
+                updatedProduct
+        );
 
         return true;
+
+    }
+
+    /**
+     * Cambia el estado activo/inactivo de un producto.
+     * @param productId identificador del producto.
+     * @return true si fue posible modificar el estado.
+     */
+    public boolean switchProductStatus(Long productId) {
+
+        return productRepository.switchProductStatus(
+                productId
+        );
+
+    }
+
+    /**
+     * Busca productos según criterio indicado.
+     * @param searchType tipo de búsqueda.
+     * @param searchValue valor a buscar.
+     * @return Lista de productos encontrados.
+     */
+    public List<Product> searchProducts(
+            String searchType,
+            String searchValue) {
+
+        return productRepository.searchProducts(
+                searchType,
+                searchValue
+        );
+
+    }
+
+    /**
+     * Busca un producto mediante su SKU.
+     * @param sku código SKU del producto.
+     * @return Producto encontrado o Optional vacío.
+     */
+    public Optional<Product> findBySku(String sku) {
+
+        if(sku == null ||
+                sku.trim().isEmpty()) {
+
+            return Optional.empty();
+
+        }
+
+        return productRepository.findBySku(
+                sku.trim()
+        );
 
     }
 

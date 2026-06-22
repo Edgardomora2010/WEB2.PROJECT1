@@ -2,38 +2,38 @@
 <div th:fragment="product_data" class="product_details_container">
 
     <!-- Encabezado de producto -->
-    <div class="product_header">
+    <section class="product_header" id="product-header">
 
-        <!-- Imagen -->
-        <div class="product_image_container">
+        <div class="product_subcontainer">
 
-            <img class="product_image"
+            <!-- Imagen -->
+            <div class="product_details_image_container">
+
+                <img class="product_image"
                  th:src="${product.imagePath}"
                  th:alt="${product.name}">
 
-        </div>
+            </div>
 
-        <!-- Información principal -->
-        <div class="product_info">
+            <!-- Información principal -->
+            <div class="product_info">
 
-            <h1 th:text="${product.name}">
-                Nombre Producto
-            </h1>
+                <h1 th:text="${product.name}">
+                    Nombre Producto
+                </h1>
 
-            <p class="product_category"
-               th:text="${product.category.name}">
-                Categoría
-            </p>
+                <p class="product_category"
+                   th:text="${product.category.name}">
+                    Categoría
+                </p>
 
-            <p class="product_sku">
+                <p class="product_sku">
+                    SKU:
+                    <span th:text="${product.sku}">
+                        SKU
+                    </span>
 
-                SKU:
-
-                <span th:text="${product.sku}">
-                    SKU
-                </span>
-
-            </p>
+                </p>
 
             <!-- Stock producto -->
             <p th:if="${productStock > 0}"
@@ -70,49 +70,69 @@
 
             </div>
 
-            <button class="add_to_cart_button">
+                <form th:action="@{/cart/addItem}"
+                      method="post">
 
-                Agregar al carrito
+                    <input type="hidden"
+                           name="product_id"
+                           th:value="${product.id}">
 
-            </button>
+                    <button type="submit"
+                            class="primary_button">
+
+                        Agregar al carrito
+
+                    </button>
+
+                </form>
 
         </div>
 
-    </div>
+        </div>
+
+    </section>
 
     <!-- Descripción -->
     <section class="product_description">
 
-        <h2>Descripción</h2>
+        <div class="product_subcontainer">
 
-        <p th:text="${product.description}">
-            Descripción del producto
-        </p>
+            <h2>Descripción</h2>
+
+            <p th:text="${product.description}">
+                Descripción del producto
+            </p>
+
+        </div>
 
     </section>
 
     <!-- Características -->
     <section class="product_properties">
 
-        <h2>Características</h2>
+        <div class="product_subcontainer">
 
-        <ul>
+            <h2>Características</h2>
 
-            <li th:each="property : ${product.properties}">
+            <ul>
 
-                <strong th:text="${property.name}">
-                    Propiedad
-                </strong>
+                <li th:each="property : ${product.properties}">
 
-                :
+                    <strong th:text="${property.name}">
+                        Propiedad
+                    </strong>
 
-                <span th:text="${property.value}">
-                    Valor
-                </span>
+                    :
 
-            </li>
+                    <span th:text="${property.value}">
+                        Valor
+                    </span>
 
-        </ul>
+                </li>
+
+            </ul>
+
+        </div>
 
     </section>
 

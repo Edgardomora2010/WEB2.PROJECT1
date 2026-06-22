@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * Controlador encargado de gestionar la carga, visualización y
- * comportamiento de la página ProductDetails.html.
+ * comportamiento de la página:ProductDetails.html.
  */
 @Slf4j
 @Controller
@@ -33,6 +33,7 @@ public class ProductDetailsController {
      */
     public ProductDetailsController(CategoryService categoryService, ProductService productService,
                                     InventoryService inventoryService) {
+
         this.categoryService = categoryService;
         this.productService = productService;
         this.inventoryService = inventoryService;
@@ -43,31 +44,32 @@ public class ProductDetailsController {
     public String showProductDetails(@PathVariable Long id,
                                      Model model) {
 
-        // Obtiene producto mediante el id de producto
+        log.info("Carga::página de detalle de productos:[ProductDetails.html]");
+        // Obtiene producto mediante id de producto
         Optional<Product> product =
                 productService.findByProductId(id);
 
-        // si el producto tiene datos
+        // si el producto esta vació redireccionar
         if (product.isEmpty()) {
             return "redirect:/";
         }
 
         // 1. Carga categorías de productos en selector de búsqueda
         // a la vista
-        log.info("Carga categorías de productos al selector");
+        log.info("Carga::categorías de productos a:[selector de categorías]");
         model.addAttribute(
                 "product_categories",
                 categoryService.getAllCategories());
 
         // 2. Envía datos de producto a vista
-        log.info("Carga datos de producto seleccionado");
+        log.info("Carga::datos de:[producto seleccionado]");
         model.addAttribute(
                 "product",
                 product.get()
         );
 
         // 3. Envía datos de stock de productos en inventario a vista
-        log.info("Carga cantidad de stock de producto");
+        log.info("Carga:[cantidad de stock] de:[producto seleccionado]");
         model.addAttribute(
                 "productStock",
                 inventoryService.getProductStock(id)

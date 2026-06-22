@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+          content="Mantenimiento administrativo de productos">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>Editar Producto</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="editclient_container">
+
+        <section>
+
+            <h1 th:text="${isNew ? 'Crear Producto' : 'Actualizar Producto'}">
+                Producto
+            </h1>
+
+        </section>
+
+        <section>
+
+            <form th:action="@{/AdminProducts/Save}"
+                  method="post">
+
+                <!-- ID oculto -->
+
+                <input type="hidden"
+                       name="productId"
+                       th:value="${isNew ? '' : product.id}">
+
+                <!-- ID -->
+
+                <div th:if="${!isNew}"
+                     class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        ID
+                    </label>
+
+                    <input type="text"
+                           class="admin_form_input"
+                           th:value="${product.id}"
+                           readonly>
+
+                </div>
+
+                <!-- FECHA CREACIÓN -->
+
+                <div th:if="${!isNew}"
+                     class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Fecha Creación
+                    </label>
+
+                    <input type="text"
+                           class="admin_form_input"
+                           th:value="${product.createdAt}"
+                           readonly>
+
+                </div>
+
+                <!-- SKU -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        SKU
+                    </label>
+
+                    <input type="text"
+                           name="sku"
+                           class="admin_form_input"
+                           th:value="${isNew ? '' : product.sku}"
+                           required>
+
+                </div>
+
+                <!-- NOMBRE -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Nombre
+                    </label>
+
+                    <input type="text"
+                           name="name"
+                           class="admin_form_input"
+                           th:value="${isNew ? '' : product.name}"
+                           required>
+
+                </div>
+
+                <!-- DESCRIPCIÓN -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Descripción
+                    </label>
+
+                    <input type="text"
+                           name="description"
+                           class="admin_form_input"
+                           th:value="${isNew ? '' : product.description}"
+                           required>
+
+                </div>
+
+                <!-- CATEGORÍA -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Categoría
+                    </label>
+
+                    <select name="category"
+                            class="admin_form_select">
+
+                        <option th:each="category : ${categories}"
+                                th:value="${category.name}"
+                                th:text="${category.name}"
+                                th:selected="${!isNew && product.category.name == category.name}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- PRECIO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Precio
+                    </label>
+
+                    <input type="number"
+                           min="0"
+                           step="0.01"
+                           name="price"
+                           class="admin_form_input"
+                           th:value="${isNew ? '' : product.price}"
+                           required>
+
+                </div>
+
+                <!-- DESTACADO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Destacado
+                    </label>
+
+                    <select name="featured"
+                            class="admin_form_select">
+
+                        <option value="true"
+                                th:selected="${!isNew && product.featured}">
+                            Sí
+                        </option>
+
+                        <option value="false"
+                                th:selected="${isNew || !product.featured}">
+                            No
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- DESCUENTO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        % Descuento
+                    </label>
+
+                    <input type="number"
+                           min="0"
+                           max="100"
+                           step="0.01"
+                           name="discountPercentage"
+                           class="admin_form_input"
+                           th:value="${isNew ? 0 : product.discountPercentage}">
+
+                </div>
+
+                <!-- ESTADO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Estado
+                    </label>
+
+                    <select name="active"
+                            class="admin_form_select">
+
+                        <option value="true"
+                                th:selected="${isNew || product.active}">
+                            Activo
+                        </option>
+
+                        <option value="false"
+                                th:selected="${!isNew && !product.active}">
+                            Inactivo
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- PROPIEDADES -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Propiedades adicionales
+                    </label>
+
+                    <input type="checkbox"
+                           id="hasProperties"
+                           th:checked="${!isNew and !#lists.isEmpty(product.properties)}">
+
+                </div>
+
+                <div id="propertiesSection"
+                     th:style="${!isNew and !#lists.isEmpty(product.properties)}
+                     ? 'display:block;'
+                     : 'display:none;'">
+
+                    <!-- PROPIEDAD 1 -->
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Propiedad 1
+                        </label>
+
+                        <input type="text"
+                               name="propertyName1"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 0 ? product.properties.get(0).name : ''}">
+
+                    </div>
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Valor 1
+                        </label>
+
+                        <input type="text"
+                               name="propertyValue1"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 0 ? product.properties.get(0).value : ''}">
+
+                    </div>
+
+                    <!-- PROPIEDAD 2 -->
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Propiedad 2
+                        </label>
+
+                        <input type="text"
+                               name="propertyName2"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 1 ? product.properties.get(1).name : ''}">
+
+                    </div>
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Valor 2
+                        </label>
+
+                        <input type="text"
+                               name="propertyValue2"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 1 ? product.properties.get(1).value : ''}">
+
+                    </div>
+
+                    <!-- PROPIEDAD 3 -->
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Propiedad 3
+                        </label>
+
+                        <input type="text"
+                               name="propertyName3"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 2 ? product.properties.get(2).name : ''}">
+
+                    </div>
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Valor 3
+                        </label>
+
+                        <input type="text"
+                               name="propertyValue3"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 2 ? product.properties.get(2).value : ''}">
+
+                    </div>
+
+                    <!-- PROPIEDAD 4 -->
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Propiedad 4
+                        </label>
+
+                        <input type="text"
+                               name="propertyName4"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 3 ? product.properties.get(3).name : ''}">
+
+                    </div>
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Valor 4
+                        </label>
+
+                        <input type="text"
+                               name="propertyValue4"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 3 ? product.properties.get(3).value : ''}">
+
+                    </div>
+
+                    <!-- PROPIEDAD 5 -->
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Propiedad 5
+                        </label>
+
+                        <input type="text"
+                               name="propertyName5"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 4 ? product.properties.get(4).name : ''}">
+
+                    </div>
+
+                    <div class="admin_form_row">
+
+                        <label class="admin_form_label">
+                            Valor 5
+                        </label>
+
+                        <input type="text"
+                               name="propertyValue5"
+                               class="admin_form_input"
+                               th:value="${!isNew and product.properties.size() > 4 ? product.properties.get(4).value : ''}">
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <button type="submit"
+                        class="primary_button">
+
+                    <span th:text="${isNew ? 'Crear Producto' : 'Actualizar Producto'}">
+                    </span>
+
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- Fragmento para mostrar errores de sitio -->
+        <div th:replace="~{fragments/SiteErrors :: site_errors}"></div>
+
+    </div>
+
+
+</main>
+
+<footer>
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const checkBox =
+                document.getElementById(
+                    "hasProperties"
+                );
+
+            const section =
+                document.getElementById(
+                    "propertiesSection"
+                );
+
+            checkBox.addEventListener(
+                "change",
+                function () {
+
+                    section.style.display =
+                        checkBox.checked
+                            ? "block"
+                            : "none";
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>

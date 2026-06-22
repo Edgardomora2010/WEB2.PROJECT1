@@ -17,7 +17,6 @@
     <title>Home</title>
 
     <!-- Implementación de hoja de estilos-->
-    <link rel="stylesheet" th:href="@{/css/GeneralStyle.css}">
     <link rel="stylesheet" th:href="@{/css/Components.css}">
     <link rel="stylesheet" th:href="@{/css/Sites.css}"/>
 
@@ -41,20 +40,38 @@
 
         <!-- Info -->
         <section class="info_section" id="info-section">
+
             <h1>Bienvenido a NextShop</h1>
-            <p>
+
+            <H3>
                 Encuentra productos de tecnología, hogar,
                 deportes, libros y mucho más.
-            </p>
+            </H3>
+
         </section>
 
         <!-- Productos buscados por el usuario -->
-        <section class="searched_products"
+        <section class="searched_products" id="searched-products"
                  th:if="${searchResults != null}">
 
             <details open>
 
-                <summary>Resultados de búsqueda:</summary>
+                <summary>
+                    Resultados de búsqueda:
+                </summary>
+
+                <p class="search_result_info">
+
+                    Categoría:
+                    <strong th:text="${selectedCategory}"></strong>
+
+                    | Producto:
+                    <strong th:text="${searchedProductName}"></strong>
+
+                    | Coincidencias:
+                    <strong th:text="${resultCount}"></strong>
+
+                </p>
 
                 <div class="products_grid">
 
@@ -69,7 +86,7 @@
 
                         </div>
 
-                        <h3 th:text="${product.name}"></h3>
+                        <h2 th:text="${product.name}"></h2>
                         <p th:text="${product.category.name}"></p>
                         <p th:text="'₡' + ${product.price}"></p>
 
@@ -91,7 +108,7 @@
         </section>
 
         <!-- Productos destacados -->
-        <section class="featured_products">
+        <section class="featured_products" id="featured-products">
 
             <details open>
 
@@ -132,7 +149,7 @@
         </section>
 
         <!-- Productos en oferta -->
-        <section class="sale_products">
+        <section class="sale_products" id="sale-products">
 
             <details open>
 
@@ -173,7 +190,7 @@
         </section>
 
         <!-- Productos recientes -->
-        <section class="new_products">
+        <section class="new_products" id="new-products">
 
             <details open>
 
@@ -193,16 +210,19 @@
                         </div>
 
                         <h3 th:text="${product.name}"></h3>
+
                         <p th:text="${product.category.name}"></p>
+
                         <p th:text="'₡' + ${product.price}"></p>
 
                         <p class="product_stock"
                            th:text="'Stock: ' + ${productStock[product.id]}">
                         </p>
 
-                        <button>
+                        <a th:href="@{/products/{id}(id=${product.id})}"
+                           class="btn_view_product">
                             Ver producto
-                        </button>
+                        </a>
 
                     </div>
 

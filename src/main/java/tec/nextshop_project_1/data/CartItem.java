@@ -5,6 +5,8 @@ package tec.nextshop_project_1.data;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 /**
  * Clase para representar la información del carrito de compras (items) dentro
  * de la aplicación.
@@ -17,5 +19,8 @@ public class CartItem {
     private Product product;
     private int quantity;
 
+    // Constructor de clase
+    public CartItem(Optional<Product> product, int productStock) {
+    }
 }
 

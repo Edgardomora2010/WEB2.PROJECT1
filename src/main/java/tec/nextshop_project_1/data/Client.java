@@ -4,6 +4,7 @@ package tec.nextshop_project_1.data;
 // IMPORTACION DE LIBRERÍAS
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import java.time.LocalDate;
 
 /**
  * Clase para representar la información de los clientes dentro
@@ -27,6 +28,7 @@ public class Client {
     private String password;
     private String phoneNumber;
     private String address;
+    private final LocalDate registrationDate;
     private boolean active;
 
 }

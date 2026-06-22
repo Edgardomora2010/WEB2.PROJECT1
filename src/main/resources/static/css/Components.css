@@ -1,35 +1,126 @@
 /* ******************************************************************************************************************/
-/* NEXTSHOP */
-/* HOJA DE ESTILOS: COMPONENTS.CSS */
-/* Contiene estilos reutilizables para componentes y elementos visuales
-/* utilizados en distintas páginas del proyecto */
+/*   NEXTSHOP: HOJA DE ESTILOS: COMPONENTS.CSS */
 /* ********************************************************************************************************************/
 
 /* ********************************************************************************************************************/
-/* OBJETOS GENERALES DE PÁGINAS */
+/* CONFIGURACIÓN GENERAL DE ELEMENTOS HTML */
+/* Define estilos base y comportamiento visual general para etiquetas HTML utilizadas
+/* en el proyecto */
+/* Los objetos bajo nombres de clase por defecto, o nombres de clase personalizadas,
+/* para efectos de esta hoja de estilos, aplicarán para todas las páginas y componentes
+/* que las utilicen, de forma que puedan ser parcial, o enteramente reutilizables a lo
+/* largo del proyecto.
 /* ********************************************************************************************************************/
 
-/* Logo de página */
+/* ********************************************************************************************************************/
+/* RESET DE ELEMENTOS HTML */
+/* ********************************************************************************************************************/
+
+/* Reinicia márgenes y rellenos por defecto de todos los elementos */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* <Html>  Página */
+html{
+    background:#F8E9C0;
+}
+
+/* ********************************************************************************************************************/
+/* SELECTORES GENÉRICOS (SIN CLASE, NI ID) */
+/* ********************************************************************************************************************/
+
+/* <Section> presentación visual general para secciones */
+section
+{
+    border: 2.5px solid coral;
+    border-radius: 8px;
+}
+
+/* <Details> presentación general para details */
+details{
+    width:100%;
+}
+
+/* Summary> presentación visual general para objeto expandible (summary) */
+summary{
+    margin-top:10px;
+    margin-left:20px;
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+    font-size:2rem;
+    font-weight:bold;
+}
+
+/* (Efecto: Before) para presentación del summary */
+summary::before{
+    content:"+";
+    margin-right:15px;
+    font-size:2rem;
+    font-weight:bold;
+}
+
+/* <Details> */
+details[open] summary::before{
+    content:"−";
+}
+
+/* ********************************************************************************************************************/
+/* SELECTORES DE CLASE (PERSONALIZADOS) */
+/* ********************************************************************************************************************/
+
+/* ##################################
+/* <HEADER>:
+/* ##################################
+
+/* ********************************************************************************************************************/
+/* Logo de proyecto (Páginas) */
+/* ********************************************************************************************************************/
+
+/* <Nav> Contenedor principal de barra de navegación para páginas secundarias */
+.main_nav_b{
+    position: absolute;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    z-index:1000;
+    height:180px;
+    background-color:cadetblue;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+/* <Div> Barra de menú secundaria para páginas secundarias */
+.main_menu_b{
+    top:0;
+    left:0;
+    width:100%;
+    height:100px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:indianred;
+    padding:0 25px;
+    z-index:999;
+}
+
+/* <Div> contenedor de logo de página */
 .site_logo{
     display: flex;
     justify-content: center;
     align-items: flex-start;
 }
 
-/* <Main> Contenedor principal de páginas secundarias */
-.page_content{
-    width:100%;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items: flex-start;
-}
-
 /* ********************************************************************************************************************/
-/* OBJETOS: BARRA DE BUSQUEDA */
+/* Objetos: Barra de búsqueda */
 /* ********************************************************************************************************************/
 
-/* Contenedor de búsqueda */
+/* <Div> Contenedor de búsqueda */
 .search_container{
     display:flex;
     align-items:center;
@@ -54,7 +145,7 @@
     cursor:pointer;
 }
 
-/* <Input> Entra de texto para búsqueda */
+/* <Input> Entrada de texto para búsqueda */
 .search_input{
     flex:1;
     height:100%;
@@ -75,7 +166,7 @@
     transition:0.3s;
 }
 
-/* Icono de botón de búsqueda de productos */
+/* <Img> Imágen para botón de búsqueda de productos */
 .search_icon{
     width:60px;
     height:auto;
@@ -83,7 +174,7 @@
 }
 
 /* ********************************************************************************************************************/
-/* OBJETOS: CARRITO DE COMPRA */
+/* Objetos: Carrito de compra */
 /* ********************************************************************************************************************/
 
 /* <Div> Contenedor para carrito de compra */
@@ -95,14 +186,14 @@
     text-decoration:none;
 }
 
-/* <Img> ícono de imagen, para carrito de compra */
+/* <Img> Imagen/ícono para para carrito de compra */
 .cart_icon{
     width:100px;
     height:auto;
     object-fit:contain;
 }
 
-/* Contenedor para coteo de items, de carrito de compra */
+/* Contenedor para conteo de items, de carrito de compra */
 .cart_item_counter{
     position:absolute;
     top:-5px;
@@ -119,8 +210,90 @@
     font-weight:bold;
 }
 
+/* ##################################
+/* <BODY>:<MAIN>:
+/* ##################################
+
 /* ********************************************************************************************************************/
-/* OBJETOS: PANEL LATERAL DE OPCIONES */
+/* Objetos: Cuerpo de página (<Body>) */
+/* ********************************************************************************************************************/
+
+/* <Main> Contenedor para el cuerpo de las páginas */
+.page_content{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items: flex-start;
+    margin-top:240px;
+}
+
+/* <Button> Botón principal */
+.primary_button{
+    display:inline-block;
+    padding:15px 30px;
+    background:black;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:1.4rem;
+    font-weight:bold;
+    text-decoration:none;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+/* Efecto (Hover) botón principal */
+.primary_button:hover{
+    background:#f7b955;
+    color:black;
+}
+
+/* <Div> contenedor/grid para ordenar tarjetas de productos */
+.products_grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+/* <Div> contenedor/card de producto para mostrar detalles de un producto */
+.product_card{
+    width:220px;
+    padding:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+/* <P> párrafos del product card*/
+.product_card p{
+    font-size: larger;
+}
+
+/* <A> links de product card */
+.product_card a{
+    font-weight: bold;
+    font-size: x-large;
+}
+
+/* <Div> contenedor de imagen para tarjeta de producto */
+.product_image_container{
+    width:100%;
+    height:200px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* <Img> imagen para tarjeta de producto */
+.product_image{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+
+/* ********************************************************************************************************************/
+/* Objetos: Papel lateral de menú de opciones */
 /* ********************************************************************************************************************/
 
 /* <Div> Capa de overlay para página, para efecto del panel */
@@ -134,7 +307,7 @@
     z-index:1999;
 }
 
-/* Mostrar capa de overlay */
+/* (Estado) Mostrar capa de visible del overlay */
 .overlay.show{
     opacity:1;
     visibility:visible;
@@ -158,13 +331,13 @@
     gap:40px;
 }
 
-/* Abre panel lateral de opciones */
+/* (Estado) Abre panel lateral de opciones */
 .side_panel.open{
     /* Mantiene panel en eje x */
     transform:translateX(0);
 }
 
-/* Botón de cierre de panel lateral de opciones */
+/* <Button> Botón de cierre de panel lateral de opciones */
 .close_button{
     align-self:flex-end;
     background:none;
@@ -174,10 +347,10 @@
     cursor:pointer;
 }
 
-/* Título de panel lateral de opciones */
+/* <H1> Título de panel lateral de opciones */
 .panel_title{
     font-size:3rem;
-    color:#5a2408;
+    color: #d6001b;
 }
 
 /* Menú de opciones de panel lateral */
@@ -202,11 +375,15 @@
     color:white;
 }
 
+/* ##################################
+/* <FOOTER>:
+/* ##################################
+
 /* ********************************************************************************************************************/
-/* OBJETOS: REDES SOCIALES */
+/* Objetos footer: Redes sociales */
 /* ********************************************************************************************************************/
 
-/* Contenedor para icono de redes sociales */
+/* <Div> Contenedor para icono de redes sociales */
 .social_media{
     display:flex;
     height:150px;
@@ -216,7 +393,7 @@
     align-items:center;
 }
 
-/* Lista de elementos de redes sociales */
+/* <ul> Lista de elementos de redes sociales */
 .social_media_list{
     display:flex;
     gap:20px;
@@ -225,7 +402,7 @@
     margin:0;
 }
 
-/* Icono de red social */
+/* <Img> Icono de red social */
 .social_media_icon{
     width:100px;
     height:auto;
@@ -233,10 +410,10 @@
 }
 
 /* ********************************************************************************************************************/
-/* MENSAJES DE ERROR */
+/* Objetos: Mensajes de error */
 /* ********************************************************************************************************************/
 
-/* Mensajes de error */
+/* <Div> Mensajes de error */
 .error_container{
     margin: 12px 0;
     padding: 10px 14px;
@@ -249,28 +426,80 @@
 }
 
 /* ********************************************************************************************************************/
-/* OBJETOS EXPANDIBLES (SUMMARY) */
+/* Botón de edición */
 /* ********************************************************************************************************************/
 
-summary{
+/* Botón editar */
+.edit_button{
+    min-width:120px;
+    padding:8px 12px;
+    background-color:#F7D26A;
+    border:1px solid #D9B248;
+    border-radius:5px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* Hover */
+.edit_button:hover {
+    background-color: #F2C84F;
+}
+
+/* Botón eliminar / desactivar */
+.delete_button{
+    min-width:120px;
+    padding:8px 12px;
+    background-color:#E57373;
+    border:1px solid #C94F4F;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+/* Hover */
+.delete_button:hover{
+    background-color:#D95C5C;
+}
+
+.large_action_button{
+    width:280px;
+}
+
+/* ##################################
+/* ADMIN FORMULARIOS
+/* ##################################*/
+
+.admin_form_row{
     display:flex;
     align-items:center;
-    cursor:pointer;
-    font-size:2rem;
+    margin-bottom:12px;
+}
+
+.admin_form_label{
+    width:180px;
+    font-size:0.95rem;
     font-weight:bold;
 }
 
-summary::before{
-    content:"+";
-    margin-right:15px;
-    font-size:2rem;
-    font-weight:bold;
+.admin_form_input,
+.admin_form_select{
+    width:350px;
+    height:40px;
+    padding:0 12px;
+    border:1px solid #bdbdbd;
+    border-radius:5px;
+    font-size:0.95rem;
 }
 
-details[open] summary::before{
-    content:"−";
+/* Tablas */
+.admin_table {
+    background-color: white;
+    border-radius: 5px;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: auto;
 }
-
 
 
 

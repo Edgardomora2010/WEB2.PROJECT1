@@ -119,41 +119,10 @@
                         <input type="hidden"
                                name="product_name" value="">
                         <button type="submit" class="menu_link">
-                            Todos los productos </button>
+                            Ir a todos los productos </button>
                     </form>
 
                 </div>
-
-                <div>
-                    <a href="#featured-products"
-                       class="menu_link">
-                        Destacados
-                    </a>
-                </div>
-
-                <div>
-                    <a href="#sale-products"
-                       class="menu_link">
-                        Ofertas
-                    </a>
-                </div>
-
-                <div>
-                    <a href="#new-products"
-                       class="menu_link">
-                        Recientes
-                    </a>
-                </div>
-
-            </div>
-
-            <div class="admin_options">
-
-                <a th:if="${session.client != null and session.client.role.name() == 'ADMIN'}"
-                   th:href="@{/AdminDashboard}"
-                   class="menu_link">
-                    Módulo Administrativo
-                </a>
 
             </div>
 

@@ -1,15 +1,20 @@
 /* ******************************************************************************************************************/
-/* NEXTSHOP */
-/* HOJA DE ESTILOS: SITES.CSS */
-/* Contiene estilos generales de las páginas implementadas en el proyecto,
-/* permitiendo definir variaciones visuales específicas según cada página.
+/*   NEXTSHOP: HOJA DE ESTILOS: SITES.CSS */
 /* ********************************************************************************************************************/
 
 /* ********************************************************************************************************************/
-/* HOME */
+/* CONFIGURACIÓN GENERAL DE ELEMENTOS HTML */
+/* Define estilos base y comportamiento visual general para etiquetas HTML utilizadas
+/* en el proyecto */
+/* Los objetos bajo nombres de clase personalizados, para efectos de esta hoja de estilos,
+/* aplicarán para algunas páginas y componentes, que las utilicen.
 /* ********************************************************************************************************************/
 
-/* HEADER: <Nav> */
+/* ##################################*/
+/* HOME/HEADER /*
+/* ##################################*/
+
+/* <Nav> contenedor principal de barra de navegación */
 .main_nav{
     position:fixed;
     top:0;
@@ -24,13 +29,79 @@
     justify-content:space-between;
 }
 
-/* <Div> Área de Login */
-.login_area{
-    font-size:xx-large;
+/* <Div> Barra de menú secundaria */
+.main_menu{
+    position:absolute;
+    top:180px;
+    left:0;
+    width:100%;
+    height:50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:indianred;
+    padding:0 25px;
+    z-index:999;
+}
+
+/* <Div> contenedor de opciones de búsqueda (personalizada, descatados, ofertas,
+ rencientes) en barra de menú secundaria */
+.home_options{
+    display:flex;
+    gap:40px;
+    align-items:center;
+}
+
+/* <Div> contenedor de opciones (modo administrativo) en barra de menú secundaria */
+.admin_options{
+    display:flex;
+    align-items:center;
+}
+
+/* <Form> de contenedor home_options */
+.home_options form{
+    margin:0;
+    padding:0;
+}
+
+/* <Button> de búsqueda de home_options (todos los productos) */
+.home_options button{
+    background:transparent;
+    border:none;
+    padding:0;
+    margin:0;
+    color:white;
+    font-size:1.4rem;
+    font-weight:bold;
+    font-family:inherit;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+/* (Efecto) <Button> de búsqueda (todos los productos) */
+.home_options button:hover{
+    color:#ffd34d;
+    transform:translateY(-2px);
+}
+
+/* <a> href:Links de menú de barra secundaria */
+.menu_link{
+    color:white;
+    font-size:1.4rem;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+/* Efecto Hover: para links (destacados, ofertas, recientes) de menú de
+ barra secundaria */
+.menu_link:hover{
+    color:#ffd34d;
+    transform:translateY(-2px);
+    font-size:2rem;
     font-weight:bold;
 }
 
-/* <Button> Botón de más opciones */
+/* <Button> Botón de más opciones de barra principal (nav) */
 .more_options_button{
     display:flex;
     justify-content:center;
@@ -47,36 +118,83 @@
     height:auto;
 }
 
-/* <Div> Barra de menú secundaria */
-.main_menu{
-    position:fixed;
-    top:180px;
-    left:0;
-    height:50px;
+/* <Section> Secciones colapsables para resultados
+(destacados, ofertas, recientes) */
+.searched_products,
+.featured_products,
+.sale_products,
+.new_products{
     width:100%;
-    background:indianred;
-    display:flex;
-    align-items:center;
-    gap:40px;
-    padding:0 25px;
-    z-index:999;
+    padding:40px;
 }
 
-/* <a> href:Links de menú de barra secundaria */
-.menu_link{
-    color:white;
-    font-size:1.4rem;
+#info-section{
+    background-color: #000000;
+    color: cadetblue;
+    font-weight: bold;
+}
+
+#searched-products{
+    background-color: rgb(253 13 55 / 0.05);
+}
+
+#featured-products{
+    background-color: rgb(254 204 0 / 0.05);
+}
+
+#sale-products{
+    background-color: rgb(8 249 171 / 0.05);
+}
+
+#new-products{
+    background-color: rgb(123 14 249 / 0.05);
+}
+
+/* <Details> para secciones: (destacados, ofertas, recientes) */
+searched_products details,
+.featured_products details,
+.sale_products details,
+.new_products details{
+    width:100%;
+}
+
+/* <Summary> para secciones (destacados, ofertas, recientes) */
+.searched_products summary,
+.featured_products summary,
+.sale_products summary,
+.new_products summary{
+    padding:20px;
+    font-size:2rem;
     font-weight:bold;
-    transition:0.3s;
+    cursor:pointer;
+    list-style:none;
 }
 
-/* Efecto Hover: para links de menú de barra secundaria */
-.menu_link:hover{
-    color:#ffd34d;
-    transform:translateY(-2px);
+/* Elimina indicador visual por defecto de elementos expandibles */
+.searched_products summary::-webkit-details-marker,
+.featured_products summary::-webkit-details-marker,
+.sale_products summary::-webkit-details-marker,
+.new_products summary::-webkit-details-marker{
+    display:none;
 }
 
-/* CUERPO DE PAGINA HOME: <Div>  */
+/* <Form> para barra principal de búsqueda */
+.search_form{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* <Div> contenedor para mostrar información de resultado de búsqueda */
+.search_result_info{
+    margin-top:10px;
+    margin-left:30px;
+    font-weight: bold;
+    font-size: x-large;
+    color: #B71C1C;
+}
+
+/*  <Main> contenedor para mostrar las diferentes secciones con productos  */
 .products_container{
     width:100%;
     min-height:100vh;
@@ -86,34 +204,6 @@
     display:flex;
     flex-direction:column;
     gap:30px;
-}
-
-/* <Section> Información de página */
-.info_section{
-    width:100%;
-    padding:20px;
-}
-
-/* <Section> para artículos de ventas */
-.sale_products{
-    width:100%;
-    padding:20px;
-}
-
-/* */
-.products_grid{
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-}
-
-/* */
-.product_card{
-    width:220px;
-    padding:15px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    background:white;
 }
 
 .product_image_container{
@@ -131,65 +221,35 @@
     object-fit:contain;
 }
 
-/* ********************************************************************************************************************/
-/* HOME: SECCIONES COLAPSABLES */
-/* ********************************************************************************************************************/
-
-.featured_products,
-.sale_products,
-.new_products{
+/* <Section> Información de página */
+.info_section{
     width:100%;
-    padding:40px;
-}
-
-.featured_products details,
-.sale_products details,
-.new_products details{
-    width:100%;
-}
-
-details{
-    width:100%;
-}
-
-.featured_products summary,
-.sale_products summary,
-.new_products summary{
     padding:20px;
-    font-size:2rem;
-    font-weight:bold;
-    cursor:pointer;
-    list-style:none;
 }
 
-.featured_products summary::-webkit-details-marker,
-.sale_products summary::-webkit-details-marker,
-.new_products summary::-webkit-details-marker{
-    display:none;
-}
-
-.search_form{
-    display: flex;
-    width: 100%;
-    height: 100%;
-}
-
-/* ********************************************************************************************************************/
+/* ##################################*/
 /* LOGIN/REGISTER */
-/* ********************************************************************************************************************/
+/* ##################################*/
 
-/* HEADER: */
+/* Header: */
 
-/* <Div> Contenedor principal de login */
+/* <Div> Área de Login */
+.login_area{
+    font-size:xx-large;
+    font-weight:bold;
+}
+
+/* <Div> Contenedor principal de: login, register */
 .login_container,
 .register_container{
+    margin-top:20px;
     display:flex;
     justify-content:center;
     align-items:center;
 }
 
 /* <Section> Sección para objetos de login */
-.login_section{
+#login-section{
     width:600px;
     padding:50px;
     border-radius:10px;
@@ -198,7 +258,7 @@ details{
     gap:60px;
 }
 
-/* <Form> Formulario login */
+/* <Form> Formulario: login, register */
 .login_form,
 .register_form{
     display:flex;
@@ -208,14 +268,14 @@ details{
     font-size:1.5rem;
 }
 
-/* Contenedores internos de inputs */
+/* <Div> Contenedores internos de inputs */
 .login_form div{
     display:flex;
     flex-direction:column;
     gap:20px;
 }
 
-/* Inputs */
+/* <Inputs> */
 .login_form input,
 .register_form input{
     height:45px;
@@ -225,7 +285,7 @@ details{
     font-size:1.5rem;
 }
 
-/* Botón */
+/* <Button> Botón para login, register */
 .login_form button,
 .register_form button{
     height:55px;
@@ -238,11 +298,12 @@ details{
     cursor:pointer;
 }
 
-/* ********************************************************************************************************************/
+/* ##################################*/
 /* REGISTER */
-/* ********************************************************************************************************************/
+/* ##################################*/
 
-.register_section{
+/* <Section> sección para register */
+#register-section{
     width:700px;
     padding:50px;
     border-radius:10px;
@@ -251,56 +312,90 @@ details{
     gap:60px;
 }
 
+/* <Row> fila para register */
 .register_row{
     display:flex;
     align-items:center;
     gap:12px;
 }
 
+/* <Label> etiquetas para fila de register */
 .register_row label{
     min-width:200px;
 }
 
-/* ********************************************************************************************************************/
-/* PRODUCT DETAILS */
-/* ********************************************************************************************************************/
 
+/* ##################################*/
+/* PRODUCT DETAILS/PRODUCT DATA */
+/* ##################################*/
+
+.product_header{
+    display:flex;
+    flex-direction:row;
+    gap:50px;
+    padding:30px;
+}
+
+/* <Div> contenedor de products para detalles de un producto */
 .product_details_container{
     width:100%;
     max-width:1200px;
     display:flex;
     flex-direction:column;
-    gap:30px;
-    font-size:1.4rem;
+    gap:25px;
 }
 
 .product_details_image_container{
-    width:450px;
+    width:350px;
     flex-shrink:0;
 }
 
+/* <Div> subcontenedor de productos*/
+.product_subcontainer{
+    margin-top:20px;
+    margin-left:40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    font-size: x-large;
+}
+
+.product_description,
+.product_properties{
+    width:100%;
+    padding:25px;
+}
+
+/* <Button del subcontenedor de productos */
+.product_subcontainer .primary_button{
+    justify-content: flex-end;
+}
+
+.product_subcontainer p{
+    font-size:1.5rem;
+}
+
+/* <H1> Título de contenedor de producto */
 .product_details_container h1{
     font-size:3rem;
 }
 
+/* <H2> Título de contenedor de producto */
 .product_details_container h2{
     font-size:2rem;
 }
 
-.product_header{
-    display:flex;
-    gap:40px;
-    align-items:flex-start;
-}
-
+/* <Div> contenedor para información de producto*/
 .product_info{
     flex:1;
 }
 
+/* <H1> Título para contenedor para información de producto */
 .product_info h1{
     font-size:3rem;
 }
 
+/* <P> párrafo para precio de producto */
 .product_price{
     font-size:2rem;
     font-weight:bold;
@@ -310,12 +405,521 @@ details{
     margin-top:30px;
 }
 
-.add_to_cart_button{
-    width:300px;
-    height:70px;
+/* ##################################*/
+/* MY ACCOUNT */
+/* ##################################*/
+
+/* <Div> contenedor principal para página Mi Cuenta */
+.account_container{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+    padding:30px 40px 50px 40px;
+}
+
+/* <Details> sección expandible para resumen general de cliente */
+.client_summary{
+    width:100%;
+    padding:20px;
+    margin-top:10px;
+}
+
+/* <H2> título principal para información de cliente */
+.client_summary h2{
+    font-size:3rem;
+}
+
+/* <P> párrafo para información general de cliente */
+.client_summary p{
+    font-size:1.5rem;
+}
+
+/* <Div> contenedor para imagen e información principal de cliente */
+.client_info{
+    display:flex;
+    align-items:flex-start;
+    gap:30px;
+}
+
+/* <Img> imagen representativa de cliente */
+.client_avatar{
+    width:180px;
+    height:auto;
+    flex-shrink:0;
+}
+
+/* <Div> contenedor para nombre, correo y fecha de registro */
+.client_data{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    font-size:2rem;
+}
+
+/* <Details> sección expandible para módulos de cuenta */
+.account_panel{
+    width:100%;
+    padding:25px;
+    background:transparent;
+}
+
+/* <Summary> encabezado expandible para módulos de cuenta */
+.account_panel summary{
+    font-size:2rem;
+    padding:15px;
+}
+
+/* <Div> contenedor para información detallada de perfil */
+.account_content{
+    padding:25px;
+    font-size:1.4rem;
+}
+
+/* <P> párrafo para datos específicos de perfil */
+.account_content p{
+    margin-bottom:20px;
+}
+
+/* <A> botón para edición de información de perfil */
+.account_button{
+    display:inline-block;
+    padding:15px 30px;
+    font-size:1.4rem;
+    font-weight:bold;
+    text-decoration:none;
+    border:2px solid coral;
+    border-radius:8px;
+    color:black;
+}
+
+/* Efecto Hover: botón para edición de perfil */
+.account_button:hover{
+    background:rgba(255,127,80,0.15);
+}
+
+/* <Details> visualización para resumen de cliente y cierre de sesión */
+#details-client,
+#details-session{
+    background:#f7b955;
+    color:black;
+    border-radius:15px;
+}
+
+/* ##################################*/
+/* SHOPPING CART */
+/* ##################################*/
+
+/* <Main> Contenedor para el cuerpo de las página Shopping cart */
+.cart_page{
+    width:100%;
+    min-height:100vh;
+    margin-top:240px;
+    padding:30px;
+}
+
+/* <Div> contenedor para datos de carrito de compras*/
+.shoppingcart_container{
+    width:100%;
+    display:grid;
+    grid-template-columns: 60% 40%;
+    gap:30px;
+}
+
+/* ********************************************************************************************************************/
+/* Lista de productos */
+/* ********************************************************************************************************************/
+
+/* <Section> Contenedor para listado de productos agregados al carrito */
+.cart_products {
+    height: 800px;
+    overflow-y: auto;
+
+}
+
+/* <H1> Título principal de sección de carrito de compras */
+.cart_products h1{
+    margin-bottom:25px;
+    font-size:2.5rem;
+}
+
+/* <Article> Tarjeta individual para producto agregado al carrito */
+.cart_item{
+    display:flex;
+    gap:25px;
+    padding:25px;
+    margin-bottom:20px;
+    background:white;
+    border:2px solid coral;
+    border-radius:8px;
+}
+
+/* <Div> Contenedor para imagen de producto en carrito */
+.cart_item_image_container{
+    width:180px;
+    flex-shrink:0;
+}
+
+/* <Img> Imagen representativa del producto agregado al carrito */
+.cart_item_image{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+}
+
+/* <Div> Contenedor para información descriptiva del producto */
+.cart_item_info{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* <A> Link de navegación hacia detalles del producto */
+.cart_item_name{
+    font-size:1.8rem;
+    font-weight:bold;
+    text-decoration:none;
+    color:black;
+}
+
+/* Efecto Hover: Link de navegación hacia detalles del producto */
+.cart_item_name:hover{
+    color:indianred;
+}
+
+/* <P> Categoría asociada al producto */
+.cart_item_category{
+    color:#666;
+}
+
+/* <P> Precio unitario del producto */
+.cart_price{
+    font-size:1.5rem;
+    font-weight:bold;
+}
+
+/* <P> Cantidad disponible en inventario para producto */
+.cart_stock{
+    color:green;
+    font-weight:bold;
+}
+
+/* ********************************************************************************************************************/
+/* Cantidad de productos */
+/* ********************************************************************************************************************/
+
+/* <Div> Contenedor para controles de cantidad de producto */
+.cart_quantity{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:10px;
+}
+
+/* <Button> Botón para aumentar o disminuir cantidad */
+.quantity_button{
+    width:40px;
+    height:40px;
     border:none;
-    border-radius:10px;
-    font-size:1.6rem;
+    border-radius:6px;
+    background:#f7b955;
+    font-size:1.5rem;
     font-weight:bold;
     cursor:pointer;
 }
+
+/* <Span> Valor actual de cantidad seleccionada */
+.quantity_value{
+    min-width:40px;
+    text-align:center;
+    font-size:1.3rem;
+    font-weight:bold;
+}
+
+/* ********************************************************************************************************************/
+/* Acciones de producto */
+/* ********************************************************************************************************************/
+
+/* <Div> Contenedor para acciones aplicables al producto */
+.cart_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* <A> Link de acción para operaciones sobre producto */
+.cart_action_link{
+    text-decoration:none;
+    color:indianred;
+    font-weight:bold;
+}
+
+/* ********************************************************************************************************************/
+/* Resumen de compra */
+/* ********************************************************************************************************************/
+
+/* <Aside> Panel resumen de pedido y totales de compra */
+.cart_summary{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    padding:35px;
+    background:white;
+    border:2px solid coral;
+    border-radius:8px;
+}
+
+/* <H2> Título principal de resumen de pedido */
+.cart_summary h2{
+    margin-bottom:25px;
+    font-size:2rem;
+}
+
+/* <Div> Fila descriptiva para subtotal, envío o cantidad */
+.summary_row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+/* <Div> Fila destacada para total general del pedido */
+.summary_total{
+    display:flex;
+    justify-content:space-between;
+    font-size:2rem;
+    font-weight:bold;
+    margin-top:20px;
+    padding-top:20px;
+    border-top:2px solid #ddd;
+}
+
+/* <Div> Contenedor para dirección de envío del cliente */
+.shipping_address{
+    margin-top:30px;
+}
+
+/* <H3> Título de sección para dirección de envío */
+.shipping_address h3{
+    margin-bottom:10px;
+}
+
+/* <A> Botón principal para finalizar proceso de compra */
+.checkout_button{
+    display:block;
+    width:100%;
+    margin-top:30px;
+    padding:18px;
+    border:none;
+    border-radius:8px;
+    background:black;
+    color:white;
+    font-size:1.5rem;
+    font-weight:bold;
+    text-align:center;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+/* Efecto Hover: Botón principal para finalizar compra */
+.checkout_button:hover{
+    background:#f7b955;
+    color:black;
+}
+
+/* ##################################*/
+/* ADMIN DASHBOARD */
+/* ##################################*/
+
+/* <Div> Contenedor principal para página de administración */
+.admin_dashboard{
+    width:100%;
+    min-height:100vh;
+    background:
+            linear-gradient(
+                    rgba(248,233,192,0.75),
+                    rgba(248,233,192,0.75)
+            ),
+            url('/images/appImages/Background1.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+/* <Section> Contenedor para módulo administrativo expandible */
+.admin_menu{
+    width:900px;
+    height:600px;
+    margin-left:40px;
+    margin-top:40px;
+    align-items:center;
+    font-size:3rem;
+}
+
+/* <Details> Elemento expandible para módulo administrativo */
+.admin_menu details{
+    margin-bottom:20px;
+}
+
+/* <Summary> Encabezado expandible de módulo administrativo */
+.admin_menu summary{
+    padding:15px;
+    font-size:2rem;
+}
+
+/* <Div> Contenedor para opciones disponibles dentro de módulo administrativo */
+.admin_section_options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding:20px;
+}
+
+/* <A> Link de navegación para operación administrativa */
+.admin_section_options a{
+    text-decoration:none;
+    font-size:1.5rem;
+}
+
+
+/* ##################################*/
+/* ADMIN CLIENTS */
+/* ##################################*/
+
+/* Contenedor principal */
+.adminclients_container {
+    width: 100%;
+    max-width: 1400px;
+}
+
+/* Separación entre secciones */
+.adminclients_container section {
+    margin-bottom: 20px;
+}
+
+/* FORMULARIO DE BÚSQUEDA */
+.admin_search_form {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Fila de búsqueda */
+.admin_search_row {
+    display: flex;
+    align-items: center;
+}
+
+/* Etiquetas */
+.admin_search_row label {
+    width: 180px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Combo e Input */
+.admin_search_row select,
+.admin_search_row input {
+    height: 40px;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    padding: 0 10px;
+}
+
+/* Combo */
+.admin_search_row select {
+    width: 220px;
+}
+
+/* Input */
+.admin_search_row input {
+    width: 400px;
+}
+
+/* Contenedor botón búsqueda */
+.admin_search_button_container {
+    margin-top: 15px;
+    margin-left: 180px;
+}
+
+.admin_table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Encabezados */
+.admin_table th {
+    background-color: #F8E9C0;
+    padding: 12px;
+}
+
+/* Datos */
+.admin_table td {
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+    vertical-align: middle;
+}
+
+/* Hover filas */
+.admin_table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Formularios internos */
+.admin_table form {
+    margin: 0;
+}
+
+/* BOTÓN CREAR ADMINISTRADOR */
+
+.create_admin_button {
+    width: 280px;
+}
+
+.editclient_container{
+    width:95%;
+    max-width:900px;
+}
+
+.editclient_container section{
+    margin-bottom:20px;
+}
+
+/* ##################################*/
+/* EDIT CLIENT */
+/* ##################################*/
+
+.editclient_container{
+    width:95%;
+    max-width:900px;
+}
+
+.editclient_container section{
+    margin-bottom:20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

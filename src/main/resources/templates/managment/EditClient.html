@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+          content="Mantenimiento administrativo de usuarios">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>Administración de Usuarios</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="editclient_container">
+
+        <!-- TÍTULO -->
+
+        <section>
+
+            <h1 th:if="${isNew}">
+                Crear Administrador
+            </h1>
+
+            <h1 th:unless="${isNew}">
+                Actualizar Usuario
+            </h1>
+
+        </section>
+
+        <!-- FORMULARIO -->
+
+        <section>
+
+            <!-- FORMULARIO CREAR -->
+
+            <form th:if="${isNew}"
+                  th:action="@{/AdminClients/Save}"
+                  method="post">
+
+                <!-- NOMBRE -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Nombre
+                    </label>
+
+                    <input type="text"
+                           name="name"
+                           class="admin_form_input"
+                           required>
+
+                </div>
+
+                <!-- APELLIDOS -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Apellidos
+                    </label>
+
+                    <input type="text"
+                           name="lastName"
+                           class="admin_form_input"
+                           required>
+
+                </div>
+
+                <!-- CORREO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Correo Electrónico
+                    </label>
+
+                    <input type="email"
+                           name="email"
+                           class="admin_form_input"
+                           required>
+
+                </div>
+
+                <!-- CONTRASEÑA -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Contraseña
+                    </label>
+
+                    <input type="text"
+                           name="password"
+                           class="admin_form_input"
+                           required>
+
+                </div>
+
+                <!-- TELÉFONO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Teléfono
+                    </label>
+
+                    <input type="text"
+                           name="phoneNumber"
+                           class="admin_form_input">
+
+                </div>
+
+                <!-- DIRECCIÓN -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Dirección
+                    </label>
+
+                    <input type="text"
+                           name="address"
+                           class="admin_form_input">
+
+                </div>
+
+                <button type="submit"
+                        class="primary_button">
+
+                    Crear Administrador
+
+                </button>
+
+            </form>
+
+            <!-- FORMULARIO EDITAR -->
+
+            <form th:unless="${isNew}"
+                  th:action="@{/AdminClients/Update}"
+                  method="post">
+
+                <!-- ID oculto -->
+
+                <input type="hidden"
+                       name="clientId"
+                       th:value="${client.id}">
+
+                <!-- ID -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        ID
+                    </label>
+
+                    <input type="text"
+                           class="admin_form_input"
+                           th:value="${client.id}"
+                           readonly>
+
+                </div>
+
+                <!-- PERFIL -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Perfil
+                    </label>
+
+                    <input type="text"
+                           class="admin_form_input"
+                           th:value="${client.role}"
+                           readonly>
+
+                </div>
+
+                <!-- NOMBRE -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Nombre
+                    </label>
+
+                    <input type="text"
+                           class="admin_form_input"
+                           th:value="${client.name}"
+                           readonly>
+
+                </div>
+
+                <!-- APELLIDOS -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Apellidos
+                    </label>
+
+                    <input type="text"
+                           class="admin_form_input"
+                           th:value="${client.lastName}"
+                           readonly>
+
+                </div>
+
+                <!-- CORREO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Correo Electrónico
+                    </label>
+
+                    <input type="email"
+                           class="admin_form_input"
+                           th:value="${client.email}"
+                           readonly>
+
+                </div>
+
+                <!-- CONTRASEÑA -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Contraseña
+                    </label>
+
+                    <input type="text"
+                           name="password"
+                           class="admin_form_input"
+                           th:value="${client.password}"
+                           required>
+
+                </div>
+
+                <!-- TELÉFONO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Teléfono
+                    </label>
+
+                    <input type="text"
+                           name="phoneNumber"
+                           class="admin_form_input"
+                           th:value="${client.phoneNumber}">
+
+                </div>
+
+                <!-- DIRECCIÓN -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Dirección
+                    </label>
+
+                    <input type="text"
+                           name="address"
+                           class="admin_form_input"
+                           th:value="${client.address}">
+
+                </div>
+
+                <!-- ESTADO -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+                        Estado
+                    </label>
+
+                    <select name="active"
+                            class="admin_form_select">
+
+                        <option value="true"
+                                th:selected="${client.active}">
+                            Activo
+                        </option>
+
+                        <option value="false"
+                                th:selected="${!client.active}">
+                            Inactivo
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button type="submit"
+                        class="primary_button">
+
+                    Actualizar Usuario
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+<footer>
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+</body>
+
+</html>

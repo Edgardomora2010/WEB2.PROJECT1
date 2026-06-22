@@ -17,7 +17,6 @@
     <title>Login</title>
 
     <!-- Implementación de hoja de estilos-->
-    <link rel="stylesheet" th:href="@{/css/GeneralStyle.css}">
     <link rel="stylesheet" th:href="@{/css/Components.css}">
     <link rel="stylesheet" th:href="@{/css/Sites.css}" />
 
@@ -27,11 +26,9 @@
 
     <header>
 
-        <!-- Área del Logo -->
-        <div class="site_logo">
-            <a th:href="@{/}"><img th:src="@{/images/appImages/NextShopLogo1.png}"
-            alt="NextShop Logo" height="300" width="auto" ></a>
-        </div>
+        <!-- HEADER:  -->
+        <!-- Fragmento (repetible en templates) para Header de página (Navegador de productos) -->
+        <div th:replace="~{fragments/HeaderC :: header_page_c}"></div>
 
     </header>
 
@@ -40,7 +37,7 @@
         <div class="login_container">
 
             <!-- Sección decorativa -->
-            <section class = "login_section">
+            <section class = "login_section" id="login-section">
 
                 <!-- Título de sección -->
                 <h1>Iniciar sesión o crear una cuenta</h1>
@@ -104,6 +101,7 @@
 
     <!-- FOOTER:  -->
     <footer class="footer_container">
+
         <!-- Fragmento (repetible en templates) para Footer de página
         (redes sociales)-->
         <div th:replace="~{fragments/Footer :: footer_page}"></div>
@@ -111,4 +109,5 @@
     </footer>
 
 </body>
+
 </html>

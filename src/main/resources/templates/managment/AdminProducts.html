@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+          content="Mantenimiento administrativo de productos">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>
+        Mantenimiento de Productos
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="adminclients_container">
+
+        <!-- TÍTULO -->
+
+        <section>
+
+            <h1>
+                Mantenimiento de Productos
+            </h1>
+
+        </section>
+
+        <!-- BÚSQUEDA -->
+
+        <section>
+
+            <h2>
+                Búsqueda de Productos
+            </h2>
+
+            <form th:action="@{/AdminProducts/Search}"
+                  method="post"
+                  class="admin_search_form">
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Tipo de búsqueda
+                    </label>
+
+                    <select name="searchType"
+                            class="admin_form_select">
+
+                        <option value="ID">
+                            ID
+                        </option>
+
+                        <option value="SKU">
+                            SKU
+                        </option>
+
+                        <option value="NAME">
+                            Nombre
+                        </option>
+
+                        <option value="CATEGORY">
+                            Categoría
+                        </option>
+
+                        <option value="FEATURED">
+                            Destacados
+                        </option>
+
+                        <option value="ON_SALE">
+                            Ofertas
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Valor
+                    </label>
+
+                    <input type="text"
+                           name="searchValue"
+                           class="admin_form_input">
+
+                </div>
+
+                <div class="admin_search_button_container">
+
+                    <button type="submit"
+                            class="primary_button">
+
+                        Buscar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- TABLA -->
+
+        <section>
+
+            <h2>
+                Productos Registrados
+            </h2>
+
+            <div class="admin_table">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>SKU</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Destacado</th>
+                        <th>Oferta</th>
+                        <th>Estado</th>
+                        <th>Editar</th>
+                        <th>Estado</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="product : ${products}">
+
+                        <td th:text="${product.id}">
+                            1
+                        </td>
+
+                        <td th:text="${product.sku}">
+                            SKU
+                        </td>
+
+                        <td th:text="${product.name}">
+                            Nombre
+                        </td>
+
+                        <td th:text="${product.category.name}">
+                            Categoría
+                        </td>
+
+                        <td>
+
+                            <span th:if="${product.featured}">
+                                Sí
+                            </span>
+
+                            <span th:if="${!product.featured}">
+                                No
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span th:if="${product.discountPercentage > 0}">
+                                Sí
+                            </span>
+
+                            <span th:if="${product.discountPercentage <= 0}">
+                                No
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span th:if="${product.active}">
+                                Activo
+                            </span>
+
+                            <span th:if="${!product.active}">
+                                Inactivo
+                            </span>
+
+                        </td>
+
+                        <!-- EDITAR -->
+
+                        <td>
+
+                            <form th:action="@{/AdminProducts/Edit}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="productId"
+                                       th:value="${product.id}">
+
+                                <button type="submit"
+                                        class="edit_button">
+
+                                    Editar
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                        <!-- ACTIVAR / DESACTIVAR -->
+
+                        <td>
+
+                            <form th:action="@{/AdminProducts/SwitchStatus}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="productId"
+                                       th:value="${product.id}">
+
+                                <button type="submit"
+                                        class="delete_button">
+
+                                    <span th:if="${product.active}">
+                                        Desactivar
+                                    </span>
+
+                                    <span th:if="${!product.active}">
+                                        Activar
+                                    </span>
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- CREAR PRODUCTO -->
+
+        <section>
+
+            <form th:action="@{/AdminProducts/Create}"
+                  method="get">
+
+                <button type="submit"
+                        class="primary_button">
+
+                    Crear Producto
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+<footer>
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+</body>
+
+</html>

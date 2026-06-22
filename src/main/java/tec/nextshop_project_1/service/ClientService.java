@@ -21,7 +21,8 @@ public class ClientService {
     public enum LoginResult {
         SUCCESS,
         USER_NOT_FOUND,
-        INVALID_PASSWORD
+        INVALID_PASSWORD,
+        INACTIVE_ACCOUNT
     }
 
     /**
@@ -30,6 +31,21 @@ public class ClientService {
      */
     public ClientService(IClientRepository clientRepository) {
         this.clientRepository = clientRepository;
+    }
+
+    /**
+     * Busca un cliente mediante su identificador.
+     * @param clientId identificador de cliente.
+     * @return Cliente encontrado o optional vacío.
+     */
+    public Optional<Client> findById(Long clientId) {
+
+        if(clientId == null) {
+            return Optional.empty();
+        }
+
+        return clientRepository.findById(clientId);
+
     }
 
     /**
@@ -49,9 +65,7 @@ public class ClientService {
      * @return Lista de todos los clientes
      */
     public List<Client> getAllClients() {
-
         return clientRepository.getAllClients();
-
     }
 
     public LoginResult authenticate(
@@ -69,14 +83,28 @@ public class ClientService {
             return LoginResult.INVALID_PASSWORD;
         }
 
+        if (client.get().getPassword().equals(clientPassword))
+        {
+            if(!client.get().isActive()) {
+                return LoginResult.INACTIVE_ACCOUNT;
+            }
+            else {
+                return LoginResult.SUCCESS;
+            }
+        }
+
         return LoginResult.SUCCESS;
+
     }
 
     /**
-     * @param client
-     * Agrega cliente a la aplicación
+     * Agrega un cliente a la aplicación.
+     * @param client información del cliente.
+     * @param role perfil que se asignará al usuario.
+     * @return true si fue posible agregar el usuario;
+     *         false si el correo ya existe.
      */
-    public boolean addClient(Client client) {
+    public boolean addClient(Client client, Client.Profile role) {
 
         // Busca el id de cliente más alto y genera el siguiente consecutivo.
         long nextId = 1;
@@ -105,7 +133,7 @@ public class ClientService {
            estado
          */
 
-        Client newClient = new Client(Client.Profile.CUSTOMER,
+        Client newClient = new Client(role,
                                       nextId,
                                       client.getName().trim(),
                                       client.getLastName().trim(),
@@ -113,6 +141,7 @@ public class ClientService {
                                       client.getPassword(),
                                       client.getPhoneNumber(),
                                       client.getAddress(),
+                                      client.getRegistrationDate(),
                                 true);
 
         clientRepository.addClient(newClient);
@@ -120,6 +149,118 @@ public class ClientService {
 
     }
 
+    /**
+     * Actualiza la información editable de un usuario.
+     * @param clientId identificador del usuario.
+     * @param password contraseña.
+     * @param phoneNumber teléfono.
+     * @param address dirección.
+     * @param active estado del usuario.
+     * @return true si fue posible actualizar.
+     */
+    public boolean updateClient(
+            Long clientId,
+            String password,
+            String phoneNumber,
+            String address,
+            boolean active) {
 
+        Optional<Client> client =
+                findById(clientId);
+
+        if(client.isEmpty()) {
+            return false;
+        }
+
+        Client updatedClient =
+                new Client(
+                        client.get().getRole(),
+                        client.get().getId(),
+                        client.get().getName(),
+                        client.get().getLastName(),
+                        client.get().getEmail(),
+                        password,
+                        phoneNumber,
+                        address,
+                        client.get().getRegistrationDate(),
+                        active
+                );
+
+        clientRepository.updateClient(
+                updatedClient
+        );
+
+        return true;
+
+    }
+
+    /**
+     * Cambia el estado activo/inactivo de un usuario.
+     * @param clientId identificador del usuario.
+     * @return true si fue posible realizar la operación.
+     */
+    public boolean switchClientStatus(Long clientId) {
+
+        return clientRepository.switchClientStatus(
+                clientId
+        );
+
+    }
+
+    /**
+     * Busca clientes según criterio indicado.
+     * @param searchType tipo de búsqueda.
+     * @param searchValue valor a buscar.
+     * @return Lista de clientes encontrados.
+     */
+    public List<Client> searchClients(
+            String searchType,
+            String searchValue) {
+
+        return clientRepository.searchClients(
+                searchType,
+                searchValue
+        );
+
+    }
+
+    /**
+     * Registra un nuevo administrador en la aplicación.
+     * @param name nombre.
+     * @param lastName apellidos.
+     * @param email correo electrónico.
+     * @param password contraseña.
+     * @param phoneNumber teléfono.
+     * @param address dirección.
+     * @return true si fue posible registrarlo.
+     */
+    public boolean createAdmin(
+            String name,
+            String lastName,
+            String email,
+            String password,
+            String phoneNumber,
+            String address) {
+
+        Client newClient =
+                new Client(
+                        Client.Profile.ADMIN,
+                        null,
+                        name,
+                        lastName,
+                        email,
+                        password,
+                        phoneNumber,
+                        address,
+                        java.time.LocalDate.now(),
+                        true
+                );
+
+        return addClient(
+                newClient,
+                Client.Profile.ADMIN
+        );
+
+    }
 
 }

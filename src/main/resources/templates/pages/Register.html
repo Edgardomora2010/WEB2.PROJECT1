@@ -17,7 +17,6 @@
     <title>Register</title>
 
     <!-- Implementación de hoja de estilos-->
-    <link rel="stylesheet" th:href="@{/css/GeneralStyle.css}">
     <link rel="stylesheet" th:href="@{/css/Components.css}">
     <link rel="stylesheet" th:href="@{/css/Sites.css}" />
 
@@ -27,13 +26,9 @@
 
 <header>
 
-    <!-- Área de Logo -->
-    <div class="site_logo">
-        <a th:href="@{/}">
-            <img th:src="@{/images/appImages/NextShopLogo1.png}"
-                 alt="NextShop Logo" height="300" width="auto" >
-        </a>
-    </div>
+    <!-- HEADER:  -->
+    <!-- Fragmento (repetible en templates) para Header de página (Navegador de productos) -->
+    <div th:replace="~{fragments/HeaderC :: header_page_c}"></div>
 
 </header>
 
@@ -42,7 +37,7 @@
     <div class="register_container">
 
         <!-- Sección decorativa -->
-        <section class="register_section">
+        <section class="register_section" id="register-section">
 
             <!-- Título de sección -->
             <h1>Crear una cuenta</h1>
@@ -161,13 +156,14 @@
 
                 </div>
 
-                <div>
+                <!-- Fragmento para mostrar errores de sitio -->
+                <div th:replace="~{fragments/SiteErrors :: site_errors}"></div>
 
+                <div>
                     <!-- Botón para crear cuenta -->
                     <button type="submit">
                         Crear cuenta
                     </button>
-
                 </div>
 
             </form>

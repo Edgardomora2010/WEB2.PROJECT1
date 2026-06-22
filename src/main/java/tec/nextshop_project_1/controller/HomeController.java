@@ -14,7 +14,7 @@ import tec.nextshop_project_1.service.ProductService;
 
 /**
  * Controlador principal encargado de gestionar la carga, visualización
- * y comportamiento de la página Home.
+ * y comportamiento de la página principal: Home.
  */
 @Slf4j
 @Controller
@@ -41,50 +41,48 @@ public class HomeController  {
      * Carga la página principal de la aplicación.
      * Envía al modelo las categorías y listas de productos requeridas por Home.
      * @param model Modelo utilizado para enviar información a la vista.
-     * @return Nombre de la plantilla Home.
+     * @return Nombre de la plantilla: Home.html.
      */
     @GetMapping("/")
     public String showHome(Model model) {
 
         // 1.
-        log.info("Carga de página principal");
+        log.info("Carga::página principal:[Home.html]");
 
-        log.info("Carga de categorías para selector de búsqueda");
+        log.info("Carga::categorías de producto para:[selector de búsqueda]");
         // 2. Carga categorías de productos en selector de búsqueda.
         model.addAttribute(
                 "product_categories",
                       categoryService.getAllCategories());
 
         // 3. Carga de productos destacados a section de productos destacados
-        log.info("Carga <section> de productos destacados");
+        log.info("Carga:: en <section> [productos destacados]");
         model.addAttribute(
                 "featuredProducts",
                 productService.getFeaturedProducts());
 
         // 4. Carga de productos en oferta a section de productos en oferta
-        log.info("Carga <section> de productos en oferta");
+        log.info("Carga:: en <section> [productos en oferta]");
         model.addAttribute(
                 "saleProducts",
                 productService.getProductsOnSale());
 
         // 5. Carga de productos agregados recientemente a section de productos
         // recientes
-        log.info("Carga <section> de productos recientes registrados");
+        log.info("Carga:: en <section> [productos recientes]");
         model.addAttribute(
                 "newProducts",
                 productService.getNewestProducts());
 
         // 6. Carga de cantidades disponibles en stock para los productos
         // mostrados en las diferentes <sections> de la página.
-        log.info("Carga cantidad en stock de productos, en los product cards " +
-                 "de todas las secciones de productos");
+        log.info("Carga::[cantidad en stock] de todos los productos en:[tarjetas de productos]");
         model.addAttribute(
                 "productStock",
                 inventoryService.getProductStockMap()
         );
 
-        // Devuelve plantilla (Home.html), habiéndose cargado componentes
-        // la de página
+        // Devuelve plantilla (Home.html), habiéndose cargado componentes la de página
         return "pages/home";
 
     }
@@ -105,26 +103,32 @@ public class HomeController  {
             @RequestParam("product_name") String productName,
             Model model) {
 
-        // 1. Criterio de búsqueda realizado por el cliente
-        log.info(
-                "Búsqueda de productos: Categoría: {}, Nombre: {}",
-                categoryName,
-                productName
-        );
-
-        // 2. Selector de categorías
-        log.info("Recarga categorías de productos en el selector de " +
-                 "categorías de la barra de búsqueda");
+        // 1. Selector de categorías
+        log.info("Recarga::categorías de productos en objeto:[selector de categorías]");
         model.addAttribute(
                 "product_categories",
                 categoryService.getAllCategories()
         );
 
-        // 3. Carga resultados de búsqueda según la categoría seleccionada
+        // Mantiene criterio de búsqueda seleccionado
+        model.addAttribute(
+                "selectedCategory",
+                categoryName
+        );
+
+        // Mantiene texto buscado
+        model.addAttribute(
+                "searchedProductName",
+                productName
+        );
+
+        // 2. Carga resultados de búsqueda según la categoría seleccionada
         // y el nombre de producto ingresado por el cliente, en el <section>
         // para búsquedas de productos realizadas por el cliente
-        log.info("Carga resultados de búsqueda según categoría y nombre de " +
-                 "producto ingresado por el cliente");
+        log.info("Búsqueda:: de productos realizada por: Categoría: {}, Nombre: {}",
+                categoryName,
+                productName
+        );
         model.addAttribute(
                 "searchResults",
                 productService.getProductsBySearchSelection(
@@ -133,33 +137,47 @@ public class HomeController  {
                 )
         );
 
-        // 4. Recarga productos en los <sections> por defecto, productos
-        // destacados, en oferta y registrados recientemente
-        log.info("Carga secciones de productos: destacados, en oferta y " +
-                 "agregados recientemente");
+        var results =
+                productService.getProductsBySearchSelection(
+                        categoryName,
+                        productName
+                );
 
-        // Destacados
+        model.addAttribute(
+                "searchResults",
+                results
+        );
+
+        model.addAttribute(
+                "resultCount",
+                results.size()
+        );
+
+
+        // 3. Destacados
+        log.info("Carga:: en <section> [productos destacados]");
         model.addAttribute(
                 "featuredProducts",
                 productService.getFeaturedProducts()
         );
 
-        // Ofertas
+        // 4. Ofertas
+        log.info("Carga:: en <section> [productos en oferta]");
         model.addAttribute(
                 "saleProducts",
                 productService.getProductsOnSale()
         );
 
-        // Recientes
+        // 5. Recientes
+        log.info("Carga:: en <section> [productos recientes]");
         model.addAttribute(
                 "newProducts",
                 productService.getNewestProducts()
         );
 
-        // 5. Carga de cantidades disponibles en stock para los productos
+        // 6. Carga de cantidades disponibles en stock para los productos
         // mostrados en las diferentes <sections> de la página.
-        log.info("Recarga cantidad en stock de productos, en los product cards " +
-                 "de todas las secciones de productos");
+        log.info("Recarga:[cantidad en stock] en todas:[tarjetas de productos]");
         model.addAttribute(
                 "productStock",
                 inventoryService.getProductStockMap()

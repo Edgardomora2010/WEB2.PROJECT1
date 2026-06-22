@@ -60,4 +60,35 @@ public interface IProductRepository {
      */
     List<Product> getAllProducts();
 
+    /**
+     * Actualiza la información editable de un producto.
+     * @param product producto actualizado.
+     */
+    void updateProduct(Product product);
+
+    /**
+     * Cambia el estado activo/inactivo de un producto.
+     * @param productId identificador del producto.
+     * @return true si fue posible modificar el estado.
+     */
+    boolean switchProductStatus(Long productId);
+
+    /**
+     * Realiza una búsqueda de productos según el criterio indicado.
+     * @param searchType tipo de búsqueda.
+     * @param searchValue valor a buscar.
+     * @return Lista de productos encontrados.
+     */
+    List<Product> searchProducts(
+            String searchType,
+            String searchValue
+    );
+
+    /**
+     * Busca un producto mediante su SKU.
+     * @param sku código SKU del producto.
+     * @return Producto encontrado o Optional vacío.
+     */
+    Optional<Product> findBySku(String sku);
+
 }

@@ -1,0 +1,45 @@
+<!-- Contenedor principal: Barra de navegación y menú -->
+<header th:fragment="header_page_c" class="main_container">
+
+    <nav class="main_nav_b">
+
+        <!-- Área del Logo -->
+        <div class="site_logo">
+            <a th:href="@{/}"><img th:src="@{/images/appImages/NextShopLogo1.png}"
+                                   alt="NextShop Logo" height="300" width="auto" >
+            </a>
+        </div>
+
+        <div class="main_menu">
+
+            <div class ="home_options">
+
+                <div>
+                    <a th:href="@{/}" class="menu_link">
+                        Volver a Home
+                    </a>
+                </div>
+
+                <div>
+                    <button onclick="window.history.back()">
+                        ← Página anterior
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="admin_options">
+
+                <a th:if="${session.client != null and session.client.role.name() == 'ADMIN'}"
+                   th:href="@{/AdminDashboard}"
+                   class="menu_link">
+                    Volver a Módulo Administrativo
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+</header>

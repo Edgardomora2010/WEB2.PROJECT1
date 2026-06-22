@@ -407,4 +407,185 @@ public class ProductRepository implements IProductRepository {
         productList.add(product);
     }
 
+    /**
+     * Actualiza la información editable de un producto.
+     * @param product producto actualizado.
+     */
+    @Override
+    public void updateProduct(Product product) {
+
+        Optional<Product> currentProduct =
+                findByProductId(
+                        product.getId()
+                );
+
+        if(currentProduct.isEmpty()) {
+            return;
+        }
+
+        currentProduct.get().setSku(
+                product.getSku()
+        );
+
+        currentProduct.get().setName(
+                product.getName()
+        );
+
+        currentProduct.get().setDescription(
+                product.getDescription()
+        );
+
+        currentProduct.get().setImagePath(
+                product.getImagePath()
+        );
+
+        currentProduct.get().setCategory(
+                product.getCategory()
+        );
+
+        currentProduct.get().setProperties(
+                product.getProperties()
+        );
+
+        currentProduct.get().setFeatured(
+                product.isFeatured()
+        );
+
+        currentProduct.get().setDiscountPercentage(
+                product.getDiscountPercentage()
+        );
+
+        currentProduct.get().setActive(
+                product.isActive()
+        );
+
+    }
+
+    /**
+     * Cambia el estado activo/inactivo de un producto.
+     * @param productId identificador del producto.
+     * @return true si fue posible modificar el estado.
+     */
+    @Override
+    public boolean switchProductStatus(Long productId) {
+
+        Optional<Product> product =
+                findByProductId(productId);
+
+        if(product.isEmpty()) {
+            return false;
+        }
+
+        product.get().setActive(
+                !product.get().isActive()
+        );
+
+        return true;
+
+    }
+
+    /**
+     * Busca productos según criterio indicado.
+     * @param searchType tipo de búsqueda.
+     * @param searchValue valor a buscar.
+     * @return Lista de productos encontrados.
+     */
+    @Override
+    public List<Product> searchProducts(
+            String searchType,
+            String searchValue) {
+
+        if(searchType == null) {
+            return getAllProducts();
+        }
+
+        String value =
+                searchValue == null
+                        ? ""
+                        : searchValue.trim().toLowerCase();
+
+        switch(searchType) {
+
+            case "ID":
+
+                return productList.stream()
+                        .filter(product ->
+                                String.valueOf(product.getId())
+                                        .contains(value))
+                        .toList();
+
+            case "SKU":
+
+                return productList.stream()
+                        .filter(product ->
+                                product.getSku()
+                                        .toLowerCase()
+                                        .contains(value))
+                        .toList();
+
+            case "NAME":
+
+                return productList.stream()
+                        .filter(product ->
+                                product.getName()
+                                        .toLowerCase()
+                                        .contains(value))
+                        .toList();
+
+            case "CATEGORY":
+
+                return productList.stream()
+                        .filter(product ->
+                                product.getCategory()
+                                        .getName()
+                                        .toLowerCase()
+                                        .contains(value))
+                        .toList();
+
+            case "FEATURED":
+
+                return productList.stream()
+                        .filter(Product::isFeatured)
+                        .toList();
+
+            case "ON_SALE":
+
+                return productList.stream()
+                        .filter(product ->
+                                product.getDiscountPercentage() > 0)
+                        .toList();
+
+            default:
+
+                return getAllProducts();
+
+        }
+
+    }
+
+    /**
+     * Busca un producto mediante su SKU.
+     * @param sku código SKU del producto.
+     * @return Producto encontrado o Optional vacío.
+     */
+    @Override
+    public Optional<Product> findBySku(String sku) {
+
+        if(sku == null ||
+                sku.trim().isEmpty()) {
+
+            return Optional.empty();
+
+        }
+
+        return productList.stream()
+                .filter(product ->
+                        product.getSku()
+                                .equalsIgnoreCase(
+                                        sku.trim()
+                                ))
+                .findFirst();
+
+    }
+
 }

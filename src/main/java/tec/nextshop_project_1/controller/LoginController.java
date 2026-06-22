@@ -36,8 +36,26 @@ public class LoginController {
      * @return Plantilla de Login.html
      */
     @GetMapping("/login")
-    public String showLoginPage() {
-        log.info("Carga de página Login.html");
+    public String showLoginPage(
+            @RequestParam(required = false) String error,
+            Model model) {
+
+        log.info("Carga::página:[Login.html]");
+
+        // Si el parámetro recibido de error, es por logueo requerido (que puede provenir)
+        // de algún intento de cargar productos al carrito sin sesión de usuario
+        if ("login_required".equals(error)) {
+
+            // Devuelve mensaje en vista (fragment:errorSite), indicándose necesidad de logueo para
+            // agregar productos al carrito
+            model.addAttribute(
+                    "errorMessage",
+                    "Debe autenticarse para utilizar el carrito."
+            );
+
+        }
+
+        // Retorna página de logueo.
         return "pages/login";
     }
 
@@ -58,10 +76,7 @@ public class LoginController {
             HttpSession session,
             Model model) {
 
-        log.info(
-                "Intento de Logueo para cliente: {}",
-                clientEmail
-        );
+        log.info("Intento::autenticación de cliente.");
 
         // Recibe resultado del proceso de autenticación realizado por
         // la clase de servicio de clientes: clientService.
@@ -76,10 +91,7 @@ public class LoginController {
             // Si el cliente (correo) no existe
             case USER_NOT_FOUND:
 
-                log.warn(
-                        "Correo no encontrado: {}",
-                        clientEmail
-                );
+                log.warn("Error::en usuario o contraseña.");
 
                 // Se informa detalle a la vista
                 model.addAttribute(
@@ -93,11 +105,7 @@ public class LoginController {
             // Si la contraseña de usuario no existe o es inválida
             case INVALID_PASSWORD:
 
-
-                log.warn(
-                        "Contraseña incorrecta para: {}",
-                        clientEmail
-                );
+                log.warn("Error::en usuario o contraseña.");
 
                 // Se informa detalle a la vista
                 model.addAttribute(
@@ -105,8 +113,32 @@ public class LoginController {
                         "La contraseña es incorrecta."
                 );
 
+                model.addAttribute(
+                        "clientEmail",
+                        clientEmail
+                );
+
                 // misma página de login
                 return "pages/login";
+
+            // Si usuario está desactivado
+            case INACTIVE_ACCOUNT:
+                log.warn("Error::cuenta inactiva.");
+
+                // Se informa detalle a la vista
+                model.addAttribute(
+                        "errorMessage",
+                        "La cuenta actual se encuentra desactivada."
+                );
+
+                model.addAttribute(
+                        "clientEmail",
+                        clientEmail
+                );
+
+                // misma página de login
+                return "pages/login";
+
 
             // Si el usuario y contraseña si existen, y fue posible
             // autenticarlos
@@ -116,10 +148,12 @@ public class LoginController {
                 Optional<Client> client =
                         clientService.findByClientEmail(clientEmail);
 
-                log.info(
-                        "Cliente autorizado correctamente: {}",
-                        clientEmail
-                );
+                if(client.isEmpty()) {
+                    log.info("Error en la autenticación.");
+                    return "pages/login";
+                }
+
+                log.info("Autenticación completada correctamente.");
 
                 // Se registra en la sesión usuario autenticado
                 session.setAttribute(

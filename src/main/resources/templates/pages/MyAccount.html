@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Codificación caracteres  -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive Design-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description" content="Registro de cliente para tienda online">
+    <meta name="keywords" content="NextShop, registro, cliente, tienda online, ecommerce">
+    <meta name="author" content="Edgardo Mora M, Oscar Marín">
+
+    <!-- Título de página principal -->
+    <title>Register</title>
+
+    <!-- Implementación de hoja de estilos-->
+    <link rel="stylesheet" th:href="@{/css/Components.css}">
+    <link rel="stylesheet" th:href="@{/css/Sites.css}" />
+
+</head>
+
+<body>
+
+<header>
+
+    <!-- HEADER:  -->
+    <!-- Fragmento (repetible en templates) para Header de página (Navegador de productos) -->
+    <div th:replace="~{fragments/HeaderC :: header_page_c}"></div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="account_container">
+
+        <!-- Datos de cliente -->
+        <details id="details-client" open>
+
+            <summary>Cliente</summary>
+
+            <div class="client_info">
+
+                <img class="client_avatar"
+                     th:src="@{/images/appImages/ClientIcon1.png}"
+                     alt="Cliente">
+
+                <div class="client_data">
+
+                    <h2 th:text="${session.client.name}">
+                        Nombre Cliente
+                    </h2>
+
+                    <p th:text="${session.client.email}">
+                        correo@cliente.com
+                    </p>
+
+                    <p>
+                        Cliente desde:
+                        <span th:text="${session.client.registrationDate}">
+                    2026-01-15
+                </span>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </details>
+
+        <!-- Perfil -->
+        <details id="details-profile" open>
+
+            <summary>Mi Perfil</summary>
+
+            <div class="account_content">
+
+                <p>
+                    Nombre:
+                    <span th:text="${session.client.name}"></span>
+                </p>
+
+                <p>
+                    Apellido:
+                    <span th:text="${session.client.lastName}"></span>
+                </p>
+
+                <p>
+                    Correo:
+                    <span th:text="${session.client.email}"></span>
+                </p>
+
+                <p>
+                    Teléfono:
+                    <span th:text="${session.client.phoneNumber}"></span>
+                </p>
+
+                <a th:href="@{/client/edit}"
+                   class="primary_button">
+                    Editar Perfil
+                </a>
+
+            </div>
+
+        </details>
+
+        <!-- Pedidos -->
+        <details id="details-order">
+
+            <summary>Mis Pedidos</summary>
+
+            <div class="account_content">
+
+                <p>Pedidos realizados: 0</p>
+                <a th:href="@{/client/orders}"
+                   class="primary_button">
+                    Ver Historial
+                </a>
+
+            </div>
+
+        </details>
+
+        <!-- Estadísticas -->
+        <details id="details-stats">
+
+            <summary>Estadísticas</summary>
+
+            <div class="account_content">
+
+                <p>Productos comprados: 0</p>
+                <p>Total invertido: ₡0</p>
+                <p>Última compra: N/A</p>
+
+            </div>
+
+        </details>
+
+        <!-- Sesión-->
+        <details id="details-session" open>
+
+            <summary>Sesión</summary>
+
+            <div class="account_content">
+
+                <a th:href="@{/logout}"
+                   class="primary_button">
+                    Cerrar Sesión
+                </a>
+
+            </div>
+
+        </details>
+
+    </div>
+
+</main>
+
+<!-- FOOTER:  -->
+<footer class="footer_container">
+    <!-- Fragmento (repetible en templates) para Footer de página
+    (redes sociales)-->
+    <div th:replace="~{fragments/Footer :: footer_page}"></div>
+
+</footer>
+
+</body>
+
+</html>

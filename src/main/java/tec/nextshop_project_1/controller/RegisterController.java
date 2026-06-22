@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import tec.nextshop_project_1.data.Client;
 import tec.nextshop_project_1.service.ClientService;
+import java.time.LocalDate;
 
 /**
  * Controlador encargado de gestionar las solicitudes relacionadas con el
@@ -28,7 +29,7 @@ public class RegisterController {
      */
     @GetMapping("/register")
     public String showRegisterPage() {
-        log.info("Carga de página de registro de cliente");
+        log.info("Carga::página de registro de clientes:[Register.html]");
         return "pages/register";
     }
 
@@ -40,7 +41,7 @@ public class RegisterController {
         this.clientService = clientService;
     }
 
-    // Orden del constructor en Client
+    // Orden del constructor en data:Client
         /*
            Profile,
            ID,
@@ -84,21 +85,21 @@ public class RegisterController {
                                       clientPassword,
                                       clientPhoneNumber,
                                       clientAdress,
+                                      LocalDate.now(),
                                 true);
 
-        log.info("Intento de registro para el usuario: {}", clientEmail);
-
-        boolean wasClientAdded = clientService.addClient(newClient);
+        log.info("Intento::registro de usuario:");
+        boolean wasClientAdded = clientService.addClient(newClient, Client.Profile.CUSTOMER);
 
         if (!wasClientAdded) {
 
             // Si ya existe usuario en sistema
-            log.warn("Ya existe un usuario con el correo: {}", clientEmail);
+            log.warn("Error: el usuario ya existe.");
 
             model.addAttribute(
                     "errorMessage",
                     "Ya existe un usuario con el correo: " + clientEmail);
-            return "pages/login";
+            return "pages/register";
 
         }
 
