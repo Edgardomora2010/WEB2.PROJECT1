@@ -135,7 +135,7 @@ public class AdminClientsController {
      * @param session sesión actual.
      * @return Página de mantenimiento de usuarios.
      */
-    @PostMapping("/AdminClients/switchStatus")
+    @PostMapping("/AdminClients/SwitchStatus")
     public String switchClientStatus(
             @RequestParam("clientId") Long clientId,
             HttpSession session) {
@@ -247,9 +247,12 @@ public class AdminClientsController {
             return "redirect:/login";
         }
 
-        // Usuario sin permisos administrativos
-        if(currentClient.getRole() != Client.Profile.ADMIN) {
-            return "redirect:/";
+        // Un cliente solo puede actualizar su propia cuenta.
+        if(currentClient.getRole() == Client.Profile.CUSTOMER) {
+
+            clientId =
+                    currentClient.getId();
+
         }
 
         var client =
@@ -379,8 +382,12 @@ public class AdminClientsController {
             return "redirect:/login";
         }
 
-        if(currentClient.getRole() != Client.Profile.ADMIN) {
-            return "redirect:/";
+        // Un cliente solo puede actualizar su propia cuenta.
+        if(currentClient.getRole() == Client.Profile.CUSTOMER) {
+
+            clientId =
+                    currentClient.getId();
+
         }
 
         boolean wasUpdated =

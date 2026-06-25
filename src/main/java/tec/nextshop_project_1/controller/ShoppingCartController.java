@@ -89,6 +89,19 @@ public class ShoppingCartController {
                         client.getId()
                 );
 
+        // Si el carrito está vacío o no tiene items.
+        if(cart.isEmpty() || cart.get().getItems().isEmpty()) {
+
+            // Se informa detalle a la vista
+            model.addAttribute(
+                    "errorMessage",
+                    "Para accesar el carrito primero deben agregar productos."
+            );
+
+            return "pages/home";
+
+        }
+
         // Carga items del carrito al modelo
         if (cart.isPresent()) {
 

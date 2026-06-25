@@ -67,11 +67,18 @@
                 LOGIN
             </a>
 
-            <a th:if="${session.client != null}"
+            <a th:if="${session.client != null and session.client.role.name() == 'CUSTOMER'}"
                th:href="@{/MyAccount}"
-               th:text="${session.client.name}">
+               th:text="${'Usuario: ' + session.client.name}">
                 Usuario
             </a>
+
+            <a th:if="${session.client != null and session.client.role.name() == 'ADMIN'}"
+               th:href="@{/MyAccount}"
+               th:text="${'Usuario: ' + session.client.name}">
+                Usuario
+            </a>
+
 
         </div>
 

@@ -902,10 +902,38 @@ searched_products details,
     margin-bottom:20px;
 }
 
+/* ##################################*/
+/* EDIT PRODUCT */
+/* ##################################*/
 
+.editproduct_layout{
+    display:flex;
+    align-items:flex-start;
+    gap:40px;
+}
 
+.editproduct_subcontainer{
+    flex:1;
+}
 
+.editproduct_image_panel{
+    width:320px;
+}
 
+.editproduct_imagen_container{
+
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:15px;
+    background:white;
+}
+
+.editproduct_image{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+
+}
 
 
 

@@ -1,0 +1,10 @@
+
+NEXTSHOP (REUNION EQUIPO) - 24-25/06/2026
+
+- [x] Al editar un producto, se está perdiendo la imagen.
+- [x] Bug en editar producto y actualizar (productos) con propiedades no carga pagina EditProduct
+- [x] Al editar un producto, no está actualizando el precio de venta.
+- [x] Corregir activar/desactivar usuarios que está fallando.
+- [x] El usuario administrador no debería ir account, porque esta es de customer.
+- [x] Implementar mantenimiento de usuario para cuentas customer
+- [x] Meter validación no ir al carrito, si no se han agregado productos.

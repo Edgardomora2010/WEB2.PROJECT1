@@ -38,6 +38,11 @@
     <!-- Contenedor principal para contenido específico de página Home -->
     <main class="products_container">
 
+        <!-- Sección para errores -->
+        <div class="error_container" th:if="${errorMessage != null}"
+             th:text="${errorMessage}">
+        </div>
+
         <!-- Info -->
         <section class="info_section" id="info-section">
 

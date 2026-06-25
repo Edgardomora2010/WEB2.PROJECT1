@@ -422,6 +422,7 @@ details[open] summary::before{
     background-color: #FFEBEE;
     color: #B71C1C;
     font-weight: bold;
+    font-size:1.5rem;
     text-align: center;
 }
 

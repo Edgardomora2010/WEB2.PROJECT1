@@ -435,6 +435,10 @@ public class ProductRepository implements IProductRepository {
                 product.getDescription()
         );
 
+        currentProduct.get().setPrice(
+                product.getPrice()
+        );
+
         currentProduct.get().setImagePath(
                 product.getImagePath()
         );

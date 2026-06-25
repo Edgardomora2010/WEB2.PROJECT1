@@ -46,7 +46,9 @@
 
         </section>
 
-        <section>
+        <section class="editproduct_layout">
+
+            <div class="editproduct_subcontainer">
 
             <form th:action="@{/AdminProducts/Save}"
                   method="post">
@@ -254,12 +256,12 @@
 
                     <input type="checkbox"
                            id="hasProperties"
-                           th:checked="${!isNew and !#lists.isEmpty(product.properties)}">
+                           th:checked="${!isNew and product.properties != null and !#lists.isEmpty(product.properties)}">
 
                 </div>
 
                 <div id="propertiesSection"
-                     th:style="${!isNew and !#lists.isEmpty(product.properties)}
+                     th:style="${!isNew and product.properties != null and !#lists.isEmpty(product.properties)}
                      ? 'display:block;'
                      : 'display:none;'">
 
@@ -274,7 +276,7 @@
                         <input type="text"
                                name="propertyName1"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 0 ? product.properties.get(0).name : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 0 ? product.properties.get(0).name : ''}">
 
                     </div>
 
@@ -287,7 +289,7 @@
                         <input type="text"
                                name="propertyValue1"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 0 ? product.properties.get(0).value : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 0 ? product.properties.get(0).value : ''}">
 
                     </div>
 
@@ -302,7 +304,7 @@
                         <input type="text"
                                name="propertyName2"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 1 ? product.properties.get(1).name : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 1 ? product.properties.get(1).name : ''}">
 
                     </div>
 
@@ -315,7 +317,7 @@
                         <input type="text"
                                name="propertyValue2"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 1 ? product.properties.get(1).value : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 1 ? product.properties.get(1).value : ''}">
 
                     </div>
 
@@ -330,7 +332,7 @@
                         <input type="text"
                                name="propertyName3"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 2 ? product.properties.get(2).name : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 2 ? product.properties.get(2).name : ''}">
 
                     </div>
 
@@ -343,7 +345,7 @@
                         <input type="text"
                                name="propertyValue3"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 2 ? product.properties.get(2).value : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 2 ? product.properties.get(2).value : ''}">
 
                     </div>
 
@@ -358,7 +360,7 @@
                         <input type="text"
                                name="propertyName4"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 3 ? product.properties.get(3).name : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 3 ? product.properties.get(3).name : ''}">
 
                     </div>
 
@@ -371,7 +373,7 @@
                         <input type="text"
                                name="propertyValue4"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 3 ? product.properties.get(3).value : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 3 ? product.properties.get(3).value : ''}">
 
                     </div>
 
@@ -386,7 +388,7 @@
                         <input type="text"
                                name="propertyName5"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 4 ? product.properties.get(4).name : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 4 ? product.properties.get(4).name : ''}">
 
                     </div>
 
@@ -399,7 +401,7 @@
                         <input type="text"
                                name="propertyValue5"
                                class="admin_form_input"
-                               th:value="${!isNew and product.properties.size() > 4 ? product.properties.get(4).value : ''}">
+                               th:value="${!isNew and product.properties != null and product.properties.size() > 4 ? product.properties.get(4).value : ''}">
 
                     </div>
 
@@ -415,7 +417,26 @@
 
                 </button>
 
+                <!-- Imagen -->
+                <input type="hidden"
+                       name="imagePath"
+                       th:value="${isNew ? 'image' : product.imagePath}">
+
             </form>
+
+            </div>
+
+            <!-- IMAGEN -->
+            <aside class="editproduct_image_panel">
+
+                <div class="editproduct_imagen_container">
+
+                    <img class="editproduct_image"
+                         th:src="${product.imagePath}"
+                         th:alt="${product.name}">
+                </div>
+
+            </aside>
 
         </section>
 

@@ -281,6 +281,7 @@ public class AdminProductsController {
             @RequestParam("description") String description,
             @RequestParam("category") String categoryName,
             @RequestParam("price") double price,
+            @RequestParam("imagePath") String imagePath,
             @RequestParam("featured") boolean featured,
             @RequestParam("discountPercentage") double discountPercentage,
             @RequestParam("active") boolean active,
@@ -419,6 +420,16 @@ public class AdminProductsController {
 
      */
 
+            // Corrección:
+            // Valida que no se pierda el path de la image genérica al crear nuevos
+            // productos o actualizar existentes, cuando carezcan de ruta de imagen
+            if(imagePath == null ||
+                    imagePath.trim().isEmpty() ||
+                    imagePath.equals("image")) {
+
+                imagePath = "/images/products/productIcon.png";
+            }
+
             // Constructor completo
             Product newProduct =
                     new Product(
@@ -427,7 +438,7 @@ public class AdminProductsController {
                             name,
                             description,
                             price,
-                            "",
+                            imagePath,
                             category.get(),
                             properties,
                             featured,
@@ -492,13 +503,25 @@ public class AdminProductsController {
 
         else {
 
+            // Corrección:
+            // Valida que no se pierda el path de la image genérica al crear nuevos
+            // productos o actualizar existentes, cuando carezcan de ruta de imagen
+            if(imagePath == null ||
+                    imagePath.trim().isEmpty() ||
+                    imagePath.equals("image")) {
+
+                imagePath =
+                        "/images/products/productIcon.png";
+            }
+
             boolean wasUpdated =
                     productService.updateProduct(
                             productId,
                             sku,
                             name,
                             description,
-                            "",
+                            price,
+                            imagePath,
                             category.get(),
                             properties,
                             featured,

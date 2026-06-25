@@ -71,7 +71,7 @@
         </details>
 
         <!-- Perfil -->
-        <details id="details-profile" open>
+        <details  id="details-profile" open>
 
             <summary>Mi Perfil</summary>
 
@@ -97,7 +97,7 @@
                     <span th:text="${session.client.phoneNumber}"></span>
                 </p>
 
-                <a th:href="@{/client/edit}"
+                <a th:href="@{/MyAccount/Edit}"
                    class="primary_button">
                     Editar Perfil
                 </a>
@@ -107,7 +107,8 @@
         </details>
 
         <!-- Pedidos -->
-        <details id="details-order">
+        <details th:if="${session.client != null and session.client.role.name() == 'CUSTOMER'}"
+                 id="details-order">
 
             <summary>Mis Pedidos</summary>
 
@@ -124,7 +125,8 @@
         </details>
 
         <!-- Estadísticas -->
-        <details id="details-stats">
+        <details th:if="${session.client != null and session.client.role.name() == 'CUSTOMER'}"
+                 id="details-stats">
 
             <summary>Estadísticas</summary>
 

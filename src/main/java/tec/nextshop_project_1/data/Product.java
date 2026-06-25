@@ -4,6 +4,7 @@ package tec.nextshop_project_1.data;
 // IMPORTACION DE LIBRERÍAS
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +40,21 @@ public class Product {
         this.price = price;
         this.imagePath = imagePath;
         this.category = category;
-        this.properties = properties;
+
+        // Corrección:
+        // Si no se recibe lista de propiedades, se crea una lista vacía para evitar
+        // errores por referencias nulas.
+        if(properties == null) {
+
+            this.properties =
+                    new ArrayList<>();
+        }
+        else {
+
+            this.properties =
+                    properties;
+        }
+
         this.featured = false;
         this.discountPercentage = 0;
         this.createdAt = LocalDateTime.now();
@@ -56,7 +71,21 @@ public class Product {
         this.price = price;
         this.imagePath = imagePath;
         this.category = category;
-        this.properties = properties;
+
+        // Corrección:
+        // Si no se recibe lista de propiedades, se crea una lista vacía para evitar
+        // errores por referencias nulas.
+        if(properties == null) {
+
+            this.properties =
+                    new ArrayList<>();
+        }
+        else {
+
+            this.properties =
+                    properties;
+        }
+
         this.featured = featured;
         this.discountPercentage = discountPercentage;
         this.createdAt = createdAt;

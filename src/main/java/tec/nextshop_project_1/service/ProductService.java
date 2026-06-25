@@ -254,6 +254,13 @@ public class ProductService {
                         product.isActive()
                 );
 
+        // Corrección:
+        // Valida que no se pierda el path de la image genérica al crear nuevos
+        // productos o actualizar existentes, cuando carezcan de ruta de imagen
+        if (newProduct.getImagePath().isEmpty()){
+            newProduct.setImagePath("/images/products/productIcon.png");
+        }
+
         productRepository.addProduct(
                 newProduct
         );
@@ -268,6 +275,7 @@ public class ProductService {
      * @param sku sku.
      * @param name nombre.
      * @param description descripción.
+     * @param price precio
      * @param imagePath ruta imagen.
      * @param category categoría.
      * @param properties propiedades.
@@ -281,6 +289,7 @@ public class ProductService {
             String sku,
             String name,
             String description,
+            double price,
             String imagePath,
             Category category,
             List<Property> properties,
@@ -295,13 +304,20 @@ public class ProductService {
             return false;
         }
 
+        // Corrección:
+        // Valida que no se pierda el path de la image genérica al crear nuevos
+        // productos o actualizar existentes, cuando carezcan de ruta de imagen
+        if (imagePath.isEmpty()) {
+            imagePath = "/images/products/productIcon.png";
+        }
+
         Product updatedProduct =
                 new Product(
                         product.get().getId(),
                         sku,
                         name,
                         description,
-                        product.get().getPrice(),
+                        price,
                         imagePath,
                         category,
                         properties,

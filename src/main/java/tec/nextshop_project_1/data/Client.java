@@ -31,4 +31,5 @@ public class Client {
     private final LocalDate registrationDate;
     private boolean active;
 
+
 }
