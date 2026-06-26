@@ -16,3 +16,5 @@ en barra secundaria.
 - [x] En pagina de productDetails incluir opción de barra de menú secundaria de ir
  a página anterior.
 - [x] Mantenimiento de familias (creación , modificación, eliminación).
+
+- [x] Implementación de API REST, mediante: endpoints (GET, POST, PUT, PATCH)

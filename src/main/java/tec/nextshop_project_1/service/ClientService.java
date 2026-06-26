@@ -68,6 +68,60 @@ public class ClientService {
         return clientRepository.getAllClients();
     }
 
+    /**
+     * Obtiene los clientes según perfil y estado.
+     *
+     * @param profile perfil.
+     * @param active estado.
+     * @return Lista filtrada.
+     */
+    public List<Client> getAllClients(
+            Client.Profile profile,
+            boolean active) {
+
+        return clientRepository.getAllClients()
+                .stream()
+                .filter(client ->
+                        client.getRole() == profile)
+                .filter(client ->
+                        client.isActive() == active)
+                .toList();
+
+    }
+
+    /**
+     * Obtiene los clientes según su estado.
+     * @param active estado del cliente.
+     * @return Lista de clientes filtrada.
+     */
+    public List<Client> getClientsByStatus(
+            boolean active) {
+
+        return clientRepository.getAllClients()
+                .stream()
+                .filter(client ->
+                        client.isActive() == active)
+                .toList();
+
+    }
+
+    /**
+     * Obtiene los clientes según el perfil.
+     *
+     * @param profile perfil del cliente.
+     * @return Lista de clientes filtrada.
+     */
+    public List<Client> getClientsByProfile(
+            Client.Profile profile) {
+
+        return clientRepository.getAllClients()
+                .stream()
+                .filter(client ->
+                        client.getRole() == profile)
+                .toList();
+
+    }
+
     public LoginResult authenticate(
             String clientEmail,
             String clientPassword) {
