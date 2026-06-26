@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+          content="Mantenimiento administrativo de categorías">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>
+        Mantenimiento de categorías
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="adminclients_container">
+
+        <!-- TÍTULO -->
+
+        <section>
+
+            <h1>
+
+                Mantenimiento de Categorías
+
+            </h1>
+
+        </section>
+
+        <!-- MENSAJES -->
+
+        <section th:if="${errorMessage != null}">
+
+            <div th:replace="~{fragments/SiteErrors :: site_errors}">
+            </div>
+
+        </section>
+
+        <!-- FORMULARIO -->
+
+        <section>
+
+            <form th:action="${isNew}
+                    ? @{/AdminCategories/Save}
+                    : @{/AdminCategories/Update}"
+                  method="post">
+
+                <!-- ID -->
+
+                <input type="hidden"
+                       name="categoryId"
+                       th:if="${!isNew}"
+                       th:value="${category.id}">
+
+                <!-- NOMBRE -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+
+                        Nombre categoría
+
+                    </label>
+
+                    <input type="text"
+                           name="categoryName"
+                           class="admin_form_input"
+                           maxlength="60"
+                           required
+                           th:value="${!isNew ? category.name : ''}">
+
+                </div>
+
+                <!-- DESCRIPCIÓN -->
+
+                <div class="admin_form_row">
+
+                    <label class="admin_form_label">
+
+                        Descripción
+
+                    </label>
+
+                    <input type="text"
+                           name="description"
+                           class="admin_form_input"
+                           maxlength="150"
+                           th:value="${!isNew ? category.description : ''}">
+
+                </div>
+
+                <!-- BOTONES -->
+
+                <div class="category_button_container">
+
+                    <button th:if="${isNew}"
+                            type="submit"
+                            class="primary_button">
+
+                        Agregar
+
+                    </button>
+
+                    <button th:unless="${isNew}"
+                            type="submit"
+                            class="primary_button">
+
+                        Actualizar
+
+                    </button>
+
+                    <a th:unless="${isNew}"
+                       th:href="@{/AdminCategories}"
+                       class="secondary_button">
+
+                        Cancelar
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- TABLA -->
+
+        <section>
+
+            <h2>
+
+                Categorías Registradas
+
+            </h2>
+
+            <table class="admin_table">
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Nombre</th>
+
+                    <th>Estado</th>
+
+                    <th>Editar</th>
+
+                    <th>Estado</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="category : ${categories}">
+
+                    <!-- ID -->
+
+                    <td th:text="${category.id}">
+                    </td>
+
+                    <!-- NOMBRE -->
+
+                    <td th:text="${category.name}">
+                    </td>
+
+                    <!-- ESTADO -->
+
+                    <td>
+
+                        <span th:if="${category.active}">
+
+                            Activa
+
+                        </span>
+
+                        <span th:unless="${category.active}">
+
+                            Inactiva
+
+                        </span>
+
+                    </td>
+
+                    <!-- EDITAR -->
+
+                    <td>
+
+                        <form th:action="@{/AdminCategories/Edit}"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="categoryId"
+                                   th:value="${category.id}">
+
+                            <button type="submit"
+                                    class="edit_button">
+
+                                Editar
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                    <!-- ACTIVAR / DESACTIVAR -->
+
+                    <td>
+
+                        <form th:action="@{/AdminCategories/SwitchStatus}"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="categoryId"
+                                   th:value="${category.id}">
+
+                            <button type="submit"
+                                    class="delete_button">
+
+                                <span th:if="${category.active}">
+
+                                    Desactivar
+
+                                </span>
+
+                                <span th:unless="${category.active}">
+
+                                    Activar
+
+                                </span>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </div>
+
+</main>
+
+<footer>
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+</body>
+
+</html>
+

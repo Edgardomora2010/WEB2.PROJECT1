@@ -385,4 +385,22 @@ public class ProductService {
 
     }
 
+    /**
+     * Verifica si existen productos asociados a una categoría.
+     *
+     * @param categoryId identificador de la categoría.
+     * @return true si existe al menos un producto asociado.
+     */
+    public boolean hasProductsInCategory(
+            Long categoryId) {
+
+        return productRepository.getAllProducts()
+                .stream()
+                .anyMatch(product ->
+                        product.getCategory()
+                                .getId()
+                                .equals(categoryId));
+
+    }
+
 }

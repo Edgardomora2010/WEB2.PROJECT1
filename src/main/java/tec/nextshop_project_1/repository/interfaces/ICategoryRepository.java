@@ -22,11 +22,25 @@ public interface ICategoryRepository {
      * @param category
      * Agrega una categoría de producto a la aplicación
      */
-    void addProductCategory(Category category);
+    void addCategory(Category category);
 
     /**
      * @return Una lista con todas las categorías de productos.
      */
     List<Category> getAllCategories();
+
+    /**
+     * Actualiza una categoría existente.
+     * @param category categoría con la información actualizada.
+     */
+    void updateCategory(Category category);
+
+    /**
+     * Cambia el estado activo/inactivo de una categoría.
+     *
+     * @param categoryId identificador de la categoría.
+     * @return true si fue posible modificar el estado.
+     */
+    boolean switchCategoryStatus(Long categoryId);
 
 }

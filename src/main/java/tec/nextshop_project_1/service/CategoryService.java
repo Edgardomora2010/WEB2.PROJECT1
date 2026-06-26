@@ -17,13 +17,16 @@ public class CategoryService {
 
     // OBJETOS/VARIABLES GLOBALES
     private final ICategoryRepository categoryRepository;
+    private ProductService productService;
 
     /**
      * // Constructor con inyección de dependencia: ICategoryRepository
      * @param categoryRepository
      */
-    public CategoryService(ICategoryRepository categoryRepository) {
+    public CategoryService(ICategoryRepository categoryRepository,
+                           ProductService productService) {
         this.categoryRepository = categoryRepository;
+        this.productService = productService;
     }
 
     /**
@@ -48,7 +51,7 @@ public class CategoryService {
      * @param category
      * Agrega una categoría de productos a la aplicación
      */
-    public boolean addProductCategory(Category category) {
+    public boolean addCategory(Category category) {
 
         // Busca el id de categoría más alto y genera el siguiente consecutivo.
         long nextId = 1;
@@ -78,9 +81,94 @@ public class CategoryService {
                 category.getDescription().trim(),
                 true);
 
-        categoryRepository.addProductCategory(newCategory);
+        categoryRepository.addCategory(newCategory);
         return true;
 
     }
 
+    /**
+     * Actualiza la información de una categoría.
+     *
+     * @param categoryId identificador de la categoría.
+     * @param categoryName nombre de la categoría.
+     * @param description descripción.
+     * @return true si fue posible actualizar.
+     */
+    public boolean updateCategory(
+            Long categoryId,
+            String categoryName,
+            String description) {
+
+        Optional<Category> currentCategory =
+                categoryRepository.getAllCategories()
+                        .stream()
+                        .filter(category ->
+                                category.getId().equals(categoryId))
+                        .findFirst();
+
+        if(currentCategory.isEmpty()) {
+
+            return false;
+
+        }
+
+        Category updatedCategory =
+                new Category(
+                        categoryId,
+                        categoryName.trim(),
+                        description.trim(),
+                        currentCategory.get().isActive()
+                );
+
+        categoryRepository.updateCategory(
+                updatedCategory
+        );
+
+        return true;
+
+    }
+    
+    /**
+     * * Cambia el estado activo/inactivo de una categoría.
+     * No permite desactivar categorías que tengan productos
+     * asociados.
+     * @param categoryId identificador de la categoría.
+     * @return true si fue posible modificar el estado.
+     */
+    public boolean switchCategoryStatus(
+            Long categoryId) {
+
+        Optional<Category> category =
+                categoryRepository.getAllCategories()
+                        .stream()
+                        .filter(currentCategory ->
+                                currentCategory.getId().equals(categoryId))
+                        .findFirst();
+
+        // Categoría inexistente.
+        if(category.isEmpty()) {
+
+            return false;
+
+        }
+
+        // No permite desactivar una categoría
+        // con productos asociados.
+        if(category.get().isActive()) {
+            
+            if(productService.hasProductsInCategory(
+                    categoryId)) {
+
+                return false;
+
+            }
+
+        }
+
+        return categoryRepository.switchCategoryStatus(
+                categoryId
+        );
+
+    }
+    
 }

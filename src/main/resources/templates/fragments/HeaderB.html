@@ -104,30 +104,38 @@
 
         </div>
 
+
+    </nav>
+
         <!-- Barra de menú secundario -->
         <div class="main_menu">
 
             <div class ="home_options">
 
                 <div>
+                    <a th:href="@{/}" class="menu_link">
+                        Volver a Home
+                    </a>
+                </div>
 
-                    <form th:action="@{/search-products}"
-                          class="menu_link"
-                          method="post">
-                        <input type="hidden"
-                               name="category_name" value="Todas">
-                        <input type="hidden"
-                               name="product_name" value="">
-                        <button type="submit" class="menu_link">
-                            Ir a todos los productos </button>
-                    </form>
-
+                <div>
+                    <button onclick="window.history.back()">
+                        ← Página anterior
+                    </button>
                 </div>
 
             </div>
 
-        </div>
+            <div class="admin_options">
 
-    </nav>
+                <a th:if="${session.client != null and session.client.role.name() == 'ADMIN'}"
+                   th:href="@{/AdminDashboard}"
+                   class="menu_link">
+                    Volver a Módulo Administrativo
+                </a>
+
+            </div>
+
+        </div>
 
 </header>

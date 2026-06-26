@@ -935,6 +935,23 @@ searched_products details,
 
 }
 
+/* ##################################*/
+/* ADMIN CATEGORIES */
+/* ##################################*/
+
+.category_button_container{
+    margin-top:20px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.category_button_container a{
+    text-decoration:none;
+}
+
+
+
 
 
 

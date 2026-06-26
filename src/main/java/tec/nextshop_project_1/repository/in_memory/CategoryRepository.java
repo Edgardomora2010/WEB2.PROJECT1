@@ -62,7 +62,7 @@ public class CategoryRepository implements ICategoryRepository {
      * Agrega una categoría de producto deseada en memoria, para uso del sistema.
      */
     @Override
-    public void addProductCategory(Category category) {
+    public void addCategory(Category category) {
         categoryList.add(category);
     }
 
@@ -72,6 +72,58 @@ public class CategoryRepository implements ICategoryRepository {
      */
     public List<Category> getAllCategories(){
         return categoryList;
+    }
+
+    /**
+     * Actualiza una categoría existente en memoria.
+     * @param category categoría actualizada.
+     */
+    @Override
+    public void updateCategory(Category category) {
+
+        for(int i = 0; i < categoryList.size(); i++) {
+
+            if(categoryList.get(i).getId().equals(category.getId())) {
+
+                categoryList.set(
+                        i,
+                        category
+                );
+
+                return;
+
+            }
+
+        }
+
+    }
+
+/**
+ * Cambia el estado activo/inactivo de una categoría.
+ *
+ * @param categoryId identificador de la categoría.
+ * @return true si fue posible modificar el estado.
+ */
+    @Override
+    public boolean switchCategoryStatus(
+            Long categoryId) {
+
+        for(Category category : categoryList) {
+
+            if(category.getId().equals(categoryId)) {
+
+                category.setActive(
+                        !category.isActive()
+                );
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
     }
 
 }
