@@ -2,15 +2,20 @@
 package tec.nextshop_project_1.controller;
 
 // IMPORTACIÓN DE LIBRERÍAS
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import tec.nextshop_project_1.data.Client;
 import tec.nextshop_project_1.service.CategoryService;
 import org.springframework.ui.Model;
 import tec.nextshop_project_1.service.InventoryService;
 import tec.nextshop_project_1.service.ProductService;
+import tec.nextshop_project_1.service.ShoppingCartService;
+
+import javax.management.remote.rmi.RMIConnection;
 
 /**
  * Controlador principal encargado de gestionar la carga, visualización
@@ -24,6 +29,7 @@ public class HomeController  {
     private final CategoryService categoryService;
     private final ProductService productService;
     private final InventoryService inventoryService;
+    private final ShoppingCartService shoppingCartService;
 
     /**
      * Constructor con inyección de dependencias:
@@ -31,10 +37,11 @@ public class HomeController  {
      * @param productService
      * @param inventoryService
      */
-    public HomeController(CategoryService categoryService, ProductService productService, InventoryService inventoryService) {
+    public HomeController(CategoryService categoryService, ProductService productService, InventoryService inventoryService, ShoppingCartService shoppingCartService) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.inventoryService = inventoryService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     /**
@@ -44,7 +51,10 @@ public class HomeController  {
      * @return Nombre de la plantilla: Home.html.
      */
     @GetMapping("/")
-    public String showHome(Model model) {
+    public String showHome(Model model,HttpSession session) {
+
+        Client client =
+                (Client) session.getAttribute("client");
 
         // 1.
         log.info("Carga::página principal:[Home.html]");
@@ -81,6 +91,16 @@ public class HomeController  {
                 "productStock",
                 inventoryService.getProductStockMap()
         );
+
+        //Items en carrito
+        if (client != null) {
+            model.addAttribute(
+                    "cartItemsCount",
+                    shoppingCartService.getCartItemsCount(client.getId())
+            );
+        } else {
+            model.addAttribute("cartItemsCount", 0);
+        }
 
         // Devuelve plantilla (Home.html), habiéndose cargado componentes la de página
         return "pages/home";
@@ -129,6 +149,7 @@ public class HomeController  {
                 categoryName,
                 productName
         );
+
         model.addAttribute(
                 "searchResults",
                 productService.getProductsBySearchSelection(

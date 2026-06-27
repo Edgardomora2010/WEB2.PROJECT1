@@ -34,6 +34,9 @@
 
 <main class="cart_page">
 
+    <!-- Fragmento para mostrar errores de sitio -->
+    <div th:replace="~{fragments/SiteErrors :: site_errors}"></div>
+
     <div class="shoppingcart_container">
 
         <!-- Productos del carrito -->
@@ -100,12 +103,16 @@
 
                     <div class="cart_quantity">
 
-                        <form th:action="@{/cart/decrease}"
+                        <form th:action="@{/ShoppingCart/UpdateQuantity}"
                               method="post">
 
                             <input type="hidden"
                                    name="product_id"
                                    th:value="${item.product.id}">
+
+                            <input type="hidden"
+                                   name="operation"
+                                   value="SUBTRACT">
 
                             <button class="quantity_button"
                                     type="submit">
@@ -121,12 +128,16 @@
                             1
                         </span>
 
-                        <form th:action="@{/cart/increase}"
+                        <form th:action="@{/ShoppingCart/UpdateQuantity}"
                               method="post">
 
                             <input type="hidden"
                                    name="product_id"
                                    th:value="${item.product.id}">
+
+                            <input type="hidden"
+                                   name="operation"
+                                   value="ADD">
 
                             <button class="quantity_button"
                                     type="submit">
@@ -141,7 +152,7 @@
 
                     <div class="cart_actions">
 
-                        <form th:action="@{/cart/remove}"
+                        <form th:action="@{/cart/removeItem}"
                               method="post">
 
                             <input type="hidden"
@@ -192,9 +203,29 @@
 
             <p>
 
+                Descuentos:
+
+                <span th:text="'-₡ ' + ${discounts}">
+                    -₡ 0
+                </span>
+
+            </p>
+
+            <p>
+
+                Impuesto:
+
+                <span th:text="'₡ ' + ${taxAmount}">
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <p>
+
                 Envío:
 
-                <span>
+                <span th:text="'₡ ' + ${shippingCost}">
                     ₡ 0
                 </span>
 
@@ -206,7 +237,7 @@
 
                 Total:
 
-                <span th:text="'₡ ' + ${subTotal}">
+                <span th:text="'₡ ' + ${totalAmount}">
                     ₡ 0
                 </span>
 

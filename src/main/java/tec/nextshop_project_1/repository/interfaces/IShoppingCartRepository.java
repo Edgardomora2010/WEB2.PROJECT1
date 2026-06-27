@@ -13,11 +13,10 @@ import java.util.Optional;
 public interface IShoppingCartRepository {
 
     /**
-     * Agrega un item de producto al carrito de compra
-     * @param cartItem
+     * Encuentra carrito mediante el id de cliente.
+     * @param clientId
+     * @return Carrito con datos de un usuario.
      */
-    void addItem(CartItem cartItem);
-
     Optional<Cart> findCartByClientId(Long clientId);
 
     /**

@@ -34,11 +34,6 @@ public class ShoppingCartRepository implements IShoppingCartRepository {
         this.carts = new HashMap<>();
     }
 
-    @Override
-    public void addItem(CartItem cartItem) {
-
-    }
-
     /**
      * Obtiene el carrito asociado a un cliente.
      * @param clientId Identificador de cliente

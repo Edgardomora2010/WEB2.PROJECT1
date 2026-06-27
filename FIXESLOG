@@ -18,3 +18,10 @@ en barra secundaria.
 - [x] Mantenimiento de familias (creación , modificación, eliminación).
 
 - [x] Implementación de API REST, mediante: endpoints (GET, POST, PUT, PATCH)
+
+- [x] Agregar cambio de cantidad en botón de carrito al agregar items.
+- [x] Recalcular cantidad items al quitar items de carrito
+- [x] calculo de método de para carrito (calcula total, subtotal, cantidad de items,
+  impuestop de venta, envío)
+- [x] métodos increase, decrease para rebajar items de carrito, validación para no
+  permitir que se ingresen más items de los que existen en inventario.

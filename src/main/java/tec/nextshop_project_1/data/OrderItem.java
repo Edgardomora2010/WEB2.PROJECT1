@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Clase para representar la información de las órdenes de compra (items)
- * de la aplicación.
+ * Clase para representar la información de los productos
+ * pertenecientes a una orden de compra.
  */
 @Data
 @RequiredArgsConstructor
@@ -17,5 +17,6 @@ public class OrderItem {
     private Product product;
     private int quantity;
     private double unitPrice;
+    private double subTotal;
 
 }

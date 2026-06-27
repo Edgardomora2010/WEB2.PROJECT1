@@ -24,7 +24,7 @@ public class Product {
     private Category category;
     private List<Property> properties;
     private boolean featured;
-    private double discountPercentage;
+    private double discountPercentage = 0;
     private LocalDateTime createdAt;
     private boolean active;
 
