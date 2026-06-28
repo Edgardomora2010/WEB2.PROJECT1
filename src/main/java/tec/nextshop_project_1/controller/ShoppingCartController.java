@@ -92,13 +92,8 @@ public class ShoppingCartController {
         // Si el carrito está vacío o no tiene items.
         if(cart.isEmpty() || cart.get().getItems().isEmpty()) {
 
-            // Se informa detalle a la vista
-            model.addAttribute(
-                    "errorMessage",
-                    "Para accesar el carrito primero deben agregar productos."
-            );
-
-            return "pages/home";
+            log.warn("Se intentó ir al carrito sin haberse agregado productos.");
+            return "redirect:/?alert=product_in_cart_required";
 
         }
 

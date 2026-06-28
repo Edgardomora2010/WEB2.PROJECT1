@@ -500,8 +500,11 @@ searched_products details,
 
 /* <Details> visualización para resumen de cliente y cierre de sesión */
 #details-client,
-#details-session{
-    background:#f7b955;
+#details-session,
+#details-profile,
+#details-stats,
+#details-order{
+    background: rgb(247 185 85 / 0.36);
     color:black;
     border-radius:15px;
 }

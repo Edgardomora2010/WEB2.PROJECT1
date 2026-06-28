@@ -22,14 +22,16 @@ public class ProductService {
 
     // OBJETOS/VARIABLES GLOBALES
     private final IProductRepository productRepository;
+    private final InventoryService inventoryService;
 
     /**
      * Constructor de clase, inyección de dependencia: ProductRepository
      * @param productRepository
      */
-    public ProductService(IProductRepository productRepository)
+    public ProductService(IProductRepository productRepository, InventoryService inventoryService)
     {
         this.productRepository = productRepository;
+        this.inventoryService = inventoryService;
     }
 
     /**
@@ -56,9 +58,24 @@ public class ProductService {
 
     /**
      * @return Una lista de todos los productos de la aplicación
+     * contempla productos en estado (inactivo) y productos sin
+     * stock en inventario.
      */
     public List<Product> getAllProducts() {
         return productRepository.getAllProducts();
+    }
+
+    /**
+     * Método privado para filtrar productos por estado activo y
+     * stock de inventario sea mayor a 0. Para generar vista en Home
+     * @param product
+     * @return
+     */
+    private boolean isAvailableProduct(Product product) {
+
+        return product.isActive()
+                && product.getCategory().isActive()
+                && inventoryService.getProductStock(product.getId()) > 0;
     }
 
     /**
@@ -68,6 +85,7 @@ public class ProductService {
 
         return productRepository.getAllProducts()
                 .stream()
+                .filter(this::isAvailableProduct)
                 .filter(Product::isFeatured)
                 .toList();
     }
@@ -79,6 +97,7 @@ public class ProductService {
 
         return productRepository.getAllProducts()
                 .stream()
+                .filter(this::isAvailableProduct)
                 .filter(product ->
                         product.getDiscountPercentage() > 0)
                 .toList();
@@ -91,6 +110,7 @@ public class ProductService {
 
         return productRepository.getAllProducts()
                 .stream()
+                .filter(this::isAvailableProduct)
                 .sorted(
                         Comparator.comparing(Product::getCreatedAt)
                                 .reversed()
@@ -122,11 +142,10 @@ public class ProductService {
 
         return productRepository.getAllProducts()
                 .stream()
-
+                .filter(this::isAvailableProduct)
                 // Filtro categoría
                 // Si la categoría seleccionada es "Todas",
                 // no se aplica filtro de categoría.
-                //
                 // En caso contrario, únicamente se mantienen los productos
                 // cuya categoría coincide con la seleccionada.
                 .filter(product ->
@@ -143,7 +162,6 @@ public class ProductService {
                 // Filtro nombre
                 // Si no se indicó texto de búsqueda,
                 // no se aplica filtro por nombre.
-                //
                 // En caso contrario, se conservan únicamente los productos
                 // cuyo nombre contiene el texto ingresado por el usuario.
                 .filter(product ->

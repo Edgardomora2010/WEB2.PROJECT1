@@ -51,7 +51,8 @@ public class HomeController  {
      * @return Nombre de la plantilla: Home.html.
      */
     @GetMapping("/")
-    public String showHome(Model model,HttpSession session) {
+    public String showHome(@RequestParam(required = false) String alert,
+                           Model model,HttpSession session) {
 
         Client client =
                 (Client) session.getAttribute("client");
@@ -100,6 +101,14 @@ public class HomeController  {
             );
         } else {
             model.addAttribute("cartItemsCount", 0);
+        }
+
+        // Se informa detalle a la vista
+        if ("product_in_cart_required".equals(alert)) {
+            model.addAttribute(
+                    "errorMessage",
+                    "Para acceder al carrito primero debe agregar al menos un producto."
+            );
         }
 
         // Devuelve plantilla (Home.html), habiéndose cargado componentes la de página
