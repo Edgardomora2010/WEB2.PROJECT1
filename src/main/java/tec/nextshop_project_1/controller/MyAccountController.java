@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import tec.nextshop_project_1.service.ClientService;
 import tec.nextshop_project_1.data.Client;
+import tec.nextshop_project_1.service.OrderService;
 
 /**
  * Controlador encargado de gestionar las solicitudes relacionadas con el
@@ -19,13 +20,15 @@ import tec.nextshop_project_1.data.Client;
 public class MyAccountController {
 
     private final ClientService clientService;
+    private final OrderService orderService;
 
     /**
      * Constructor con inyección de dependencia:
      * @param clientService
      */
-    public MyAccountController(ClientService clientService) {
+    public MyAccountController(ClientService clientService, OrderService orderService) {
         this.clientService = clientService;
+        this.orderService = orderService;
     }
 
     /**
@@ -57,6 +60,15 @@ public class MyAccountController {
 
             return "pages/home";
         }*/
+
+        // Muestra histórico de pedido realizados por un cliente
+        model.addAttribute(
+                "orders",
+                orderService.findOrdersByClientId(
+                        client.getId()
+                )
+        );
+
 
         log.info("Carga::página:[MyAccount.html]");
         return "pages/MyAccount";

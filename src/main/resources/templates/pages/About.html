@@ -1,10 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+
+    <!-- Codificación caracteres  -->
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <!-- Responsive Design-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description" content="Página de venta de artículos">
+    <meta name="keywords" content="NextShop, tienda online, ecommerce, tecnología, accesorios, compras online">
+    <meta name="author" content="Edgardo Mora M, Oscar Marín">
+
+    <!-- Título de página principal -->
+    <title>Login</title>
+
+    <!-- Implementación de hoja de estilos-->
+    <link rel="stylesheet" th:href="@{/css/Components.css}">
+    <link rel="stylesheet" th:href="@{/css/Sites.css}" />
+
 </head>
+
 <body>
+
+<header>
+
+    <!-- HEADER:  -->
+    <!-- Fragmento (repetible en templates) para Header de página (Navegador de productos) -->
+    <div th:replace="~{fragments/HeaderB :: header_page}"></div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="about_container">
+
+        <section class="about_section">
+
+            <h1>Acerca de NextShop</h1>
+
+            <hr>
+
+            <p>
+                <strong>NextShop</strong> es una plataforma de comercio electrónico
+                desarrollada para ofrecer una experiencia de compra sencilla,
+                organizada y segura.
+            </p>
+
+            <p>
+                Los clientes pueden explorar el catálogo de productos, consultar
+                la disponibilidad en inventario, agregar artículos al carrito de
+                compras y confirmar sus pedidos mediante un proceso de compra
+                intuitivo.
+            </p>
+
+            <p>
+                El sistema incorpora además herramientas administrativas para la
+                gestión de categorías, productos, inventario, clientes y órdenes
+                de compra, permitiendo administrar la tienda desde una única
+                plataforma.
+            </p>
+
+            <p>
+                Nuestro objetivo es brindar un servicio confiable, con una
+                navegación clara y una gestión eficiente de los productos y
+                pedidos de nuestros clientes.
+            </p>
+
+            <div>
+
+                <a th:href="@{/}">
+                    Volver al inicio
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<!-- FOOTER:  -->
+<footer class="footer_container">
+
+    <!-- Fragmento (repetible en templates) para Footer de página
+    (redes sociales)-->
+    <div th:replace="~{fragments/Footer :: footer_page}"></div>
+
+</footer>
+
 
 </body>
 </html>

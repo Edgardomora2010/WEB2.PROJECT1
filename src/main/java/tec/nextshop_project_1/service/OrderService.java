@@ -47,6 +47,17 @@ public class OrderService {
     }
 
     /**
+     * Obtiene todas las órdenes realizadas por un cliente.
+     * @param clientId identificador del cliente.
+     * @return Lista de órdenes del cliente.
+     */
+    public List<Order> findOrdersByClientId(Long clientId){
+        return orderRepository.findOrdersByClientId(
+                clientId
+        );
+    }
+
+    /**
      * Construye una preorden a partir del cliente y el carrito de compras.
      * La preorden permite visualizar el resumen de la compra antes de
      * confirmar el pedido definitivo.

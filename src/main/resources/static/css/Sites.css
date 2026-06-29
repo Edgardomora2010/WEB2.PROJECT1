@@ -1045,7 +1045,29 @@ searched_products details,
         width:220px;
 }
 
+/* ABOUT */
 
+.about_section{
+    margin-top: 200px;
+    font-size: x-large;
+    text-align: center;
+}
+
+/* ORDER DETAILS */
+.order_paid{
+    color:#2e7d32;
+    font-weight:bold;
+}
+
+.pay_order_actions{
+
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:30px;
+    flex-wrap:wrap;
+
+}
 
 
 
