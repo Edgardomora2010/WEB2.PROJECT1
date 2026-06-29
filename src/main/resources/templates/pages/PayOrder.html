@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <!-- Codificación caracteres -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description"
+          content="Confirmación de pedido">
+
+    <meta name="keywords"
+          content="NextShop,pago,pedido,checkout">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>Confirmación de Compra</title>
+
+    <!-- Hojas de estilos -->
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}"/>
+
+</head>
+
+<body>
+
+<header>
+
+    <!-- HEADER -->
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="cart_page">
+
+    <!-- Mensajes -->
+    <div th:replace="~{fragments/SiteErrors :: site_errors}">
+    </div>
+
+    <div class="shoppingcart_container">
+
+
+        <!-- PANEL IZQUIERDO (70%) -->
+
+
+        <section class="cart_products">
+
+            <h2>
+                Confirmación del Pedido
+            </h2>
+
+            <!-- Información general -->
+
+            <div class="order_information">
+
+                <h3>
+
+                    Información del Pedido
+
+                </h3>
+
+                <p>
+
+                    <strong>Pedido:</strong>
+
+                    <span
+                            th:text="${order != null ? order.orderNumber : ''}">
+        </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Fecha:</strong>
+
+                    <span
+                            th:text="${order != null ? order.orderDate : ''}">
+        </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Estado:</strong>
+
+                    <span
+                            th:text="${order != null ? order.status : ''}">
+        </span>
+
+                </p>
+
+                <hr>
+
+                <h3>
+
+                    Información del Cliente
+
+                </h3>
+
+                <p>
+
+                    <strong>Nombre:</strong>
+
+                    <span
+                            th:text="${session.client != null ? session.client.name + ' ' + session.client.lastName : ''}">
+        </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Correo:</strong>
+
+                    <span
+                            th:text="${session.client != null ? session.client.email : ''}">
+        </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Teléfono:</strong>
+
+                    <span
+                            th:text="${session.client != null ? session.client.phoneNumber : ''}">
+        </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Dirección:</strong>
+
+                    <span
+                            th:text="${session.client != null ? session.client.address : ''}">
+        </span>
+
+                </p>
+
+            </div>
+
+            <hr>
+
+            <h3>
+
+                Productos del Pedido
+
+            </h3>
+
+            <!-- Tabla -->
+
+            <div class="order_table_container">
+
+                <table class="order_table">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Producto</th>
+
+                        <th>Cant.</th>
+
+                        <th>Precio Unit.</th>
+
+                        <th>Subtotal</th>
+
+                        <th>Desc.</th>
+
+                        <th>Imp.</th>
+
+                        <th>Total</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:if="${order == null}">
+
+                        <td colspan="7"
+                            style="text-align:center;padding:20px;">
+
+                            No existen productos para mostrar.
+
+                        </td>
+
+                    </tr>
+
+                    <tr th:each="item :
+            ${order != null ? order.orderItems :
+            T(java.util.Collections).emptyList()}">
+
+                        <td
+                                th:text="${item.productName}">
+                            Producto
+                        </td>
+
+                        <td
+                                th:text="${item.quantity}">
+                            1
+                        </td>
+
+                        <td
+                                th:text="'₡ ' + ${item.unitPrice}">
+                            ₡0
+                        </td>
+
+                        <td
+                                th:text="'₡ ' + ${item.subTotal}">
+                            ₡0
+                        </td>
+
+                        <td
+                                th:text="'-₡ ' + ${item.discountAmount}">
+                            -₡0
+                        </td>
+
+                        <td
+                                th:text="'₡ ' + ${item.taxAmount}">
+                            ₡0
+                        </td>
+
+                        <td
+                                th:text="'₡ ' + ${item.totalAmount}">
+                            ₡0
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- PANEL DERECHO (30%)  -->
+
+
+        <aside class="cart_summary">
+
+            <h2>
+
+                Resumen del Pedido
+
+            </h2>
+
+            <p>
+
+                Artículos:
+
+                <span th:text="${order != null && order.orderItems != null ? order.orderItems.size() : 0}">
+                    0
+                </span>
+
+            </p>
+
+            <p>
+
+                Subtotal:
+
+                <span th:text="'₡ ' + ${order.subTotal}">
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <p>
+
+                Descuentos:
+
+                <span th:text="'-₡ ' + ${order.discountAmount}">
+                    -₡ 0
+                </span>
+
+            </p>
+
+            <p>
+
+                Impuesto:
+
+                <span th:text="'₡ ' + ${order.taxAmount}">
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <p>
+
+                Envío:
+
+                <span th:text="'₡ ' + ${order.shippingAmount}">
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <hr>
+
+            <p class="cart_total">
+
+                Total:
+
+                <span th:text="'₡ ' + ${order.totalAmount}">
+                    ₡ 0
+                </span>
+
+            </p>
+
+            <hr>
+
+            <h3>
+
+                Método de Pago
+
+            </h3>
+
+            <form th:action="@{/checkout/confirm}"
+                  method="post">
+
+                <label>
+
+                    Método
+
+                </label>
+
+                <select
+                        name="paymentMethod">
+
+                    <option value="CREDIT_CARD"
+                            selected>
+
+                        Tarjeta de Crédito
+
+                    </option>
+
+                    <option value="DEBIT_CARD">
+
+                        Tarjeta de Débito
+
+                    </option>
+
+                    <option value="SINPE">
+
+                        SINPE Móvil
+
+                    </option>
+
+                    <option value="BANK_TRANSFER">
+
+                        Transferencia Bancaria
+
+                    </option>
+
+                </select>
+
+                <br><br>
+
+                <label>
+
+                    Tipo de Tarjeta
+
+                </label>
+
+                <select name="cardType">
+
+                    <option value="VISA" selected>VISA</option>
+                    <option value="MASTERCARD">MasterCard</option>
+                    <option value="AMERICAN_EXPRESS">American Express</option>
+
+                </select>
+
+                <br><br>
+
+                <label>
+
+                    Número de Tarjeta
+
+                </label>
+
+                <input
+                        type="password"
+                        name="cardNumber"
+                        maxlength="19"
+                        placeholder="XXXX XXXX XXXX XXXX">
+
+                <br><br>
+
+                <label>
+
+                    Titular
+
+                </label>
+
+                <input
+                        type="text"
+                        th:value="${session.client.name + ' ' + session.client.lastName}"
+                        readonly>
+
+                <br><br>
+
+                <label>
+
+                    Expiración
+
+                </label>
+
+                <div class="payment_expiration">
+
+                    <select>
+
+                        <option>01</option>
+                        <option>02</option>
+                        <option>03</option>
+                        <option>04</option>
+                        <option>05</option>
+                        <option>06</option>
+                        <option>07</option>
+                        <option>08</option>
+                        <option>09</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+
+                    </select>
+
+                    <select>
+
+                        <option>2026</option>
+                        <option>2027</option>
+                        <option>2028</option>
+                        <option>2029</option>
+                        <option>2030</option>
+                        <option>2031</option>
+                        <option>2032</option>
+                        <option>2033</option>
+                        <option>2034</option>
+                        <option>2035</option>
+
+                    </select>
+
+                </div>
+
+                <br>
+
+                <button
+                        type="submit"
+                        class="primary_button">
+
+                    Confirmar Compra
+
+                </button>
+
+            </form>
+
+            <br>
+
+            <a th:href="@{/cart}"
+               class="primary_button">
+
+                Cancelar
+
+            </a>
+
+        </aside>
+
+    </div>
+
+</main>
+
+<footer class="footer_container">
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+</body>
+
+</html>

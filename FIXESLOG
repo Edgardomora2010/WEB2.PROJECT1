@@ -52,3 +52,15 @@ en barra secundaria.
    o ingresar  página de carrito, sin productos previamente agregados, pero no
    se está redireccionando bien al home, y se quedan objetos muertos de la página,
    y se queda visualizándose parte de home, pero el la endpoint de /cart.
+
+   <-24/28/06-2026
+- [x]  Validar que no permita para o terminar de generar (vender) un pedido para
+ un usuario administrador de la tienda.
+ - [x]  Terminar de pagar transacción en carrito, y cerrar venta. Recalculando
+ rebajas de items. re-evaluar cantidades en stock actuales, en inventario con
+ respecto a lo que pretende rebajar inventario.
+ - [x] Crear controllers de entidades Order (Pedido) e itemOrder (itemPedido),
+ para manejar respaldo e histórico de pedidos.
+ - [x] Terminar de pagar transacción en carrito, y cerrar venta. Recalculando
+ rebajas de items. re-evaluar cantidades en stock actuales, en inventario con
+ respecto a lo que pretende rebajar inventario.

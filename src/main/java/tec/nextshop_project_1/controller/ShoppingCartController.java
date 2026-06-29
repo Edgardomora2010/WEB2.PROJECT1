@@ -58,6 +58,7 @@ public class ShoppingCartController {
     @GetMapping("/cart")
     public String showShoppingCart(
             HttpSession session,
+            @RequestParam(required = false) String alert,
             Model model) {
 
         // 1. Carga de página de carrito de compra
@@ -155,6 +156,25 @@ public class ShoppingCartController {
                 shoppingCartService.calculateCartItemsTotal(client.getId())
         );
 
+        if ("admin_user_not_allowed".equals(alert)) {
+
+            model.addAttribute(
+                    "errorMessage",
+                    "Los administradores del sistema, pueden realizar pruebas de uso del " +
+                                 "carrito, pero no pueden realizar compras."
+            );
+
+        }
+
+        if ("inventory_not_available".equals(alert)) {
+
+            model.addAttribute(
+                    "errorMessage",
+                    "Uno o más productos en el carrito, ya no posee suficiente inventario " +
+                                 "para poder realizar la venta."
+            );
+
+        }
 
         return "pages/ShoppingCart";
     }

@@ -52,6 +52,7 @@ public class HomeController  {
      */
     @GetMapping("/")
     public String showHome(@RequestParam(required = false) String alert,
+                           @RequestParam(required = false) String success,
                            Model model,HttpSession session) {
 
         Client client =
@@ -109,6 +110,26 @@ public class HomeController  {
                     "errorMessage",
                     "Para acceder al carrito primero debe agregar al menos un producto."
             );
+        }
+
+        // Si una orden no se creó correctamente
+        if ("order_fail_to_be_created".equals(alert)) {
+
+            model.addAttribute(
+                    "errorMessage",
+                    "Lo sentimos, no se pudo completar la compra de forma correcta."
+            );
+
+        }
+
+        // Si una orden se creó exitosamente
+        if ("order_successfully_created".equals(success)) {
+
+            model.addAttribute(
+                    "successMessage",
+                    "¡Compra realizada con éxito! Su pedido fue registrado correctamente."
+            );
+
         }
 
         // Devuelve plantilla (Home.html), habiéndose cargado componentes la de página

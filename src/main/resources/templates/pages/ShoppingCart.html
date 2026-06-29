@@ -37,6 +37,9 @@
     <!-- Fragmento para mostrar errores de sitio -->
     <div th:replace="~{fragments/SiteErrors :: site_errors}"></div>
 
+    <!-- Fragmento para mostrar mensajes de éxito del sitio -->
+    <div th:replace="~{fragments/SiteSuccess:: site_success}"></div>
+
     <div class="shoppingcart_container">
 
         <!-- Productos del carrito -->
@@ -249,7 +252,7 @@
                 Dirección Cliente
             </p>
 
-            <a th:href="@{/checkout}"
+            <a th:href="@{/PayOrder}"
                class="primary_button">
 
                 Finalizar Compra
