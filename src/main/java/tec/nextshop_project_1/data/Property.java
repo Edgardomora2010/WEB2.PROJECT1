@@ -1,20 +1,19 @@
-// PAQUETES
 package tec.nextshop_project_1.data;
 
-// IMPORTACION DE LIBRERÍAS
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- * Clase para representar la información de las propiedades de un producto
- * de la aplicación.
- */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 public class Property {
 
-    // OBJETOS/VARIABLES
+    @Column(name = "property_name")
     private String name;
+    @Column(name = "property_value")
     private String value;
-
 }

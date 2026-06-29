@@ -3,6 +3,7 @@ package tec.nextshop_project_1.repository.in_memory;
 
 // IMPORTACIÓN DE LIBRERIAS
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import tec.nextshop_project_1.data.Product;
 import tec.nextshop_project_1.data.Property;
@@ -22,6 +23,7 @@ import java.util.Optional;
  * real en MySQL.
  */
 @Repository
+@Profile("in-memory")
 public class ProductRepository implements IProductRepository {
 
     // OBJETOS Y VARIABLES GLOBALES

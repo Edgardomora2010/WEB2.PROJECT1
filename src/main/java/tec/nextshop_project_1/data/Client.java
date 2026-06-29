@@ -1,35 +1,38 @@
-//PAQUETES
 package tec.nextshop_project_1.data;
 
-// IMPORTACION DE LIBRERÍAS
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
-/**
- * Clase para representar la información de los clientes dentro
- * de la aplicación.
- */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "clients")
 public class Client {
 
-    // OBJETOS/VARIABLES
     public enum Profile {
         CUSTOMER,
         ADMIN
     }
 
-    private final Profile role;
-    private final Long id;
-    private final String name;
-    private final String lastName;
-    private final String email;
+    @Enumerated(EnumType.STRING)
+    private Profile role;
+    @Id
+    private Long id;
+    private String name;
+    private String lastName;
+    private String email;
     private String password;
     private String phoneNumber;
     private String address;
-    private final LocalDate registrationDate;
+    private LocalDate registrationDate;
     private boolean active;
-
-
 }

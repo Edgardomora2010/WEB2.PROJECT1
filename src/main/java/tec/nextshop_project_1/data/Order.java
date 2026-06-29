@@ -1,23 +1,29 @@
-// PAQUETES
 package tec.nextshop_project_1.data;
 
-// IMPORTACION DE LIBRERÍAS
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Clase para representar la información de las órdenes de compra
- * de la aplicación.
- */
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "orders")
 public class Order {
 
-    /**
-     * Métodos de pago soportados por la aplicación.
-     */
     public enum PaymentMethod {
         CASH,
         CREDIT_CARD,
@@ -26,9 +32,6 @@ public class Order {
         BANK_TRANSFER
     }
 
-    /**
-     * Estados posibles de una orden de compra.
-     */
     public enum OrderStatus {
         PENDING,
         PAID,
@@ -38,12 +41,19 @@ public class Order {
         CANCELLED
     }
 
-    // OBJETOS/VARIABLES
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
     private Client client;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
     private List<OrderItem> items;
     private LocalDateTime orderDate;
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     private String shippingAddress;
     private double subTotal;
@@ -51,5 +61,4 @@ public class Order {
     private double taxAmount;
     private double shippingAmount;
     private double totalAmount;
-
 }
