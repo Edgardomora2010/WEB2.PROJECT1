@@ -185,6 +185,18 @@ Esta organización permite ubicar cada cambio en una capa específica. Los servi
 
 El beneficio principal de esta arquitectura es la separación entre lógica de negocio y acceso a datos. Por ejemplo, la conexión de imágenes se mantuvo en el dato `imagePath` del producto y las vistas ya consumían `product.imagePath`, por lo que no fue necesario rediseñar la interfaz.
 
+![Diagrama de Componentes de NextShop](evidencias/11-diagrama-componentes-nextshop.png)
+
+Figura 11. Diagrama de Componentes de la aplicación NextShop.
+
+![Flujo Request → Response de NextShop](<evidencias/12-diagrama 2.png>)
+
+Figura 12. Flujo de atención de una solicitud en la aplicación NextShop utilizando la arquitectura Spring Boot.
+
+La Figura 12 muestra el recorrido de una solicitud desde que el usuario realiza una petición hasta que la respuesta es presentada en el navegador. El controlador recibe la solicitud, delega el procesamiento en la capa de servicios y consulta la información mediante los repositorios conectados a la base de datos. Posteriormente, Thymeleaf genera la vista utilizando los datos obtenidos y carga las imágenes correspondientes mediante el atributo `imagePath`, produciendo finalmente la respuesta HTML enviada al usuario.
+
+Este flujo evidencia la separación de responsabilidades implementada en la aplicación y la interacción entre las diferentes capas que conforman la arquitectura de NextShop.
+
 **Evidencias relacionadas**
 
 - `docs/evidencias/06-productrepository-imagepath.png`: muestra productos con rutas reales.
