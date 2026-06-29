@@ -13,7 +13,7 @@ NextShop es una aplicacion web desarrollada con Spring Boot y Thymeleaf que simu
 
 El sistema tambien incluye un modulo administrativo para la gestion de productos y clientes. Desde este modulo, un usuario con perfil administrador puede consultar registros, realizar busquedas, editar informacion y activar o desactivar elementos del sistema.
 
-En esta version, el proyecto trabaja con datos almacenados en memoria. Esta decision permite validar las funcionalidades principales y mantener una arquitectura preparada para incorporar persistencia con Spring Data JPA y base de datos.
+En esta version, el proyecto trabaja con persistencia relacional mediante MySQL y Spring Data JPA. La aplicacion utiliza Docker Compose para levantar una base local reproducible, Hibernate para crear o actualizar las tablas y `DataInitializer` para cargar los datos iniciales cuando la base esta vacia.
 
 ## 3. Actores del Sistema
 
@@ -108,14 +108,14 @@ Ejemplos:
 
 ### Repository
 
-La capa de repositorios se encarga del acceso a los datos. En esta version, los datos se almacenan en memoria por medio de listas y mapas. Tambien existen interfaces que facilitan la integracion posterior con Spring Data JPA.
+La capa de repositorios se encarga del acceso a los datos. Los servicios dependen de interfaces de repositorio, mientras que la implementacion principal utiliza adaptadores JPA conectados a MySQL. Esta separacion desacopla la logica de negocio de la tecnologia de persistencia.
 
 Ejemplos:
 
-- `ClientRepository`
-- `ProductRepository`
-- `CategoryRepository`
-- `InventoryRepository`
+- `JpaClientRepositoryAdapter`
+- `JpaProductRepositoryAdapter`
+- `JpaCategoryRepositoryAdapter`
+- `JpaInventoryRepositoryAdapter`
 - `ShoppingCartRepository`
 
 ### Model
@@ -142,16 +142,20 @@ Las vistas del sistema estan desarrolladas con Thymeleaf. Se utilizan plantillas
 
 - El sistema se ejecuta en un ambiente local de desarrollo.
 - Los datos cargados al iniciar la aplicacion son datos de prueba.
-- La informacion cargada durante la ejecucion corresponde a datos de prueba almacenados en memoria.
+- La informacion inicial se carga en MySQL mediante `DataInitializer` cuando la base local esta vacia.
 - Los usuarios administradores ya existen en los datos iniciales o pueden ser creados desde el modulo administrativo.
 - El control de acceso se realiza de forma manual mediante la sesion del usuario.
 - La aplicacion representa una base funcional para el proyecto academico y esta disenada para crecer de manera modular.
 
-## 8. Limitaciones Conocidas
+## 8. Decisiones tecnicas
 
-El proyecto se encuentra en desarrollo continuo. Por esta razon, algunas decisiones tecnicas se mantienen en una version inicial y pueden fortalecerse en las siguientes etapas.
+El proyecto se encuentra en desarrollo continuo. Las decisiones tecnicas actuales permiten mantener una base funcional y extensible.
 
-- La persistencia de datos se maneja en memoria, lo cual facilita la prueba del flujo principal antes de integrar una base de datos.
+- La persistencia principal se maneja con MySQL, Spring Data JPA e Hibernate.
+- Docker Compose permite que cada desarrollador levante su propia base local sin copiar una base de datos fisica.
+- Git versiona el codigo, las entidades JPA, los adaptadores de repositorio, `docker-compose.yml`, `DataInitializer` y las imagenes del catalogo.
+- Git no versiona la base de datos fisica; cada entorno local la crea a partir de Docker, Hibernate y los datos iniciales.
+- El carrito se mantiene en sesion/memoria por tratarse de estado temporal del usuario autenticado.
 - El control de acceso se realiza mediante sesion y validaciones en los controladores.
 - Las validaciones de formularios se realizan principalmente de forma manual desde los servicios y controladores.
 - La arquitectura permite incorporar servicios REST y operaciones adicionales conforme avance el proyecto.
@@ -214,7 +218,7 @@ Espacio reservado para captura.
 
 NextShop cuenta con una base funcional para una tienda en linea desarrollada con Spring Boot, Thymeleaf y una arquitectura por capas. El proyecto permite demostrar navegacion, catalogo, registro, login, carrito basico y administracion de productos y clientes.
 
-La estructura actual permite continuar el desarrollo de manera ordenada, incorporando nuevos componentes como persistencia con base de datos, seguridad y servicios adicionales segun los requerimientos del Proyecto Programado.
+La estructura actual permite continuar el desarrollo de manera ordenada, ampliando componentes como seguridad, reportes, pedidos y servicios adicionales segun los requerimientos del Proyecto Programado.
 
 ## Evidencias
 

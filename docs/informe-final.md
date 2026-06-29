@@ -1,38 +1,12 @@
-# Informe final del Proyecto Programado: NextShop
+# Proyecto Programado: NextShop
 
-**Curso:** Programación Web II  
-**Proyecto:** NextShop  
+**Universidad:** Instituto Tecnológico de Costa Rica  
+**Carrera:** Ingeniería del Software  
+**Nombre del curso:** Programación Web II  
+**Profesor:** Carlos Arias Rodriguez  
+**Nombre del Proyecto Programado:** NextShop  
 **Integrantes:** Edgardo Mora, Oscar Marín  
 **Fecha:** Junio de 2026  
-**Documento:** Memoria técnica final  
-
----
-
-## Control del documento
-
-| Elemento | Valor |
-| --- | --- |
-| Archivo principal | `docs/informe-final.md` |
-| Evidencias visuales | `docs/evidencias/` |
-| Documentos de apoyo | `docs/ProyectoProgramado.md`, `docs/inventario-productos-imagenes.md`, `docs/catalogo-visual-productos.md`, `docs/fuente-imagenes-productos.md`, `docs/catalogo-imagenes-productos.md` |
-| Estado | Versión final para entrega |
-
-## Ficha técnica del proyecto
-
-| Elemento | Valor |
-| --- | --- |
-| Proyecto | NextShop |
-| Tipo de sistema | Tienda en línea |
-| Framework | Spring Boot |
-| Motor de plantillas | Thymeleaf |
-| Arquitectura | MVC por capas |
-| Lenguaje principal | Java |
-| Persistencia actual | MySQL con Spring Data JPA |
-| Persistencia | Repositorios JPA sobre interfaces de acceso a datos |
-| Recursos estáticos | CSS e imágenes desde `src/main/resources/static/` |
-| Control de versiones | Git |
-| Build | Maven |
-| Estado | Funcional |
 
 ---
 
@@ -54,11 +28,17 @@
 14. Módulo administrativo
 15. Validaciones y reglas de negocio
 16. Pruebas y evidencias
-17. Control de versiones
-18. Alcance técnico y proyección
-19. Evolución propuesta del sistema
-20. Conclusiones
-21. Anexos
+17. Control de versiones y trabajo colaborativo
+18. Conclusiones
+19. Anexos
+
+**ANEXOS**
+
+- Anexo A - Control del documento
+- Anexo B - Ficha técnica del proyecto
+- Anexo C - Documentos de apoyo
+- Anexo D - Evidencias visuales
+- Anexo E - Datos del módulo de imágenes
 
 ---
 
@@ -156,15 +136,7 @@ La versión actual de NextShop incluye funcionalidades públicas, autenticadas y
 - Activación y desactivación de productos.
 - Gestión básica de clientes.
 
-**Evolución del producto**
-
-- Integración con servicios de pago.
-- Persistencia relacional con MySQL y Spring Data JPA.
-- Despliegue en infraestructura productiva.
-- Configuración de seguridad avanzada.
-- Automatización de pruebas funcionales.
-
-Esta sección delimita el alcance entregado y plantea posibles extensiones del producto sin afectar las funcionalidades implementadas.
+Esta sección delimita el alcance entregado y resume las funcionalidades implementadas en la versión final del Proyecto Programado.
 
 ---
 
@@ -209,7 +181,9 @@ La arquitectura del proyecto está organizada por capas:
 | Templates | Renderiza HTML con Thymeleaf | `home.html`, `ProductDetails.html`, `ShoppingCart.html` |
 | Static | Expone CSS, imágenes y recursos públicos | `images/products/`, `css/` |
 
-Esta organización permite ubicar cada cambio en una capa específica. Por ejemplo, la conexión de imágenes se mantuvo en el dato `imagePath` del producto y las vistas ya consumían `product.imagePath`, por lo que no fue necesario rediseñar la interfaz.
+Esta organización permite ubicar cada cambio en una capa específica. Los servicios trabajan contra interfaces de repositorio y no dependen directamente de la tecnología de almacenamiento. La implementación principal utiliza adaptadores JPA para acceder a MySQL, mientras que los repositorios en memoria quedan disponibles únicamente bajo el perfil `in-memory`.
+
+El beneficio principal de esta arquitectura es la separación entre lógica de negocio y acceso a datos. Por ejemplo, la conexión de imágenes se mantuvo en el dato `imagePath` del producto y las vistas ya consumían `product.imagePath`, por lo que no fue necesario rediseñar la interfaz.
 
 **Evidencias relacionadas**
 
@@ -220,13 +194,23 @@ Esta organización permite ubicar cada cambio en una capa específica. Por ejemp
 
 ## 8. Modelo de datos y persistencia
 
-NextShop utiliza MySQL como base de datos relacional para manejar productos, categorías, clientes e inventario. La integración se realiza con Spring Data JPA, entidades del dominio y adaptadores que implementan las interfaces de repositorio existentes.
+NextShop utiliza MySQL como base de datos relacional para manejar productos, categorías, clientes, inventario, órdenes y detalles de órdenes. Se eligió MySQL por ser un motor relacional estable, ampliamente utilizado y adecuado para representar relaciones entre productos, categorías, usuarios, inventario y pedidos.
 
-El proyecto conserva una estructura por interfaces para separar los servicios de la tecnología de persistencia. Los repositorios en memoria permanecen como alternativa de perfil, mientras que la ejecución principal utiliza los adaptadores JPA y la base `nextshopdb`.
+La integración se realiza con Spring Data JPA porque permite trabajar con entidades Java y repositorios declarativos, reduciendo código repetitivo de acceso a datos y manteniendo una capa de persistencia coherente con Spring Boot. El proyecto conserva una estructura por interfaces para separar los servicios de la tecnología de persistencia. Los repositorios en memoria permanecen como alternativa de perfil, mientras que la ejecución principal utiliza los adaptadores JPA y la base `nextshopdb`.
 
 En el caso de productos, cada registro incluye información como identificador, SKU, nombre, descripción, precio, categoría, propiedades, estado, stock y ruta de imagen. El campo `imagePath` queda persistido como metadato del producto y apunta a archivos estáticos PNG.
 
-Esta implementación corresponde al uso de repositorios, entidades y persistencia relacional vistos durante el curso.
+Hibernate administra la creación y actualización de tablas mediante la configuración `spring.jpa.hibernate.ddl-auto=update`. Además, `DataInitializer` carga la información inicial cuando la base está vacía: categorías, clientes, productos e inventario. Este proceso permite levantar una base local funcional sin copiar manualmente archivos SQL ni respaldos de base de datos.
+
+El carrito de compras se mantiene en sesión/memoria por decisión de diseño, ya que representa un estado temporal asociado al usuario autenticado durante su navegación.
+
+Esta implementación corresponde al uso de repositorios, entidades, ORM y persistencia relacional vistos durante el curso.
+
+### 8.1 Base de datos local con Docker Compose
+
+El proyecto incluye `docker-compose.yml` para levantar una base MySQL local reproducible. El servicio utiliza una imagen compatible de MySQL, expone el puerto local `3307` hacia el puerto interno `3306` y crea la base `nextshopdb` al iniciar el contenedor por primera vez.
+
+El archivo no depende de rutas absolutas del equipo de un desarrollador. Utiliza un volumen nombrado de Docker para conservar los datos locales sin versionar la base física en Git. Su propósito es que cada integrante pueda levantar su propio ambiente local con la misma configuración general de base de datos.
 
 ---
 
@@ -274,7 +258,7 @@ La ruta pública utilizada por la aplicación sigue este formato:
 /images/products/nombre-del-producto.png
 ```
 
-La integración se realizó conectando cada producto con su ruta `imagePath` y conservando esos valores en la persistencia de productos. No se modificaron nombres, categorías, precios, descripciones ni lógica de negocio. El fallback `productIcon.png` se conserva para casos futuros, pero los productos existentes ya usan rutas específicas.
+La integración se realizó conectando cada producto con su ruta `imagePath` y conservando esos valores en la persistencia de productos. No se modificaron nombres, categorías, precios, descripciones ni lógica de negocio. El fallback `productIcon.png` se conserva como imagen predeterminada del sistema, pero los productos existentes ya usan rutas específicas.
 
 Esta implementación evidencia el uso de recursos estáticos en Spring Boot y renderizado dinámico con Thymeleaf.
 
@@ -412,6 +396,8 @@ Las pruebas realizadas verifican que la aplicación compila, sirve recursos est�
 | Detalle `/products/15` | Correcto | `02-detalle-producto-imagen.png` |
 | Imagen estática | HTTP 200 | `03-ruta-estatica-imagen.png` |
 | Carrito con producto | Correcto | `04-carrito-imagen-producto.png` |
+| Login contra MySQL | Correcto | Validado con usuarios persistidos |
+| Docker Compose operativo | Correcto | MySQL disponible en puerto local `3307` |
 
 ### 16.2 Pruebas técnicas
 
@@ -424,6 +410,8 @@ Las pruebas realizadas verifican que la aplicación compila, sirve recursos est�
 | Fallback conservado | `productIcon.png` |
 | Productos persistidos en MySQL | 99 |
 | Inventarios persistidos en MySQL | 99 |
+| Clientes iniciales persistidos en MySQL | 3 |
+| Catálogo visual mediante `imagePath` | Correcto |
 
 ### 16.3 Compilación
 
@@ -450,6 +438,7 @@ BUILD SUCCESS
 | ProductRepository | `docs/evidencias/06-productrepository-imagepath.png` | Rutas `imagePath` reales |
 | Carpeta de imágenes | `docs/evidencias/07-carpeta-static-images-products.png` | Archivos PNG físicos disponibles |
 | Build | `docs/evidencias/08-build-success.png` | Compilación exitosa |
+| MySQL y Docker Compose | `docker-compose.yml` | Base local reproducible para persistencia |
 | Git status | `docs/evidencias/09-git-status.png` | Estado del repositorio |
 | Git log | `docs/evidencias/10-git-log.png` | Historial reciente de commits |
 
@@ -457,21 +446,39 @@ Esta sección evidencia validación funcional, técnica y de control de versione
 
 ---
 
-## 17. Control de versiones
+## 17. Control de versiones y trabajo colaborativo
 
-El proyecto utiliza Git para registrar cambios y mantener trazabilidad. La rama documentada es:
+El proyecto utiliza Git para registrar cambios, mantener trazabilidad y facilitar el trabajo colaborativo entre integrantes. La rama documentada es:
 
 ```text
 integracion-edgardo-imagenes
 ```
 
-Commit relevante:
+Commits relevantes:
 
 ```text
+690c794 Agregar compose local para MySQL
+45e2dd1 Agregar persistencia JPA con MySQL
 34839c2 Conectar imagenes de productos y corregir template home
 ```
 
-Este commit integra las rutas reales de imágenes en `ProductRepository` y corrige el nombre del template de home para evitar problemas en sistemas sensibles a mayúsculas y minúsculas.
+Git versiona el código fuente, las entidades JPA, los adaptadores de repositorio, `docker-compose.yml`, `DataInitializer`, la configuración de la aplicación, la documentación y las imágenes del catálogo. La base de datos física no se versiona; cada desarrollador obtiene una base local propia al levantar Docker y ejecutar la aplicación.
+
+El flujo colaborativo se ejecuta de la siguiente forma:
+
+```bash
+git pull
+docker compose up -d
+./mvnw spring-boot:run
+```
+
+En Windows también puede ejecutarse:
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+Con este flujo, Docker levanta MySQL, Hibernate crea o actualiza las tablas y `DataInitializer` carga automáticamente categorías, clientes, productos e inventario. Las imágenes ya están versionadas en Git y el campo `imagePath` queda persistido en MySQL. Como resultado, cada integrante obtiene una copia funcional del proyecto sin copiar manualmente bases de datos ni archivos SQL.
 
 El uso de Git respalda el trabajo colaborativo y permite auditar los cambios realizados.
 
@@ -487,45 +494,15 @@ La captura muestra los commits recientes. Evidencia la trazabilidad del avance d
 
 ---
 
-## 18. Alcance técnico y proyección
-
-La versión actual cumple el alcance definido para el proyecto y deja una base clara para futuras ampliaciones:
-
-- Los datos principales se administran mediante MySQL y Spring Data JPA.
-- Las imágenes se manejan como archivos estáticos, una práctica adecuada para catálogos visuales.
-- La autenticación se gestiona mediante sesión y perfiles de usuario.
-- Las rutas administrativas se protegen según el perfil del usuario autenticado.
-- La estructura por capas permite incorporar nuevos servicios externos y ampliar los módulos existentes.
-
-Este alcance permite demostrar el funcionamiento completo del sistema y mantiene una arquitectura ordenada para la evolución del producto.
-
----
-
-## 19. Evolución propuesta del sistema
-
-Para futuras versiones se proponen las siguientes mejoras:
-
-- Ampliar el modelo persistente con historial de compras y reportes administrativos.
-- Incorporar migraciones controladas de esquema para ambientes productivos.
-- Ampliar la seguridad con políticas más detalladas de autorización.
-- Agregar reportes administrativos y métricas de ventas.
-- Optimizar la experiencia visual del carrito y del panel administrativo.
-- Incorporar pruebas automatizadas para servicios, controladores y flujos principales.
-- Mantener las imágenes como archivos estáticos y persistir sus rutas como metadatos del producto.
-
-Estas mejoras representan una evolución natural del producto y aprovechan la arquitectura ya implementada.
-
----
-
-## 20. Conclusiones
+## 18. Conclusiones
 
 NextShop demuestra una aplicación web funcional construida con Spring Boot, Thymeleaf y una arquitectura MVC por capas. El proyecto integra navegación pública, detalle de productos, sesiones de usuario, carrito de compras y módulos administrativos.
 
-La integración del catálogo visual fortalece la experiencia de usuario y evidencia el uso correcto de recursos estáticos. Cada producto del inventario queda conectado a una imagen mediante `imagePath`, manteniendo una separación clara entre datos y archivos físicos.
+La persistencia relacional con MySQL, Spring Data JPA e Hibernate permite almacenar categorías, productos, inventario, clientes, órdenes y detalles de órdenes. El uso de Docker Compose facilita una base local reproducible, mientras que `DataInitializer` carga los datos iniciales necesarios para ejecutar el sistema.
 
-El proyecto también deja una base preparada para crecimiento: seguridad avanzada, pruebas automatizadas, reportes administrativos e integración con servicios externos.
+La integración del catálogo visual fortalece la experiencia de usuario y evidencia el uso correcto de recursos estáticos. Cada producto del inventario queda conectado a una imagen mediante `imagePath`, manteniendo una separación clara entre datos persistidos y archivos físicos versionados.
 
-Esta implementación consolida los conceptos prácticos de Programación Web II: controladores, servicios, repositorios, vistas dinámicas, sesiones, validaciones y control de versiones.
+El trabajo colaborativo se respalda con Git, que versiona el código fuente, la documentación, Docker Compose, las entidades JPA, los adaptadores de repositorio, las imágenes del catálogo y la configuración necesaria para reproducir el entorno. Esta implementación consolida los conceptos prácticos de Programación Web II: controladores, servicios, repositorios, vistas dinámicas, sesiones, validaciones, persistencia y control de versiones.
 
 ### Resumen ejecutivo de funcionalidades
 
@@ -542,9 +519,35 @@ Esta implementación consolida los conceptos prácticos de Programación Web II:
 
 ---
 
-## 21. Anexos
+## 19. Anexos
 
-### Anexo A: Documentos de apoyo
+### Anexo A: Control del documento
+
+| Elemento | Valor |
+| --- | --- |
+| Archivo principal | `docs/informe-final.md` |
+| Evidencias visuales | `docs/evidencias/` |
+| Documentos de apoyo | `docs/ProyectoProgramado.md`, `docs/inventario-productos-imagenes.md`, `docs/catalogo-visual-productos.md`, `docs/fuente-imagenes-productos.md`, `docs/catalogo-imagenes-productos.md` |
+| Estado | Versión final para entrega |
+
+### Anexo B: Ficha técnica del proyecto
+
+| Elemento | Valor |
+| --- | --- |
+| Proyecto | NextShop |
+| Tipo de sistema | Tienda en línea |
+| Framework | Spring Boot |
+| Motor de plantillas | Thymeleaf |
+| Arquitectura | MVC por capas |
+| Lenguaje principal | Java |
+| Persistencia actual | MySQL con Spring Data JPA |
+| Persistencia | Repositorios JPA sobre interfaces de acceso a datos |
+| Recursos estáticos | CSS e imágenes desde `src/main/resources/static/` |
+| Control de versiones | Git |
+| Build | Maven |
+| Estado | Funcional |
+
+### Anexo C: Documentos de apoyo
 
 - `docs/ProyectoProgramado.md`
 - `docs/inventario-productos-imagenes.md`
@@ -552,7 +555,7 @@ Esta implementación consolida los conceptos prácticos de Programación Web II:
 - `docs/fuente-imagenes-productos.md`
 - `docs/catalogo-imagenes-productos.md`
 
-### Anexo B: Evidencias visuales
+### Anexo D: Evidencias visuales
 
 - `docs/evidencias/README.md`
 - `docs/evidencias/01-home-productos-imagenes.png`
@@ -565,7 +568,7 @@ Esta implementación consolida los conceptos prácticos de Programación Web II:
 - `docs/evidencias/09-git-status.png`
 - `docs/evidencias/10-git-log.png`
 
-### Anexo C: Datos del módulo de imágenes
+### Anexo E: Datos del módulo de imágenes
 
 | Indicador | Valor |
 | --- | --- |
