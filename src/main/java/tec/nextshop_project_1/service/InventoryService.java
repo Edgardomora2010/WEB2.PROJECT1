@@ -165,6 +165,34 @@ public class InventoryService {
     }
 
     /**
+     * Actualiza la información de inventario de un producto.
+     * @param productId
+     * @param quantity
+     * @param minimumStock
+     * @return true si la actualización fue exitosa.
+     */
+    public boolean updateInventory(
+            Long productId,
+            int quantity,
+            int minimumStock) {
+
+        if (productId == null || productId <= 0) {
+            return false;
+        }
+
+        if (quantity < 0 || minimumStock < 0) {
+            return false;
+        }
+
+        return inventoryRepository.updateInventory(
+                productId,
+                quantity,
+                minimumStock
+        );
+
+    }
+
+    /**
      * Rebaja del inventario las cantidades correspondientes a los productos
      * vendidos en una orden.
      * @param order Orden confirmada.

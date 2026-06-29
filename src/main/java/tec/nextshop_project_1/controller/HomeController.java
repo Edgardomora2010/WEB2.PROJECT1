@@ -137,6 +137,15 @@ public class HomeController  {
 
     }
 
+    /**
+     * Página acerca de la tienda virtual :)
+     * @return
+     */
+    @GetMapping("/about")
+    public String showAbout(){
+        return "pages/About";
+    }
+
     /** Procesa la búsqueda de productos realizada por el usuario.
      * @param categoryName
      * @param productName

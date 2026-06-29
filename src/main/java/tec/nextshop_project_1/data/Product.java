@@ -35,7 +35,7 @@ public class Product {
     private Category category;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "product_properties", joinColumns = @JoinColumn(name = "product_id"))
-    private List<Property> properties;
+    private List<Property> properties = new ArrayList<>();
     private boolean featured;
     private double discountPercentage = 0;
     private LocalDateTime createdAt;
@@ -70,4 +70,5 @@ public class Product {
         this.createdAt = createdAt;
         this.active = active;
     }
+
 }
