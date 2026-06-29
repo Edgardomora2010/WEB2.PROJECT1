@@ -1,0 +1,12 @@
+<div th:fragment="site_success">
+
+    <div class="success_container"
+         th:if="${successMessage != null}">
+
+        <span th:text="${successMessage}">
+            Mensaje de éxito
+        </span>
+
+    </div>
+
+</div>

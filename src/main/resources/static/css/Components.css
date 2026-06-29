@@ -426,6 +426,21 @@ details[open] summary::before{
     text-align: center;
 }
 
+/* Mensajes de éxito */
+.success_container{
+    margin: 12px 0;
+    padding: 10px 14px;
+    border: 2px solid #173a03;
+    border-radius: 6px;
+    background-color: #aef3b4;
+    color: #032e03;
+    font-weight: bold;
+    font-size:1.5rem;
+    text-align: center;
+}
+
+
+
 /* ********************************************************************************************************************/
 /* Botón de edición */
 /* ********************************************************************************************************************/

@@ -38,9 +38,14 @@
     <!-- Contenedor principal para contenido específico de página Home -->
     <main class="products_container">
 
-        <!-- Sección para errores -->
+        <!-- Sección para mensajes de error/alerta -->
         <div class="error_container" th:if="${errorMessage != null}"
              th:text="${errorMessage}">
+        </div>
+
+        <!-- Sección para mensajes de éxito -->
+        <div class="success_container" th:if="${successMessage != null}"
+             th:text="${successMessage}">
         </div>
 
         <!-- Info -->
@@ -244,7 +249,21 @@
     <div th:replace="~{fragments/Footer :: footer_page}"></div>
 
 <!-- Scripts JS: Para manipular visualización de panel de opciones de página -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module" th:src="@{/js/sidePanel.js}"></script>
+
+    <script th:if="${successMessage}">
+        window.onload = function () {
+
+            Swal.fire({
+                icon: 'success',
+                title: '¡Compra realizada!',
+                text: 'Su pedido fue registrado correctamente.',
+                confirmButtonText: 'Aceptar'
+            });
+
+        };
+    </script>
 
 </body>
 

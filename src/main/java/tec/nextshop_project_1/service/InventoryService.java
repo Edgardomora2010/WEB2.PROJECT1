@@ -3,12 +3,10 @@ package tec.nextshop_project_1.service;
 
 // IMPORTACIÓN DE LIBRERÍAS
 import org.springframework.stereotype.Service;
-import tec.nextshop_project_1.data.Inventory;
+import tec.nextshop_project_1.data.*;
 import tec.nextshop_project_1.repository.interfaces.IInventoryRepository;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 
 /**
  * Clase perteneciente a la capa de servicio, encargada de la lógica de negocio
@@ -85,6 +83,128 @@ public class InventoryService {
         }
 
         return productStock;
+
+    }
+
+    /**
+     *
+     * @param cart Carrito de productos de cliente.
+     * @return Una lista de productos en el carrito, cuya stock en inventario es
+     * inferior a lo pretende rebajar el carrito del inventario.
+     */
+    public List<Inventory> validateInventoryDecrease(Cart cart){
+
+        List<Inventory> rejectedProducts = new ArrayList<>();
+
+        // Recorre los productos del carrito.
+        for (CartItem cartItem : cart.getItems()) {
+
+            Optional<Inventory> optInventory =
+                    findByProductId(
+                            cartItem.getProduct().getId()
+                    );
+
+            if (optInventory.isPresent()) {
+
+                Inventory inventory =
+                        optInventory.get();
+
+                if (inventory.getQuantity() < cartItem.getQuantity()) {
+
+                    rejectedProducts.add(
+                            inventory
+                    );
+
+                }
+
+            }
+
+        }
+
+        return rejectedProducts;
+
+    }
+
+    /**
+     * Método sobrecargado que devuelve, Una lista de productos en el carrito, cuyo
+     * stock en inventario es inferior a lo pretende rebajar el carrito del inventario.
+     * @param preOrder Recibe una objeto Order en vez de Cart
+     * @return
+     */
+    public List<Inventory> validateInventoryDecrease(Order preOrder){
+
+        List<Inventory> rejectedProducts = new ArrayList<>();
+
+        // Recorre los productos del carrito.
+        for (OrderItem orderItem : preOrder.getOrderItems()) {
+
+            Optional<Inventory> optInventory =
+                    findByProductId(
+                            orderItem.getProductId()
+                    );
+
+            if (optInventory.isPresent()) {
+
+                Inventory inventory =
+                        optInventory.get();
+
+                if (inventory.getQuantity() < orderItem.getQuantity()) {
+
+                    rejectedProducts.add(
+                            inventory
+                    );
+
+                }
+
+            }
+
+        }
+
+        return rejectedProducts;
+
+    }
+
+    /**
+     * Rebaja del inventario las cantidades correspondientes a los productos
+     * vendidos en una orden.
+     * @param order Orden confirmada.
+     * @return true si fue posible rebajar todo el inventario.
+     */
+    public boolean decreaseInventory(Order order) {
+
+        // Recorre los productos vendidos
+        for (OrderItem orderItem : order.getOrderItems()) {
+
+            Optional<Inventory> optInventory =
+                    findByProductId(
+                            orderItem.getProductId()
+                    );
+
+            // Producto inexistente
+            if(optInventory.isEmpty()) {
+                return false;
+            }
+
+            Inventory inventory =
+                    optInventory.get();
+
+            if(inventory.getQuantity()
+                    < orderItem.getQuantity()) {
+
+                return false;
+
+            }
+
+            // se rebajan existencias
+            inventory.setQuantity(inventory.getQuantity()
+                    - orderItem.getQuantity());
+
+            // Guardar cambios en el repositorio
+            //inventoryRepository.saveInventory(inventory);
+
+        }
+
+        return true;
 
     }
 

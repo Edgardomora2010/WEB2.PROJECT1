@@ -523,4 +523,17 @@ public class ShoppingCartService {
 
         }
 
+    /**
+     * Elimina completamente el carrito de compras
+     * asociado a un cliente.
+     * @param clientId Identificador del cliente.
+     */
+    public void deleteCart(Long clientId) {
+
+        shoppingRepository.deleteCart(
+                clientId
+        );
+
+    }
+
 }

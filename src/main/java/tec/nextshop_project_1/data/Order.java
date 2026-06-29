@@ -40,16 +40,31 @@ public class Order {
 
     // OBJETOS/VARIABLES
     private Long id;
-    private Client client;
-    private List<OrderItem> items;
+    private String orderNumber;
     private LocalDateTime orderDate;
-    private OrderStatus status;
+    private LocalDateTime paymentDate;
+    private LocalDateTime deliveredDate;
+    private OrderStatus status = OrderStatus.PENDING;
     private PaymentMethod paymentMethod;
+    // Datos del cliente
+    private Long clientId;
+    private String clientName;
+    private String clientEmail;
+    private String clientPhone;
     private String shippingAddress;
+    // Productos
+    private List<OrderItem> orderItems;
+    // Totales
     private double subTotal;
     private double discountAmount;
     private double taxAmount;
     private double shippingAmount;
     private double totalAmount;
+    // Simulación tipo de pago
+    // Observaciones: Esto debería modelarse en otra entidad sin embargo por
+    // motivos de tiempo y que es un proyecto académico se aprovecha la oportunidad
+    // de modelarlo en esta entidad.
+    private String cardType;
+    private String cardNumber;
 
 }
