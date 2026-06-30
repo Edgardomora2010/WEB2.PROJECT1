@@ -2,10 +2,10 @@
 
 **Universidad:** Instituto Tecnológico de Costa Rica  
 **Carrera:** Ingeniería del Software  
-**Nombre del curso:** Programación Web II  
+**Curso:** Web 2  
 **Profesor:** Carlos Arias Rodriguez  
 **Nombre del Proyecto Programado:** NextShop  
-**Integrantes:** Edgardo Mora, Oscar Marín  
+**Integrantes:** Oscar Marín y Edgardo Mora  
 **Fecha:** Junio de 2026  
 
 ---
@@ -44,9 +44,9 @@
 
 ## 1. Resumen ejecutivo
 
-NextShop es una aplicación web desarrollada con Spring Boot y Thymeleaf para gestionar una tienda en línea. El sistema permite consultar productos, ver detalles, iniciar sesión, agregar productos al carrito y administrar información del catálogo desde módulos internos.
+NextShop es una aplicación web desarrollada con Spring Boot y Thymeleaf para gestionar una tienda en línea. El sistema permite consultar productos, ver detalles, iniciar sesión, agregar productos al carrito, confirmar compras, consultar órdenes y administrar información del catálogo desde módulos internos.
 
-La versión documentada trabaja con persistencia relacional en MySQL mediante Spring Data JPA. Esta implementación conserva la separación entre controladores, servicios, repositorios y vistas, y permite que productos, categorías, usuarios e inventario se administren desde base de datos.
+La versión documentada trabaja con persistencia relacional en MySQL mediante Spring Data JPA. Esta implementación conserva la separación entre controladores, servicios, repositorios y vistas, y permite que productos, categorías, usuarios, inventario, órdenes y detalles de órdenes se administren desde base de datos.
 
 Uno de los avances principales del proyecto fue la integración del catálogo visual de productos. Se auditaron 99 registros, se definieron 87 rutas PNG únicas y se conectó cada producto con su imagen mediante `imagePath`.
 
@@ -91,7 +91,7 @@ Esta solución aplica separación de responsabilidades, renderizado dinámico y 
 
 ### Objetivo general
 
-Desarrollar una aplicación web de comercio electrónico llamada NextShop que permita gestionar y visualizar productos, usuarios, carrito de compras y recursos estáticos aplicando los conceptos de Programación Web II.
+Desarrollar una aplicación web de comercio electrónico llamada NextShop que permita gestionar y visualizar productos, usuarios, carrito de compras y recursos estáticos aplicando los conceptos de Web 2.
 
 ### Objetivos específicos
 
@@ -126,6 +126,8 @@ La versión actual de NextShop incluye funcionalidades públicas, autenticadas y
 - Acceso al carrito de compras.
 - Agregado de productos al carrito.
 - Visualización de productos agregados.
+- Confirmación de compra con generación de orden.
+- Consulta de detalle de órdenes del cliente.
 - Consulta de cuenta de usuario.
 
 **Funcionalidades administrativas**
@@ -134,7 +136,9 @@ La versión actual de NextShop incluye funcionalidades públicas, autenticadas y
 - Listado y búsqueda de productos.
 - Creación y edición de productos.
 - Activación y desactivación de productos.
-- Gestión básica de clientes.
+- Gestión de clientes.
+- Gestión de categorías.
+- Gestión de inventario y stock mínimo.
 
 Esta sección delimita el alcance entregado y resume las funcionalidades implementadas en la versión final del Proyecto Programado.
 
@@ -174,11 +178,11 @@ La arquitectura del proyecto está organizada por capas:
 
 | Capa | Responsabilidad | Ejemplos |
 | --- | --- | --- |
-| Controller | Atiende solicitudes HTTP y selecciona vistas o redirecciones | `HomeController`, `ProductDetailsController`, `ShoppingCartController`, `AdminProductsController` |
-| Service | Aplica reglas de negocio y validaciones | `ProductService`, `ClientService`, `ShoppingCartService`, `InventoryService` |
-| Repository | Accede a datos mediante interfaces y adaptadores JPA | `JpaProductRepositoryAdapter`, `JpaClientRepositoryAdapter`, `JpaCategoryRepositoryAdapter`, `JpaInventoryRepositoryAdapter` |
-| Data / Model | Representa entidades del dominio | `Product`, `Client`, `Category`, `Inventory`, `Cart` |
-| Templates | Renderiza HTML con Thymeleaf | `home.html`, `ProductDetails.html`, `ShoppingCart.html` |
+| Controller | Atiende solicitudes HTTP y selecciona vistas o redirecciones | `HomeController`, `ProductDetailsController`, `ShoppingCartController`, `OrdersController`, `AdminInventoryController`, `AdminProductsController` |
+| Service | Aplica reglas de negocio y validaciones | `ProductService`, `ClientService`, `ShoppingCartService`, `InventoryService`, `OrderService` |
+| Repository | Accede a datos mediante interfaces y adaptadores JPA | `JpaProductRepositoryAdapter`, `JpaClientRepositoryAdapter`, `JpaCategoryRepositoryAdapter`, `JpaInventoryRepositoryAdapter`, `JpaOrderRepositoryAdapter` |
+| Data / Model | Representa entidades del dominio | `Product`, `Client`, `Category`, `Inventory`, `Order`, `OrderItem`, `Cart` |
+| Templates | Renderiza HTML con Thymeleaf | `home.html`, `ProductDetails.html`, `ShoppingCart.html`, `PayOrder.html`, `OrderDetails.html`, `AdminInventory.html` |
 | Static | Expone CSS, imágenes y recursos públicos | `images/products/`, `css/` |
 
 Esta organización permite ubicar cada cambio en una capa específica. Los servicios trabajan contra interfaces de repositorio y no dependen directamente de la tecnología de almacenamiento. La implementación principal utiliza adaptadores JPA para acceder a MySQL, mientras que los repositorios en memoria quedan disponibles únicamente bajo el perfil `in-memory`.
@@ -301,8 +305,11 @@ Vistas relacionadas:
 - `src/main/resources/templates/pages/home.html`
 - `src/main/resources/templates/pages/ProductDetails.html`
 - `src/main/resources/templates/pages/ShoppingCart.html`
+- `src/main/resources/templates/pages/PayOrder.html`
+- `src/main/resources/templates/pages/OrderDetails.html`
 - `src/main/resources/templates/fragments/ProductData.html`
 - `src/main/resources/templates/managment/AdminProducts.html`
+- `src/main/resources/templates/managment/AdminInventory.html`
 
 Esta implementación corresponde al renderizado de vistas del lado servidor visto en el curso.
 
@@ -343,8 +350,10 @@ La funcionalidad se implementa principalmente con:
 - `ShoppingCartRepository`
 - `InventoryService`
 - `ProductService`
+- `OrdersController`
+- `OrderService`
 
-El carrito muestra producto, cantidad, stock, subtotal y resumen del pedido. También utiliza `item.product.imagePath` para presentar la imagen del producto agregado.
+El carrito muestra producto, cantidad, stock, subtotal y resumen del pedido. También utiliza `item.product.imagePath` para presentar la imagen del producto agregado. Durante la confirmación de compra, el sistema valida inventario, registra la orden, descuenta cantidades disponibles y permite consultar el detalle de la orden generada.
 
 Esta implementación corresponde al uso de formularios, solicitudes POST, redirecciones y sesión HTTP.
 
@@ -363,9 +372,10 @@ El módulo administrativo permite consultar y mantener información del sistema.
 - `/AdminProducts`
 - `/AdminClients`
 - `/AdminCategories`
+- `/AdminInventory`
 - `/AdminDashboard`
 
-Desde estas pantallas se gestionan productos, clientes y categorías según las opciones implementadas. Las operaciones incluyen búsqueda, edición, activación y desactivación.
+Desde estas pantallas se gestionan productos, clientes, categorías e inventario según las opciones implementadas. Las operaciones incluyen búsqueda, edición, activación, desactivación y actualización de cantidades disponibles y stock mínimo.
 
 El acceso administrativo depende del perfil del usuario. Por esta razón, el informe documenta el módulo a partir de su implementación, sus rutas y las evidencias de control de versiones, sin alterar seguridad ni vistas para generar una captura artificial.
 
@@ -388,6 +398,9 @@ NextShop aplica reglas de negocio desde controladores y servicios. Las principal
 - Permitir activar o desactivar productos y usuarios.
 - Validar existencia del producto antes de agregarlo al carrito.
 - Validar stock disponible antes de agregar al carrito.
+- Validar cantidades antes de actualizar inventario.
+- Descontar inventario al confirmar una orden.
+- Registrar órdenes y sus detalles asociados al cliente.
 - Asociar el carrito al cliente autenticado.
 
 Estas reglas reducen errores de uso y mantienen coherencia entre interfaz, datos y lógica.
@@ -408,6 +421,9 @@ Las pruebas realizadas verifican que la aplicación compila, sirve recursos est�
 | Detalle `/products/15` | Correcto | `02-detalle-producto-imagen.png` |
 | Imagen estática | HTTP 200 | `03-ruta-estatica-imagen.png` |
 | Carrito con producto | Correcto | `04-carrito-imagen-producto.png` |
+| Confirmación de orden | Correcto | Validado mediante flujo de compra |
+| Detalle de orden | Correcto | Vista `OrderDetails.html` |
+| Administración de inventario | Correcto | Vista `AdminInventory.html` |
 | Login contra MySQL | Correcto | Validado con usuarios persistidos |
 | Docker Compose operativo | Correcto | MySQL disponible en puerto local `3307` |
 
@@ -423,6 +439,8 @@ Las pruebas realizadas verifican que la aplicación compila, sirve recursos est�
 | Productos persistidos en MySQL | 99 |
 | Inventarios persistidos en MySQL | 99 |
 | Clientes iniciales persistidos en MySQL | 3 |
+| Órdenes persistidas en MySQL | Correcto |
+| Descuento de inventario por compra | Correcto |
 | Catálogo visual mediante `imagePath` | Correcto |
 
 ### 16.3 Compilación
@@ -453,6 +471,8 @@ BUILD SUCCESS
 | MySQL y Docker Compose | `docker-compose.yml` | Base local reproducible para persistencia |
 | Git status | `docs/evidencias/09-git-status.png` | Estado del repositorio |
 | Git log | `docs/evidencias/10-git-log.png` | Historial reciente de commits |
+| Diagrama de componentes | `docs/evidencias/11-diagrama-componentes-nextshop.png` | Organización por capas y componentes |
+| Flujo Request-Response | `docs/evidencias/12-diagrama 2.png` | Recorrido de una solicitud en Spring Boot |
 
 Esta sección evidencia validación funcional, técnica y de control de versiones.
 
@@ -463,12 +483,16 @@ Esta sección evidencia validación funcional, técnica y de control de versione
 El proyecto utiliza Git para registrar cambios, mantener trazabilidad y facilitar el trabajo colaborativo entre integrantes. La rama documentada es:
 
 ```text
-integracion-edgardo-imagenes
+integracion-edgardo-nueva-version
 ```
 
 Commits relevantes:
 
 ```text
+a3147d5 Integrar ultima actualizacion de Edgardo
+813ec1b Agregar diagramas finales al informe
+4b0a5eb Correcciones de bugs, estructura de pedidos, validaciones, inventario e historial de órdenes
+3a8ce9d Actualizar documentacion final del proyecto
 690c794 Agregar compose local para MySQL
 45e2dd1 Agregar persistencia JPA con MySQL
 34839c2 Conectar imagenes de productos y corregir template home
@@ -508,13 +532,13 @@ La captura muestra los commits recientes. Evidencia la trazabilidad del avance d
 
 ## 18. Conclusiones
 
-NextShop demuestra una aplicación web funcional construida con Spring Boot, Thymeleaf y una arquitectura MVC por capas. El proyecto integra navegación pública, detalle de productos, sesiones de usuario, carrito de compras y módulos administrativos.
+NextShop demuestra una aplicación web funcional construida con Spring Boot, Thymeleaf y una arquitectura MVC por capas. El proyecto integra navegación pública, detalle de productos, sesiones de usuario, carrito de compras, confirmación de órdenes, consulta de detalle de órdenes y módulos administrativos.
 
 La persistencia relacional con MySQL, Spring Data JPA e Hibernate permite almacenar categorías, productos, inventario, clientes, órdenes y detalles de órdenes. El uso de Docker Compose facilita una base local reproducible, mientras que `DataInitializer` carga los datos iniciales necesarios para ejecutar el sistema.
 
 La integración del catálogo visual fortalece la experiencia de usuario y evidencia el uso correcto de recursos estáticos. Cada producto del inventario queda conectado a una imagen mediante `imagePath`, manteniendo una separación clara entre datos persistidos y archivos físicos versionados.
 
-El trabajo colaborativo se respalda con Git, que versiona el código fuente, la documentación, Docker Compose, las entidades JPA, los adaptadores de repositorio, las imágenes del catálogo y la configuración necesaria para reproducir el entorno. Esta implementación consolida los conceptos prácticos de Programación Web II: controladores, servicios, repositorios, vistas dinámicas, sesiones, validaciones, persistencia y control de versiones.
+El trabajo colaborativo se respalda con Git, que versiona el código fuente, la documentación, Docker Compose, las entidades JPA, los adaptadores de repositorio, las imágenes del catálogo y la configuración necesaria para reproducir el entorno. Esta implementación consolida los conceptos prácticos de Web 2: controladores, servicios, repositorios, vistas dinámicas, sesiones, validaciones, persistencia y control de versiones.
 
 ### Resumen ejecutivo de funcionalidades
 
@@ -523,7 +547,12 @@ El trabajo colaborativo se respalda con Git, que versiona el código fuente, la 
 | Login | Implementado |
 | Catálogo | Implementado |
 | CRUD Productos | Implementado |
+| CRUD Categorías | Implementado |
+| Gestión de Clientes | Implementado |
+| Gestión de Inventario | Implementado |
 | Carrito | Implementado |
+| Confirmación de Orden | Implementado |
+| Detalle de Orden | Implementado |
 | Integración de imágenes | Implementado |
 | Recursos estáticos | Implementado |
 | Validaciones | Implementado |
@@ -538,6 +567,7 @@ El trabajo colaborativo se respalda con Git, que versiona el código fuente, la 
 | Elemento | Valor |
 | --- | --- |
 | Archivo principal | `docs/informe-final.md` |
+| Archivo PDF | `docs/informe-final.pdf` |
 | Evidencias visuales | `docs/evidencias/` |
 | Documentos de apoyo | `docs/ProyectoProgramado.md`, `docs/inventario-productos-imagenes.md`, `docs/catalogo-visual-productos.md`, `docs/fuente-imagenes-productos.md`, `docs/catalogo-imagenes-productos.md` |
 | Estado | Versión final para entrega |
@@ -547,6 +577,9 @@ El trabajo colaborativo se respalda con Git, que versiona el código fuente, la 
 | Elemento | Valor |
 | --- | --- |
 | Proyecto | NextShop |
+| Curso | Web 2 |
+| Profesor | Carlos Arias Rodriguez |
+| Integrantes | Oscar Marín y Edgardo Mora |
 | Tipo de sistema | Tienda en línea |
 | Framework | Spring Boot |
 | Motor de plantillas | Thymeleaf |
@@ -554,6 +587,9 @@ El trabajo colaborativo se respalda con Git, que versiona el código fuente, la 
 | Lenguaje principal | Java |
 | Persistencia actual | MySQL con Spring Data JPA |
 | Persistencia | Repositorios JPA sobre interfaces de acceso a datos |
+| Base de datos local | MySQL `nextshopdb` mediante Docker Compose |
+| Configuración local | `src/main/resources/application.properties` |
+| Ejecución local | `docker compose up -d` y `mvnw.cmd spring-boot:run` |
 | Recursos estáticos | CSS e imágenes desde `src/main/resources/static/` |
 | Control de versiones | Git |
 | Build | Maven |
@@ -579,6 +615,8 @@ El trabajo colaborativo se respalda con Git, que versiona el código fuente, la 
 - `docs/evidencias/08-build-success.png`
 - `docs/evidencias/09-git-status.png`
 - `docs/evidencias/10-git-log.png`
+- `docs/evidencias/11-diagrama-componentes-nextshop.png`
+- `docs/evidencias/12-diagrama 2.png`
 
 ### Anexo E: Datos del módulo de imágenes
 
