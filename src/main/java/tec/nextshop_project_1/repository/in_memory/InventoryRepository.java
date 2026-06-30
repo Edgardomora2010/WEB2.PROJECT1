@@ -212,6 +212,34 @@ public class InventoryRepository implements IInventoryRepository {
     }
 
     /**
+     * Actualiza la cantidad disponible y el stock mínimo de un producto
+     * en inventario.
+     * @param productId id del producto a modificar.
+     * @param quantity nueva cantidad (mayor o menor al actual)
+     * @param minimumStock nuevo stock mínimo (mayor o menor al actual)
+     * @return
+     */
+    @Override
+    public boolean updateInventory(
+            Long productId,
+            int quantity,
+            int minimumStock) {
+
+        Optional<Inventory> inventory =
+                findByProductId(productId);
+
+        if (inventory.isEmpty()) {
+            return false;
+        }
+
+        inventory.get().setQuantity(quantity);
+        inventory.get().setMinimumStock(minimumStock);
+
+        return true;
+
+    }
+
+    /**
      * @return Lista completa de registros de inventario.
      */
     @Override

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <!-- Codificación -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <meta name="description"
+          content="Detalle del pedido del cliente">
+
+    <meta name="keywords"
+          content="NextShop, Pedido, Orden, Cliente">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>Detalle del Pedido</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}"/>
+
+</head>
+
+<body>
+
+<header>
+
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="pay_order_container">
+
+        <section class="pay_order_section">
+
+            <h1>
+                Detalle del Pedido
+            </h1>
+
+            <p>
+                A continuación se muestra el detalle completo del pedido
+                realizado por el cliente.
+            </p>
+
+            <hr>
+
+
+            <!-- Información General del Pedido -->
+
+            <div class="order_information">
+
+                <h2>
+                    Información del Pedido
+                </h2>
+
+                <p>
+
+                    <strong>Número de Pedido:</strong>
+
+                    <span th:text="${order.orderNumber}">
+                        PNX-0000000001
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Fecha del Pedido:</strong>
+
+                    <span th:text="${order.orderDate}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Estado:</strong>
+
+                    <span th:text="${order.status}">
+                    </span>
+
+                </p>
+
+            </div>
+
+            <hr>
+
+
+            <!-- Información del Cliente -->
+
+            <div class="client_information">
+
+                <h2>
+                    Información del Cliente
+                </h2>
+
+                <p>
+
+                    <strong>Nombre:</strong>
+
+                    <span th:text="${order.clientName}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Correo:</strong>
+
+                    <span th:text="${order.clientEmail}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Teléfono:</strong>
+
+                    <span th:text="${order.clientPhone}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Dirección de entrega:</strong>
+
+                    <span th:text="${order.shippingAddress}">
+                    </span>
+
+                </p>
+
+            </div>
+
+            <hr>
+
+
+            <!-- Información de Pago -->
+
+            <div class="payment_information">
+
+                <h2>
+                    Información del Pago
+                </h2>
+
+                <p>
+
+                    <strong>Método de pago:</strong>
+
+                    <span th:text="${order.paymentMethod}">
+                        CREDIT_CARD
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Tipo de tarjeta:</strong>
+
+                    <span th:text="${order.cardType}">
+                        VISA
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Número de tarjeta:</strong>
+
+                    <span th:text="${order.cardNumber}">
+
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Fecha del pago:</strong>
+
+                    <span th:text="${order.paymentDate}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Entrega estimada:</strong>
+
+                    <span th:text="${order.deliveredDate}">
+                    </span>
+
+                </p>
+
+            </div>
+
+            <hr>
+
+            <!-- Productos Comprados -->
+
+            <h2>
+                Productos del Pedido
+            </h2>
+
+            <table class="order_table">
+
+                <thead>
+
+                <tr>
+
+                    <th>SKU</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th>Descuento</th>
+                    <th>Impuesto</th>
+                    <th>Total</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="item : ${order.orderItems}">
+
+                    <td th:text="${item.sku}">
+                        SKU0001
+                    </td>
+
+                    <td th:text="${item.productName}">
+                        Producto
+                    </td>
+
+                    <td th:text="${item.quantity}">
+                        1
+                    </td>
+
+                    <td>
+
+                        ₡<span
+                            th:text="${#numbers.formatDecimal(item.unitPrice,1,2)}">
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ₡<span
+                            th:text="${#numbers.formatDecimal(item.subTotal,1,2)}">
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ₡<span
+                            th:text="${#numbers.formatDecimal(item.discountAmount,1,2)}">
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ₡<span
+                            th:text="${#numbers.formatDecimal(item.taxAmount,1,2)}">
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <strong>
+
+                            ₡<span
+                                th:text="${#numbers.formatDecimal(item.totalAmount,1,2)}">
+                            </span>
+
+                        </strong>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+            <hr>
+
+
+            <!-- Resumen del Pedido -->
+
+            <div class="order_resume">
+
+                <h2>
+                    Resumen de la compra
+                </h2>
+
+                <p>
+
+                    <strong>Subtotal:</strong>
+
+                    ₡<span
+                        th:text="${#numbers.formatDecimal(order.subTotal,1,2)}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Descuento:</strong>
+
+                    ₡<span
+                        th:text="${#numbers.formatDecimal(order.discountAmount,1,2)}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Impuestos:</strong>
+
+                    ₡<span
+                        th:text="${#numbers.formatDecimal(order.taxAmount,1,2)}">
+                    </span>
+
+                </p>
+
+                <p>
+
+                    <strong>Envío:</strong>
+
+                    ₡<span
+                        th:text="${#numbers.formatDecimal(order.shippingAmount,1,2)}">
+                    </span>
+
+                </p>
+
+                <hr>
+
+                <h2>
+
+                    Total cancelado
+
+                </h2>
+
+                <h1>
+
+                    ₡<span
+                        th:text="${#numbers.formatDecimal(order.totalAmount,1,2)}">
+                    </span>
+
+                </h1>
+
+            </div>
+
+            <hr>
+
+
+            <!-- Acciones -->
+
+            <div class="pay_order_actions">
+
+                <a th:href="@{/MyAccount}"
+                   class="primary_button">
+
+                    Volver a Mi Cuenta
+
+                </a>
+
+                <button type="button"
+                        class="primary_button"
+                        onclick="window.print();">
+
+                    Imprimir Comprobante
+
+                </button>
+
+                <button type="button"
+                        class="primary_button"
+                        disabled
+                        title="Funcionalidad disponible en una próxima versión">
+
+                    Enviar por Correo
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer_container">
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+</body>
+
+</html>

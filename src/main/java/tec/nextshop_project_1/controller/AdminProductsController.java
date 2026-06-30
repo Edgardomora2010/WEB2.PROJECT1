@@ -247,6 +247,10 @@ public class AdminProductsController {
         );
 
         model.addAttribute(
+                "product",
+                new Product());
+
+        model.addAttribute(
                 "isNew",
                 true
         );

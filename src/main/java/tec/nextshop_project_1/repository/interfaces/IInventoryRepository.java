@@ -27,4 +27,18 @@ public interface IInventoryRepository {
      */
     boolean addInventoryItem(Inventory inventory);
 
+    /**
+     * Actualiza la cantidad disponible y el stock mínimo de un producto
+     * en inventario.
+     * @param productId id del producto a modificar.
+     * @param quantity nueva cantidad (mayor o menor al actual)
+     * @param minimumStock nuevo stock mínimo (mayor o menor al actual)
+     * @return true si se actualizó correctamente.
+     */
+    boolean updateInventory(
+            Long productId,
+            int quantity,
+            int minimumStock
+    );
+
 }

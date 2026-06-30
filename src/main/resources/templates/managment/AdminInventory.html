@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+          content="Mantenimiento administrativo de inventario">
+
+    <meta name="author"
+          content="Edgardo Mora M, Oscar Marín">
+
+    <title>
+        Mantenimiento de Inventario
+    </title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/Components.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Sites.css}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div th:replace="~{fragments/HeaderC :: header_page_c}">
+    </div>
+
+</header>
+
+<main class="page_content">
+
+    <div class="adminclients_container">
+
+        <!-- TÍTULO -->
+
+        <section>
+
+            <h1>
+                Mantenimiento de Inventario
+            </h1>
+
+        </section>
+
+        <!-- BÚSQUEDA -->
+
+        <section>
+
+            <h2>
+                Búsqueda de Productos
+            </h2>
+
+            <form th:action="@{/AdminInventory/Search}"
+                  method="post"
+                  class="admin_search_form">
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Tipo de búsqueda
+                    </label>
+
+                    <select name="searchType"
+                            class="admin_form_select">
+
+                        <option value="ID">
+                            ID
+                        </option>
+
+                        <option value="SKU">
+                            SKU
+                        </option>
+
+                        <option value="NAME">
+                            Nombre
+                        </option>
+
+                        <option value="CATEGORY">
+                            Categoría
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Valor
+                    </label>
+
+                    <input type="text"
+                           name="searchValue"
+                           class="admin_form_input">
+
+                </div>
+
+                <div class="admin_search_button_container">
+
+                    <button type="submit"
+                            class="primary_button">
+
+                        Buscar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- TABLA -->
+
+        <section>
+
+            <h2>
+                Inventario Registrado
+            </h2>
+
+            <div class="admin_table">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>SKU</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Stock Actual</th>
+                        <th>Stock Mínimo</th>
+                        <th>Modificar</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="inventory : ${inventoryItems}">
+
+                        <td th:text="${inventory.product.id}">
+                            1
+                        </td>
+
+                        <td th:text="${inventory.product.sku}">
+                            SKU001
+                        </td>
+
+                        <td th:text="${inventory.product.name}">
+                            Producto
+                        </td>
+
+                        <td th:text="${inventory.product.category.name}">
+                            Categoría
+                        </td>
+
+                        <td th:text="${inventory.quantity}">
+                            25
+                        </td>
+
+                        <td th:text="${inventory.minimumStock}">
+                            5
+                        </td>
+
+                        <!-- MODIFICAR INVENTARIO -->
+
+                        <td>
+
+                            <form th:action="@{/AdminInventory/Edit}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="productId"
+                                       th:value="${inventory.product.id}">
+
+                                <button type="submit"
+                                        class="edit_button">
+
+                                    Modificar
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- FORMULARIO DE EDICIÓN -->
+
+        <section th:if="${inventory != null}">
+
+            <h2>
+                Actualizar Inventario
+            </h2>
+
+            <form th:action="@{/AdminInventory/Update}"
+                  method="post"
+                  class="admin_search_form">
+
+                <input type="hidden"
+                       name="productId"
+                       th:value="${inventory.product.id}">
+
+                <!-- ID -->
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        ID
+                    </label>
+
+                    <input type="text"
+                           th:value="${inventory.product.id}"
+                           readonly
+                           class="admin_form_input">
+
+                </div>
+
+                <!-- SKU -->
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        SKU
+                    </label>
+
+                    <input type="text"
+                           th:value="${inventory.product.sku}"
+                           readonly
+                           class="admin_form_input">
+
+                </div>
+
+                <!-- PRODUCTO -->
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Producto
+                    </label>
+
+                    <input type="text"
+                           th:value="${inventory.product.name}"
+                           readonly
+                           class="admin_form_input">
+
+                </div>
+
+                <!-- CATEGORÍA -->
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Categoría
+                    </label>
+
+                    <input type="text"
+                           th:value="${inventory.product.category.name}"
+                           readonly
+                           class="admin_form_input">
+
+                </div>
+
+                <!-- STOCK -->
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Stock Actual
+                    </label>
+
+                    <input type="number"
+                           name="quantity"
+                           min="0"
+                           th:value="${inventory.quantity}"
+                           class="admin_form_input"
+                           required>
+
+                </div>
+
+                <!-- STOCK MÍNIMO -->
+
+                <div class="admin_search_row">
+
+                    <label class="admin_form_label">
+                        Stock Mínimo
+                    </label>
+
+                    <input type="number"
+                           name="minimumStock"
+                           min="0"
+                           th:value="${inventory.minimumStock}"
+                           class="admin_form_input"
+                           required>
+
+                </div>
+
+                <div class="admin_search_button_container">
+
+                    <button type="submit"
+                            class="primary_button">
+
+                        Actualizar Inventario
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- Sección para mensajes de error/alerta -->
+        <div class="error_container" th:if="${errorMessage != null}"
+             th:text="${errorMessage}">
+        </div>
+
+        <!-- Sección para mensajes de éxito -->
+        <div class="success_container" th:if="${successMessage != null}"
+             th:text="${successMessage}">
+        </div>
+
+    </div>
+
+</main>
+
+<footer>
+
+    <div th:replace="~{fragments/Footer :: footer_page}">
+    </div>
+
+</footer>
+
+</body>
+
+</html>
+

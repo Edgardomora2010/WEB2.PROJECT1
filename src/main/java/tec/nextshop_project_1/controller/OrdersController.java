@@ -16,6 +16,7 @@ import tec.nextshop_project_1.data.Order;
 import tec.nextshop_project_1.service.OrderService;
 import tec.nextshop_project_1.service.InventoryService;
 import tec.nextshop_project_1.service.ShoppingCartService;
+import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -220,6 +221,65 @@ public class OrdersController {
         }
 
         return "redirect:/?success=order_successfully_created";
+
+    }
+
+    /**
+     * Carga el detalle de una orden realizada por el cliente.
+     * @param orderId identificador de la orden.
+     * @param session sesión del cliente.
+     * @param model modelo para la vista.
+     * @return Plantilla OrderDetail.html.
+     */
+    @GetMapping("/client/order/{orderId}")
+    public String clientOrderDetails(
+            @PathVariable Long orderId,
+            HttpSession session,
+            Model model) {
+
+        Client client =
+                (Client) session.getAttribute("client");
+
+        // Cliente no autenticado.
+        if (client == null) {
+
+            return "redirect:/login";
+
+        }
+
+        // Solo clientes pueden consultar sus pedidos.
+        if (client.getRole().name().equals("ADMIN")) {
+
+            return "redirect:/?alert=admin_user_not_allowed";
+
+        }
+
+        Optional<Order> order =
+                orderService.findByOrderId(
+                        orderId
+                );
+
+        // La orden no existe.
+        if (order.isEmpty()) {
+
+            return "redirect:/MyAccount?alert=order_not_found";
+
+        }
+
+        // La orden pertenece a otro cliente.
+        if (!order.get().getClientId().equals(client.getId())) {
+
+            return "redirect:/MyAccount?alert=order_not_found";
+
+        }
+
+        // Envía la orden a la vista.
+        model.addAttribute(
+                "order",
+                order.get()
+        );
+
+        return "pages/OrderDetails";
 
     }
 

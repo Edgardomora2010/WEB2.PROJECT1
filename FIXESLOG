@@ -64,3 +64,24 @@ en barra secundaria.
  - [x] Terminar de pagar transacción en carrito, y cerrar venta. Recalculando
  rebajas de items. re-evaluar cantidades en stock actuales, en inventario con
  respecto a lo que pretende rebajar inventario.
+ Posiblemente (paso anterior), involucre crear una entidades nuevas Pago,
+  tipo de pago y reembolso (se analizará por pinzas, probablemente solo pago por
+   tema de tiempo y sentido académico, incluso de lo contrario se ingresará un pago
+
+ 26/29-06-2026
+ - [x] Mantenimiento de inventario, para poder hacer nueva  o carga de stock en
+ inventario. Esto se maneja con órdenes de requisición, facturas de compra
+ movimientos de inventario en la vida real, para este proyecto solo se implementa
+  un ajuste de cantidad de productos de inventario
+ - [x] Reporte histórico sencillo y detallado de pedidos de cliente.
+
+ No logrados por falta de tiempo, implementación de cambios, y correcciones de bugs y problemas.
+ - [ ] Calculo de reporte de estadísticas de pedido.
+ - [ ] Limpieza de TODO el CSS (Para mejor visualización, sin embargo es más secundario,
+  y tiene cabida hasta que esté listas funcionalidades de la app) sin embargo si hay
+  algunos objetos de CSS, que está son mas de prioridad arreglar , aunque no se limpie
+   todo el CSS de la aplicación, porque están dando una visualización y comportamiento
+    molesto hasta cierto punto.
+ - [ ] Seguridad por encriptación como la desea el profesor.
+
+

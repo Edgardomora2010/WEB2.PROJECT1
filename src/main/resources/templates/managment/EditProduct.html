@@ -59,6 +59,11 @@
                        name="productId"
                        th:value="${isNew ? '' : product.id}">
 
+                <input type="hidden"
+                       name="imagePath"
+                       th:value="${isNew ?'/images/products/productIcon.png'
+                       : product.imagePath}">
+
                 <!-- ID -->
 
                 <div th:if="${!isNew}"
@@ -417,11 +422,6 @@
 
                 </button>
 
-                <!-- Imagen -->
-                <input type="hidden"
-                       name="imagePath"
-                       th:value="${isNew ? 'image' : product.imagePath}">
-
             </form>
 
             </div>
@@ -432,8 +432,9 @@
                 <div class="editproduct_imagen_container">
 
                     <img class="editproduct_image"
-                         th:src="${product.imagePath}"
-                         th:alt="${product.name}">
+                         th:src="${isNew ? '/images/products/productIcon.png' : product.imagePath}"
+                         th:alt="${isNew ? 'Producto' : product.name}">
+
                 </div>
 
             </aside>
