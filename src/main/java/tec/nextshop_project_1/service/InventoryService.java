@@ -165,6 +165,59 @@ public class InventoryService {
     }
 
     /**
+     * Agrega un nuevo registro de inventario a la aplicación.
+     * Todo producto nuevo inicia con una cantidad disponible de cero
+     * unidades y un stock mínimo igual a cero.
+     * Genera automáticamente el siguiente identificador consecutivo
+     * para mantener consistencia con la estrategia utilizada en los
+     * demás servicios de la aplicación.
+     * @param inventory información del inventario a registrar.
+     * @return true si el registro fue agregado correctamente.
+     */
+    public boolean addInventoryItem(
+            Inventory inventory) {
+
+        // Valida que exista el objeto de inventario y
+        // que tenga un producto asociado.
+        if(inventory == null ||
+                inventory.getProduct() == null) {
+
+            return false;
+
+        }
+
+        // Busca el id de inventario más alto y
+        // genera el siguiente consecutivo.
+        long nextId = 1;
+
+        for(Inventory currentInventory :
+                inventoryRepository.getAllInventoryItems()) {
+
+            if(currentInventory.getId() >= nextId) {
+
+                nextId =
+                        currentInventory.getId() + 1;
+
+            }
+
+        }
+
+        // Crea el nuevo registro de inventario.
+        Inventory newInventory =
+                new Inventory(
+                        nextId,
+                        inventory.getProduct(),
+                        inventory.getQuantity(),
+                        inventory.getMinimumStock()
+                );
+
+        return inventoryRepository.addInventoryItem(
+                newInventory
+        );
+
+    }
+
+    /**
      * Actualiza la información de inventario de un producto.
      * @param productId
      * @param quantity

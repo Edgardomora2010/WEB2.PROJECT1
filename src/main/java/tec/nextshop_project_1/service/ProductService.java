@@ -5,6 +5,7 @@ package tec.nextshop_project_1.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tec.nextshop_project_1.data.Category;
+import tec.nextshop_project_1.data.Inventory;
 import tec.nextshop_project_1.data.Product;
 import tec.nextshop_project_1.data.Property;
 import tec.nextshop_project_1.repository.interfaces.IProductRepository;
@@ -281,6 +282,19 @@ public class ProductService {
 
         productRepository.addProduct(
                 newProduct
+        );
+
+        /*
+         * Todo producto nuevo inicia con
+         * inventario en cero.
+         */
+        inventoryService.addInventoryItem(
+                new Inventory(
+                        null,
+                        newProduct,
+                        0,
+                        0
+                )
         );
 
         return true;

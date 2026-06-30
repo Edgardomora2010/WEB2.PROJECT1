@@ -40,4 +40,35 @@ public class JpaInventoryRepositoryAdapter implements IInventoryRepository {
         repository.save(inventory);
         return true;
     }
+
+    /**
+     * Actualiza la cantidad disponible y el stock mínimo
+     * de un producto en inventario.
+     */
+    @Override
+    public boolean updateInventory(
+            Long productId,
+            int quantity,
+            int minimumStock) {
+
+        Optional<Inventory> inventory =
+                repository.findByProduct_Id(productId);
+
+        if (inventory.isEmpty()) {
+            return false;
+        }
+
+        Inventory currentInventory =
+                inventory.get();
+
+        currentInventory.setQuantity(quantity);
+        currentInventory.setMinimumStock(minimumStock);
+
+        repository.save(currentInventory);
+
+        return true;
+
+    }
+
+
 }

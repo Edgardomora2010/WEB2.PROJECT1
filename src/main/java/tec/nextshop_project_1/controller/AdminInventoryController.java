@@ -68,9 +68,51 @@ public class AdminInventoryController {
             return "redirect:/?error=admin_only";
         }
 
-        model.addAttribute(
+        /*model.addAttribute(
                 "inventoryItems",
                 inventoryService.getAllInventoryItems()
+        );*/
+
+        // Recarga la tabla con todos los productos,
+        // tengan o no un registro persistido de inventario.
+        List<Inventory> inventoryItems =
+                new ArrayList<>();
+
+        List<Product> products =
+                productService.getAllProducts();
+
+        for(Product product : products) {
+
+            Optional<Inventory> inventory =
+                    inventoryService.findByProductId(
+                            product.getId()
+                    );
+
+            if(inventory.isPresent()) {
+
+                inventoryItems.add(
+                        inventory.get()
+                );
+
+            }
+            else {
+
+                inventoryItems.add(
+                        new Inventory(
+                                null,
+                                product,
+                                0,
+                                0
+                        )
+                );
+
+            }
+
+        }
+
+        model.addAttribute(
+                "inventoryItems",
+                inventoryItems
         );
 
         return "managment/AdminInventory";
@@ -113,11 +155,39 @@ public class AdminInventoryController {
         List<Inventory> inventoryItems =
                 new ArrayList<>();
 
-        for(Product product : products){
+        // Recorre todos los productos encontrados
+        // según el criterio de búsqueda.
+        for(Product product : products) {
 
-            inventoryService.findByProductId(
-                    product.getId()
-            ).ifPresent(inventoryItems::add);
+            Optional<Inventory> inventory =
+                    inventoryService.findByProductId(
+                            product.getId()
+                    );
+
+            // Si existe un registro de inventario
+            // asociado al producto, se agrega a la lista.
+            if(inventory.isPresent()) {
+
+                inventoryItems.add(
+                        inventory.get()
+                );
+
+            }
+            else {
+
+                // Si el producto aún no posee un
+                // registro de inventario, se crea
+                // uno temporal con existencias en cero.
+                inventoryItems.add(
+                        new Inventory(
+                                null,
+                                product,
+                                0,
+                                0
+                        )
+                );
+
+            }
 
         }
 
@@ -156,29 +226,95 @@ public class AdminInventoryController {
             return "redirect:/?error=admin_only";
         }
 
-        // Recarga la tabla
+        // Recarga la tabla con todos los productos,
+        // tengan o no un registro persistido de inventario.
+        List<Inventory> inventoryItems =
+                new ArrayList<>();
+
+        List<Product> products =
+                productService.getAllProducts();
+
+        for(Product product : products) {
+
+            Optional<Inventory> inventory =
+                    inventoryService.findByProductId(
+                            product.getId()
+                    );
+
+            if(inventory.isPresent()) {
+
+                inventoryItems.add(
+                        inventory.get()
+                );
+
+            }
+            else {
+
+                inventoryItems.add(
+                        new Inventory(
+                                null,
+                                product,
+                                0,
+                                0
+                        )
+                );
+
+            }
+
+        }
+
         model.addAttribute(
                 "inventoryItems",
-                inventoryService.getAllInventoryItems()
+                inventoryItems
         );
 
         Optional<Inventory> inventory =
-                inventoryService.findByProductId(productId);
+                inventoryService.findByProductId(
+                        productId
+                );
 
-        if (inventory.isEmpty()) {
+        Inventory inventoryData;
 
-            model.addAttribute(
-                    "errorMessage",
-                    "No se encontró el registro de inventario."
-            );
+        // Si el producto no posee un registro
+        // persistido de inventario, se crea uno
+        // temporal para permitir su edición.
+        if(inventory.isPresent()) {
 
-            return "managment/AdminInventory";
+            inventoryData =
+                    inventory.get();
+
+        }
+        else {
+
+            Optional<Product> product =
+                    productService.findByProductId(
+                            productId
+                    );
+
+            if(product.isEmpty()) {
+
+                model.addAttribute(
+                        "errorMessage",
+                        "No se encontró el producto."
+                );
+
+                return "managment/AdminInventory";
+
+            }
+
+            inventoryData =
+                    new Inventory(
+                            null,
+                            product.get(),
+                            0,
+                            0
+                    );
 
         }
 
         model.addAttribute(
                 "inventory",
-                inventory.get()
+                inventoryData
         );
 
         return "managment/AdminInventory";
@@ -229,9 +365,51 @@ public class AdminInventoryController {
 
         }
 
-        model.addAttribute(
+        /*model.addAttribute(
                 "inventoryItems",
                 inventoryService.getAllInventoryItems()
+        );*/
+
+        // Recarga la tabla con todos los productos,
+        // tengan o no un registro persistido de inventario.
+        List<Inventory> inventoryItems =
+                new ArrayList<>();
+
+        List<Product> products =
+                productService.getAllProducts();
+
+        for(Product product : products) {
+
+            Optional<Inventory> inventory =
+                    inventoryService.findByProductId(
+                            product.getId()
+                    );
+
+            if(inventory.isPresent()) {
+
+                inventoryItems.add(
+                        inventory.get()
+                );
+
+            }
+            else {
+
+                inventoryItems.add(
+                        new Inventory(
+                                null,
+                                product,
+                                0,
+                                0
+                        )
+                );
+
+            }
+
+        }
+
+        model.addAttribute(
+                "inventoryItems",
+                inventoryItems
         );
 
         return "managment/AdminInventory";
